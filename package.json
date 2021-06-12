@@ -1,0 +1,45 @@
+{
+  "name": "digitalbeing",
+  "version": "0.2.27",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/XRFoundation/DigitalBeing.git"
+  },
+  "engines": {
+    "node": ">= 16.3.0"
+  },
+  "npmClient": "npm",
+  "jest": "ts-jest",
+  "main": "src/initialize.js",
+  "scripts": {
+    "start": "node src/initialize.js",
+    "start-gui": "GUI=true node src/initialize.js",
+    "start-local": "URL=https://localhost:3000/location/test node src/initialize.js",
+    "start-gui-local": "URL=https://localhost:3000/location/test GUI=true node src/initialize.js",
+    "validate": "npm run lint && npm run test",
+    "test": "echo \"TODO: Add Testing to Client\" && exit 0",
+    "lint": "eslint --fix --quiet \"*.ts\" \"**/*.ts\" \"**/*.tsx\""
+  },
+  "dependencies": {
+    "@google-cloud/agones-sdk": "1.14.0",
+    "grpc": "^1.24.10",
+    "@grpc/proto-loader": "^0.5.2",
+    "puppeteer": "9.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "13.13.51",
+    "@types/react": "17.0.11",
+    "@types/react-dom": "17.0.7",
+    "@types/three": "0.129.1",
+    "config": "3.3.6",
+    "cross-env": "7.0.3",
+    "eslint": "7.28.0",
+    "eslint-plugin-react": "7.24.0",
+    "semantic-release": "17.4.3",
+    "semantic-release-monorepo": "7.0.5",
+    "typescript": "4.3.2",
+    "uuid": "8.3.2"
+  },
+  "license": "ISC"
+}
