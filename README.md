@@ -1,5 +1,6 @@
 # DigitalBeing
-Your AI, anywhere
+Your AI, Anywhere
+
 Web Machine Learning, Computer Vision & Digital Beings
 
 ### Use Cases
