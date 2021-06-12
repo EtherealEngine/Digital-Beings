@@ -14,5 +14,5 @@ message TestResponse {
 }
 
 service TestService {
-  rpc Test (TestRequest) returns (TestResponse);
+  rpc test (TestRequest) returns (TestResponse);
 }

@@ -21,21 +21,6 @@ class Bot {
         this.fakeMediaPath = fakeMediaPath;
     }
 
-    async keyPress(key, numMilliSeconds) {
-        await this.setFocus('canvas');
-        await this.clickElementById('canvas', 'engine-renderer-canvas');
-        const interval = setInterval(() => {
-            console.log('Pressing', key);
-            this.pressKey(key);
-        }, 100);
-        return new Promise((resolve) => setTimeout(() => {
-            console.log('Clearing button press for ' + key, numMilliSeconds);
-            this.releaseKey(key);
-            clearInterval(interval);
-            resolve()
-        }, numMilliSeconds));
-    }
-
     async sendMessage(message) {
         await this.clickElementByClass('button', 'openChat');
         await this.clickElementById('input', 'newMessage');
@@ -89,6 +74,14 @@ class Bot {
     async interactObject() {
 
     }
+
+    /** Return screenshot
+ * @param {Function} fn Function to execut _in the node context._
+ */
+    async screenshot() {
+            return await this.page.screenshot();
+    }
+
 
     /** Runs a function and takes a screenshot if it fails
      * @param {Function} fn Function to execut _in the node context._
@@ -199,6 +192,21 @@ class Bot {
         this.pu = new PageUtils(this);
     }
 
+    async keyPress(key, numMilliSeconds) {
+        await this.setFocus('canvas');
+        await this.clickElementById('canvas', 'engine-renderer-canvas');
+        const interval = setInterval(() => {
+            console.log('Pressing', key);
+            this.pressKey(key);
+        }, 100);
+        return new Promise((resolve) => setTimeout(() => {
+            console.log('Clearing button press for ' + key, numMilliSeconds);
+            this.releaseKey(key);
+            clearInterval(interval);
+            resolve()
+        }, numMilliSeconds));
+    }
+
     async pressKey(keycode) {
         await this.page.keyboard.down(keycode);
     }
@@ -253,7 +261,7 @@ class Bot {
         await this.page.mouse.click(0, 0);
 
         this.evaluate(() => {
-            if(globalThis.store === undefined){
+            if (globalThis.store === undefined) {
                 return console.warn("Store was not found, ignoring chat");
             }
             const chatState = globalThis.store.getState().get('chat');
