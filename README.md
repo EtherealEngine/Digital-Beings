@@ -12,7 +12,7 @@ Web Machine Learning, Computer Vision & Digital Beings
 
 ### ML Models 
 
-XR3 Interface to Python, JavaScript, or WebRTC 
+XREngine Interface to Python, JavaScript, or WebRTC 
 
 Infer on Web Edge
 Face, Eyes, Hands, Pose, Scene Understanding
