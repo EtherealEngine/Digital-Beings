@@ -1,11 +1,15 @@
 import zerorpc
 PORT = 42422
 
+def handleMessage(sender, message):
+    print("Handle messages to respond to here!");
+    return "Respond to message from " + sender + " | " + message
+
 class PythonServer(object):
     def listen(self):
         print("Listning on"+str(PORT))
     def message(self, sender, message):
-        return "Respond to message from " + sender + " | " + message
+        return handleMessage(sender, message)
 
 try:
     s = zerorpc.Server(PythonServer())

@@ -15,7 +15,7 @@
   "scripts": {
     "build": "bash build.sh",
     "start": "ts-node src/initialize.ts",
-    "start-gui": "GUI=true node src/initialize.js",
+    "start-gui": "GUI=true ts-node src/initialize.ts",
     "start-local": "URL=https://localhost:3000/location/test ts-node src/initialize.ts",
     "start-gui-local": "URL=https://localhost:3000/location/test GUI=true ts-node src/initialize.ts",
     "validate": "npm run lint && npm run test",

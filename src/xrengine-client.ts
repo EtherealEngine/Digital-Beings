@@ -74,6 +74,7 @@ class XREngineBot {
     }
 
     async getInstanceMessages() {
+        if(!this.activeChannel) return;
         console.log("Getting messages from instance channel: ", this.activeChannel);
         // TODO: Fix because we don't want the whole chat state spamming every time
         this.messageResponseHandler("replaceme", this.activeChannel.chatState, (response) => this.sendMessage(response));
@@ -415,3 +416,5 @@ class PageUtils {
         }, selector);
     }
 }
+
+module.exports = { createXREngineClient }
