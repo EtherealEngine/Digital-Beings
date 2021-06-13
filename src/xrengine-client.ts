@@ -1,24 +1,68 @@
-const { URL } = require('url')
-const { BrowserLauncher } = require('./browser-launcher')
-const fs = require('fs');
-const getOS = require('./platform');
-const { PageUtils } = require("./PageUtils");
+const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
+
+const browserLauncher= require('./browser-launcher')
+const { existsSync } = require('fs');
+
+function getOS() {
+    const platform = process.platform;
+    console.log(platform);
+    let os;
+    if (platform.includes('darwin')) {
+      os = 'Mac OS';
+    } else if (platform.includes('win32')) {
+      os = 'Windows';
+    } else if (platform.includes('linux')) {
+      os = 'Linux';
+    }
+  
+    return os;
+}
+
+
+async function createXREngineClient(messageResponseHandler) {
+    const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
+
+    console.log("Preparing to connect to ", XRENGINE_URL);
+    xrengineBot.delay(Math.random() * 100000);
+    console.log("Connecting to server...");
+    await xrengineBot.launchBrowser();
+
+    await new Promise((resolve) => {
+        setTimeout(() => xrengineBot.enterRoom(XRENGINE_URL, { name: "TestBot" }), 1000);
+    });
+
+    await new Promise((resolve) => {
+        setTimeout(() => xrengineBot.sendMessage("Hello World! I have connected."), 5000);
+    });
+}
 
 /**
  * Main class for creating a bot.
  */
-class Bot {
+class XREngineBot {
     activeChannel;
+    messageResponseHandler
+    headless: boolean;
+    name: string;
+    autoLog: boolean;
+    fakeMediaPath: any;
+    page: any;
+    browser: any;
+    pu: PageUtils;
     constructor({
         name = "Bot",
-        fakeMediaPath,
+        fakeMediaPath = "",
         headless = true,
+        messageResponseHandler = null,
         autoLog = true } = {}
     ) {
         this.headless = headless;
         this.name = name;
         this.autoLog = autoLog;
+        this.messageResponseHandler = messageResponseHandler;
         this.fakeMediaPath = fakeMediaPath;
+
+        setInterval(() => this.getInstanceMessages(), 1000)
     }
 
     async sendMessage(message) {
@@ -30,6 +74,8 @@ class Bot {
 
     async getInstanceMessages() {
         console.log("Getting messages from instance channel: ", this.activeChannel);
+        // TODO: Fix because we don't want the whole chat state spamming every time
+        messageResponseHandler("replaceme", this.activeChannel.chatState, (response) => this.sendMessage(response));
         return this.activeChannel && this.activeChannel.chatState;
     }
 
@@ -128,7 +174,7 @@ class Bot {
      */
     detectOsOption() {
         const os = getOS();
-        const options = {};
+        const options: { executablePath: any } = {executablePath: null};
         let chromePath = '';
         switch (os) {
             case 'Mac OS':
@@ -145,7 +191,7 @@ class Bot {
         }
 
         if (chromePath) {
-            if (fs.existsSync(chromePath)) {
+            if (existsSync(chromePath)) {
                 options.executablePath = chromePath;
             }
             else {
@@ -179,7 +225,7 @@ class Bot {
             ...this.detectOsOption()
         };
 
-        this.browser = await BrowserLauncher.browser(options);
+        this.browser = await browserLauncher.browser(options);
         this.page = await this.browser.newPage();
 
         if (this.autoLog) {
@@ -199,7 +245,7 @@ class Bot {
             console.log('Pressing', key);
             this.pressKey(key);
         }, 100);
-        return new Promise((resolve) => setTimeout(() => {
+        return new Promise<void>((resolve) => setTimeout(() => {
             console.log('Clearing button press for ' + key, numMilliSeconds);
             this.releaseKey(key);
             clearInterval(interval);
@@ -278,7 +324,7 @@ class Bot {
     }
 
     async waitForTimeout(timeout) {
-        return await new Promise(resolve => setTimeout(() => resolve(), timeout));
+        return await new Promise<void>(resolve => setTimeout(() => resolve(), timeout));
     }
 
     async waitForSelector(selector, timeout) {
@@ -314,4 +360,57 @@ class Bot {
     }
 }
 
-module.exports = Bot
+class PageUtils {
+    page: any;
+    autoLog: boolean;
+    constructor({ page, autoLog = true }) {
+        this.page = page;
+        this.autoLog = autoLog;
+    }
+    async clickSelectorClassRegex(selector, classRegex) {
+        if (this.autoLog)
+            console.log(`Clicking for a ${selector} matching ${classRegex}`);
+
+        await this.page.evaluate((selector, classRegex) => {
+            classRegex = new RegExp(classRegex);
+            let buttons = Array.from(document.querySelectorAll(selector));
+            let enterButton = buttons.find(button => Array.from(button.classList).some(c => classRegex.test(c)));
+            if (enterButton)
+                enterButton.click();
+        }, selector, classRegex.toString().slice(1, -1));
+    }
+    async clickSelectorId(selector, id) {
+        if (this.autoLog)
+            console.log(`Clicking for a ${selector} matching ${id}`);
+
+        await this.page.evaluate((selector, id) => {
+            let matches = Array.from(document.querySelectorAll(selector));
+            let singleMatch = matches.find(button => button.id === id);
+            let result;
+            if (singleMatch && singleMatch.click) {
+                console.log('normal click');
+                result = singleMatch.click();
+            }
+            if (singleMatch && !singleMatch.click) {
+                console.log('on click');
+                result = singleMatch.dispatchEvent(new MouseEvent('click', { 'bubbles': true }));
+            }
+            if (!singleMatch) {
+                console.log('event click', matches.length);
+                const m = matches[0];
+                result = m.dispatchEvent(new MouseEvent('click', { 'bubbles': true }));
+            }
+        }, selector, id);
+    }
+    async clickSelectorFirstMatch(selector) {
+        if (this.autoLog)
+            console.log(`Clicking for first ${selector}`);
+
+        await this.page.evaluate((selector) => {
+            let matches = Array.from(document.querySelectorAll(selector));
+            let singleMatch = matches[0];
+            if (singleMatch)
+                singleMatch.click();
+        }, selector);
+    }
+}

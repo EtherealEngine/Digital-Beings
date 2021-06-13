@@ -1,25 +1,28 @@
+from concurrent import futures
+import logging
+
 import grpc
-import sample_pb2
 
-channel = grpc.insecure_channel('localhost:50051')
-stub = sample_pb2.SearchServiceStub(channel)
+import MessageService_pb2
+import MessageService_pb2_grpc
 
-req = sample_pb2.TestRequest(data='test123')
-print stub.Search(req)
 
-print("Hello")
+class MessageController(MessageService_pb2_grpc.MessageService):
 
-def get_bot_response(message):
-    print("Hello world!")
-    # url = "http://127.0.0.1:8000/api/ask-question/"
+    def call(self, request, context):
+        print("hello, there is an input")
+        return Hello_pb2.Response()
 
-    # payload = "id={}&question={}".format(bot_id, message)
-    # print("payload ==> ", payload)
-    # headers = {
-    #     'content-type': "application/x-www-form-urlencoded",
-    #     'cache-control': "no-cache",
-    #     'Accept': "application/json"
-    #     }
 
-    # response = requests.request("POST", url, data=payload, headers=headers)
-    # return response.text
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    MessageService_pb2_grpc.add_MessageService_to_server(MessageController(), server)
+    server.add_insecure_port('0.0.0.0:5051')
+    server.start()
+    server.wait_for_termination()
+
+
+if __name__ == '__main__':
+    logging.basicConfig()
+    print("hello")
+    serve()

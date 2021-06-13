@@ -2,8 +2,11 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 class BrowserLauncher {
+    static browser(options: { headless: any; ignoreHTTPSErrors: boolean; args: string[]; ignoreDefaultArgs: string[]; }): any {
+        throw new Error("Method not implemented.");
+    }
     constructor() {}
-
+    _browser
     async browser(options) {
         console.log('Making new browser');
         console.log(this._browser);
@@ -20,4 +23,4 @@ class BrowserLauncher {
     }
 }
 
-module.exports = {BrowserLauncher: new BrowserLauncher()}
+module.exports = new BrowserLauncher()
