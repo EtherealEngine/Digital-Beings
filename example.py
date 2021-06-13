@@ -1,28 +1,17 @@
-from concurrent import futures
-import logging
+import zerorpc
+PORT = 42422
 
-import grpc
+class PythonServer(object):
+    def listen(self):
+        print("Listning on"+str(PORT))
+    def message(self, sender, message):
+        return "Respond to message from " + sender + " | " + message
 
-import MessageService_pb2
-import MessageService_pb2_grpc
-
-
-class MessageController(MessageService_pb2_grpc.MessageService):
-
-    def call(self, request, context):
-        print("hello, there is an input")
-        return Hello_pb2.Response()
-
-
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    MessageService_pb2_grpc.add_MessageService_to_server(MessageController(), server)
-    server.add_insecure_port('0.0.0.0:5051')
-    server.start()
-    server.wait_for_termination()
-
-
-if __name__ == '__main__':
-    logging.basicConfig()
-    print("hello")
-    serve()
+try:
+    s = zerorpc.Server(PythonServer())
+    s.bind(f'tcp://0.0.0.0:{PORT}')
+    s.run()
+    print('PythonServer running...')
+except Exception as e:
+    print('unable to start PythonServer:', e)
+    raise e

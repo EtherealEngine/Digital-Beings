@@ -13,27 +13,24 @@
   "jest": "ts-jest",
   "main": "src/initialize.js",
   "scripts": {
-    "build": "bash proto/build.sh",
-    "start": "node src/initialize.js",
+    "build": "bash build.sh",
+    "start": "ts-node src/initialize.ts",
     "start-gui": "GUI=true node src/initialize.js",
-    "start-local": "URL=https://localhost:3000/location/test node src/initialize.js",
-    "start-gui-local": "URL=https://localhost:3000/location/test GUI=true node src/initialize.js",
+    "start-local": "URL=https://localhost:3000/location/test ts-node src/initialize.ts",
+    "start-gui-local": "URL=https://localhost:3000/location/test GUI=true ts-node src/initialize.ts",
     "validate": "npm run lint && npm run test",
     "test": "echo \"TODO: Add Testing to Client\" && exit 0",
-    "lint": "eslint --fix --quiet \"*.ts\" \"**/*.ts\" \"**/*.tsx\"",
-    "server": "ts-node server/index.ts",
-    "client": "ts-node client/index.ts"
+    "lint": "eslint --fix --quiet \"*.ts\" \"**/*.ts\" \"**/*.tsx\""
   },
   "dependencies": {
-    "@google-cloud/agones-sdk": "1.14.0",
-    "grpc": "^1.24.10",
-    "@grpc/proto-loader": "^0.5.2",
+    "discord.js": "^12.5.3",
+    "dotenv-flow": "^3.2.0",
     "puppeteer": "9.1.1",
-    "@types/google-protobuf": "^3.7.2",
-    "grpc-tools": "^1.9.1",
-    "grpc_tools_node_protoc_ts": "^4.1.2",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "twit": "^2.2.11",
+    "twitter-autohook": "^1.7.2",
+    "zeromq": "^5.2.8",
+    "zerorpc": "^0.9.8"
   },
   "devDependencies": {
     "@types/node": "13.13.51",

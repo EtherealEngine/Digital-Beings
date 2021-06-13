@@ -66,6 +66,7 @@ class XREngineBot {
     }
 
     async sendMessage(message) {
+        if(message === null) return;
         await this.clickElementByClass('button', 'openChat');
         await this.clickElementById('input', 'newMessage');
         await this.typeMessage(message);
@@ -75,7 +76,7 @@ class XREngineBot {
     async getInstanceMessages() {
         console.log("Getting messages from instance channel: ", this.activeChannel);
         // TODO: Fix because we don't want the whole chat state spamming every time
-        messageResponseHandler("replaceme", this.activeChannel.chatState, (response) => this.sendMessage(response));
+        this.messageResponseHandler("replaceme", this.activeChannel.chatState, (response) => this.sendMessage(response));
         return this.activeChannel && this.activeChannel.chatState;
     }
 
