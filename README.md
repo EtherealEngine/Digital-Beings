@@ -1,5 +1,5 @@
 # DigitalBeing
-A platform for letting researchers connect an intelligent AI directly to realtime communication etworks and 3D worlds.
+A platform for letting researchers connect an intelligent AI directly to realtime communication networks and 3D worlds.
 
 ### How It Works
 Under the hood you'll find an instance of Chrome (using Puppeteer) which can be run in headless or GUI mode. The bot uses control surfaces from the user API to interact, and also has some extra access to world state.
