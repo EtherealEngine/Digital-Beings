@@ -3,7 +3,7 @@ const path = require('path');
 const grpc = require('grpc');
 
 const proto = grpc.load(`${__dirname}/../example.proto`)
-const PORT = 50051
+const PORT = 50050
 const IP = 'localhost'
 
 class PyConnect {
@@ -53,7 +53,9 @@ var promisify = (fn, ctx, ...args) => {
             }
         });
 
-        fn.apply(ctx, args)
+        console.log("fn => ", fn)
+
+        fn.apply(ctx, [args[0], args[1]])
     });
 };
 

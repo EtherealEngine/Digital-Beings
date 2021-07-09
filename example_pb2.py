@@ -19,23 +19,30 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rexample.proto\"\x1f\n\x0eRequestMessage\x12\r\n\x05value\x18\x01 \x01(\t2<\n\x05\x41gent\x12\x33\n\rHandleMessage\x12\x0f.RequestMessage\x1a\x0f.RequestMessage\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\rexample.proto\"*\n\x07Request\x12\x0e\n\x06sender\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x19\n\x08Response\x12\r\n\x05value\x18\x01 \x01(\t2/\n\x05\x41gent\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x62\x06proto3'
 )
 
 
 
 
-_REQUESTMESSAGE = _descriptor.Descriptor(
-  name='RequestMessage',
-  full_name='RequestMessage',
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='Request',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='value', full_name='RequestMessage.value', index=0,
+      name='sender', full_name='Request.sender', index=0,
       number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='message', full_name='Request.message', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -53,18 +60,58 @@ _REQUESTMESSAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=17,
-  serialized_end=48,
+  serialized_end=59,
 )
 
-DESCRIPTOR.message_types_by_name['RequestMessage'] = _REQUESTMESSAGE
+
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='Response',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='Response.value', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=61,
+  serialized_end=86,
+)
+
+DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-RequestMessage = _reflection.GeneratedProtocolMessageType('RequestMessage', (_message.Message,), {
-  'DESCRIPTOR' : _REQUESTMESSAGE,
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), {
+  'DESCRIPTOR' : _REQUEST,
   '__module__' : 'example_pb2'
-  # @@protoc_insertion_point(class_scope:RequestMessage)
+  # @@protoc_insertion_point(class_scope:Request)
   })
-_sym_db.RegisterMessage(RequestMessage)
+_sym_db.RegisterMessage(Request)
+
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
+  'DESCRIPTOR' : _RESPONSE,
+  '__module__' : 'example_pb2'
+  # @@protoc_insertion_point(class_scope:Response)
+  })
+_sym_db.RegisterMessage(Response)
 
 
 
@@ -75,16 +122,16 @@ _AGENT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=50,
-  serialized_end=110,
+  serialized_start=88,
+  serialized_end=135,
   methods=[
   _descriptor.MethodDescriptor(
     name='HandleMessage',
     full_name='Agent.HandleMessage',
     index=0,
     containing_service=None,
-    input_type=_REQUESTMESSAGE,
-    output_type=_REQUESTMESSAGE,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

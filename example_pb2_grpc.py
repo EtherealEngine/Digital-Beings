@@ -16,8 +16,8 @@ class AgentStub(object):
         """
         self.HandleMessage = channel.unary_unary(
                 '/Agent/HandleMessage',
-                request_serializer=example__pb2.RequestMessage.SerializeToString,
-                response_deserializer=example__pb2.RequestMessage.FromString,
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
                 )
 
 
@@ -35,8 +35,8 @@ def add_AgentServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'HandleMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.HandleMessage,
-                    request_deserializer=example__pb2.RequestMessage.FromString,
-                    response_serializer=example__pb2.RequestMessage.SerializeToString,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -60,7 +60,7 @@ class Agent(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Agent/HandleMessage',
-            example__pb2.RequestMessage.SerializeToString,
-            example__pb2.RequestMessage.FromString,
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
-
 const createDiscordClient = (messageResponseHandler) => {
   if(!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
   const client = new Discord.Client();
@@ -14,9 +13,9 @@ const createDiscordClient = (messageResponseHandler) => {
       if (message.author.bot)
         return; // Skip own messages
       if (message.channel.type === 'text') {
-        await messageResponseHandler(message.author, message.content, (response) => message.channel.send(response));
+        await messageResponseHandler(message.author.username, message.content, (response) => message.channel.send(response.value));
       } else if (message.channel.type === 'dm') {
-        await messageResponseHandler(message.author, message.content, (response) => message.author.send(response));
+        await messageResponseHandler(message.author.username, message.content, (response) => message.author.send(response.value));
       }
     });
   });

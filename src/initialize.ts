@@ -17,10 +17,10 @@ globalThis.requestAnimationFrame = (f) => {
 }
 const pyConnect = require('./pyconnect');
 
-(async function(){  await pyConnect.invoke('listen'); })();
+// (async function(){  await pyConnect.invoke('listen'); })();
 
-const messageResponseHandler = async (username, message, callback) => {
-    const response = await pyConnect.invoke('message', username, message)
+const messageResponseHandler = async (sender, message, callback) => {
+    const response = await pyConnect.invoke(sender, message)
     callback(response);
 }
 

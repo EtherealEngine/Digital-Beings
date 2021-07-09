@@ -1,9 +1,15 @@
 syntax = "proto3";
 
-message RequestMessage {
+message Request {
+    string sender = 1;
+    string message = 2;
+
+}
+
+message Response {
     string value = 1;
 }
 
 service Agent {
-    rpc HandleMessage(RequestMessage) returns (RequestMessage) {}
+    rpc HandleMessage(Request) returns (Response) {}
 }
