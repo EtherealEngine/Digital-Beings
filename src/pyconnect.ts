@@ -1,38 +1,36 @@
 const spawn = require('child_process').spawn;
 const path = require('path');
-const zerorpc = require('zerorpc');
+const grpc = require('grpc');
 
-
-const TIMEOUT = 60; 
-const IP = '127.0.0.1';
-const PORT = '42422';
+const proto = grpc.load(`${__dirname}/../example.proto`)
+const PORT = 50051
+const IP = 'localhost'
 
 class PyConnect {
     static connected: any;
-    static zerorpcProcess: any;
-    static zerorpc: any;
+    static grpcProcess: any;
+    static grpc: any;
     static server() {
         if (!PyConnect.connected) {
             console.log('PythonConnector – making a new connection to the python layer');
-            PyConnect.zerorpcProcess = spawn('python3', ['-u', path.join(__dirname, 'PythonServer.py')]);
-            PyConnect.zerorpcProcess.stdout.on('data', function(data) {
+            PyConnect.grpcProcess = spawn('python3', ['-u', path.join(__dirname, '../grpc_server.py')]);
+            PyConnect.grpcProcess.stdout.on('data', function(data) {
                 console.info('python:', data.toString());
             });
-            PyConnect.zerorpcProcess.stderr.on('data', function(data) {
+            PyConnect.grpcProcess.stderr.on('data', function(data) {
                 console.error('python:', data.toString());
             });
-            PyConnect.zerorpc = new zerorpc.Client({'timeout': TIMEOUT, 'heartbeatInterval': TIMEOUT*1000});
-            PyConnect.zerorpc.connect('tcp://' + IP + ':' + PORT);
+            PyConnect.grpc = new proto.Agent(IP + ':' + PORT, grpc.credentials.createInsecure());
             PyConnect.connected = true;
         }
-        return PyConnect.zerorpc;
+        return PyConnect.grpc;
     }
 
     static async invoke(method, ...args) {
         try {
             
-            var zerorpc = PyConnect.server();
-            return await promisify(zerorpc.invoke, zerorpc, method, ...args);
+            var grpc = PyConnect.server();
+            return await promisify(grpc.HandleMessage, grpc, method, ...args);
         }
         catch (e) {
             return Promise.reject(e)
