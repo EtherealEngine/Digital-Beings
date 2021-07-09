@@ -25,6 +25,7 @@
   "dependencies": {
     "discord.js": "12.5.3",
     "dotenv-flow": "3.2.0",
+    "grpc": "^1.24.10",
     "puppeteer": "^10.1.0",
     "ts-node": "10.0.0",
     "twit": "2.2.11",
