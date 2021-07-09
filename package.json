@@ -25,12 +25,10 @@
   "dependencies": {
     "discord.js": "12.5.3",
     "dotenv-flow": "3.2.0",
-    "puppeteer": "10.1.0",
+    "puppeteer": "^10.1.0",
     "ts-node": "10.0.0",
     "twit": "2.2.11",
-    "twitter-autohook": "1.7.2",
-    "zeromq": "5.2.8",
-    "zerorpc": "0.9.8"
+    "twitter-autohook": "1.7.2"
   },
   "devDependencies": {
     "@types/node": "14.17.4",
