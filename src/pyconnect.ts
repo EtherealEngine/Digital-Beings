@@ -53,8 +53,6 @@ var promisify = (fn, ctx, ...args) => {
             }
         });
 
-        console.log("fn => ", fn)
-
         fn.apply(ctx, [args[0], args[1]])
     });
 };

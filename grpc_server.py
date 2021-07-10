@@ -17,6 +17,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # the request and response are of the data type
     # example_pb2.Request
     def HandleMessage(self, request, context):
+        print("request => ", request)
         response = example_pb2.Response()
         response.value = example.handle_message(request.sender, request.message)
         return response
@@ -30,7 +31,7 @@ server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
-# listen on port 50051
+# listen on port 50050
 print('Starting server. Listening on port 50050.')
 server.add_insecure_port('[::]:50050')
 server.start()
