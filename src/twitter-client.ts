@@ -81,7 +81,7 @@ const createTwitterClient = async (messageResponseHandler) => {
       const message = ReceivedMessage.replace("@" + TWITTER_ID + " ", "");
 
       console.log("Received message ", message, " from ", name);
-      messageResponseHandler(name, message, (response) =>  SendMessage(id, name, 'Tweet', response));
+      messageResponseHandler(name, message, (response) =>  SendMessage(id, name, 'Tweet', response.value));
     }
 
     if (typeof (event.direct_message_events) !== 'undefined') {
@@ -90,7 +90,7 @@ const createTwitterClient = async (messageResponseHandler) => {
         const name = event.users[event.direct_message_events[0].message_create.sender_id].screen_name;
         const message = event.direct_message_events[0].message_create.message_data.text;
         console.log("Received message ", message, " from ", name);
-        messageResponseHandler(name, message, (response) => SendMessage(id, name, 'DM', response));
+        messageResponseHandler(name, message, (response) => SendMessage(id, name, 'DM', response.value));
       }
     }
   });
