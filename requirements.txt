@@ -2,3 +2,5 @@ six==1.16.0
 grpcio==1.38.1
 grpcio-tools==1.38.1
 openai==0.3.0
+rasa==2.2.4
+rasa-sdk==2.2.0
