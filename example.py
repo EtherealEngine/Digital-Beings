@@ -7,7 +7,7 @@ import json
 def handle_message(sender, message):
     print("Handle messages to respond to here!")
     if sender and message:
-        engine = 'curie'
+        engine = 'curie-instruct-beta'
         context = 'Agent is a teacher expert in Web Development. You have skills in HTML And the problem your student is telling you about is I have been trying to center a div inside another div for over an hour now, I just can not do it, i need help with it..'
         gpt3_agent = Gpt3Agent(engine, context, message)
         response = gpt3_agent.invoke_api()
@@ -23,7 +23,7 @@ class Gpt3Agent():
     
     
     def __init__(self, engine, context, question):
-        self.engine = engine
+        self.engine_name = engine
         self.question = question
         self.chat_context = context
 
@@ -44,7 +44,7 @@ class Gpt3Agent():
     
     
     def invoke_api(self):
-        url = "https://api.openai.com/v1/engines/curie-instruct-beta/completions"
+        url = f"https://api.openai.com/v1/engines/{self.engine_name}/completions"
         payload = "{\n\t \"prompt\": \"" + self.chat_context + "\\nQ:" + self.question + "\\nAgent:\",\n\t  \"max_tokens\": 25,\n\t  \"temperature\": 1,\n\t  \"top_p\": 1,\n\t  \"n\": 1,\n\t  \"stream\": false,\n\t  \"logprobs\": null,\n\t  \"stop\": \"\\n\"\n}"        
         headers = {
             'content-type': "application/json",
@@ -57,3 +57,10 @@ class Gpt3Agent():
         return self.agent_response
 
 
+class RasaAgent():
+    engine_name = ''
+    
+    
+    def __init__(self, engine, context, question):
+        self.engine = engine
+    
