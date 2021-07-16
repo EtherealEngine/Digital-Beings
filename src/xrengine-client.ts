@@ -234,7 +234,7 @@ class XREngineBot {
             this.page.on('console', consoleObj => console.log(">> ", consoleObj.text()));
         }
 
-        this.page.setViewport({ width: 1600, height: 900 });
+        this.page.setViewport({ width: 0, height: 0 });
         await this.page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
 
         this.pu = new PageUtils(this);
