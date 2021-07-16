@@ -1,4 +1,5 @@
 six==1.16.0
+spacy
 grpcio==1.38.1
 grpcio-tools==1.38.1
 openai==0.3.0
