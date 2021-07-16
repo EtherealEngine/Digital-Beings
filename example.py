@@ -8,14 +8,14 @@ import os
 def handle_message(sender, message):
     print("Handle messages to respond to here!")
     if sender and message:
-        rasa_agent = RasaAgent('1', message)
-        response = rasa_agent.invoke()
-        # engine = 'curie-instruct-beta'
-        # context = 'Agent is a teacher expert in Web Development. You have skills in HTML And the problem your student is telling you about is I have been trying to center a div inside another div for over an hour now, I just can not do it, i need help with it..'
-        # gpt3_agent = Gpt3Agent(engine, context, message)
-        # response = gpt3_agent.invoke_api()
-        # return "Respond to message from " + sender + " | " + message + "\n\n" + "Agent Response" + " | " + response
-        return "@" + sender + " " + response
+        engine = 'curie-instruct-beta'
+        context = 'Agent is a teacher expert in Web Development. You have skills in HTML And the problem your student is telling you about is I have been trying to center a div inside another div for over an hour now, I just can not do it, i need help with it..'
+        rasa_model_name = '1'
+        gpt3_agent = Gpt3Agent(engine, context, message)
+        rasa_agent = RasaAgent(rasa_model_name, message)
+        gpt3_response = gpt3_agent.invoke_api()
+        rasa_response = rasa_agent.invoke()
+        return "Respond to message from " + sender + " | " + message + "\n\n" + "GPT3 Response" + " | " + gpt3_response + "\n\n" + "Rasa Response" + " | " + rasa_response
 
 
 class Gpt3Agent():
@@ -63,6 +63,7 @@ class Gpt3Agent():
 from rasa.core.agent import Agent
 from rasa.utils.endpoints import EndpointConfig
 from rasa import train
+import asyncio
 
 
 class RasaAgent():
@@ -82,13 +83,17 @@ class RasaAgent():
         full_modal_path = output_path+self.model_name+".tar.gz"
         agent = Agent.load(full_modal_path, action_endpoint=EndpointConfig(action_endpoint))
         if agent.is_ready():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             loop = asyncio.get_event_loop()
-            self.response = loop.run_until_complete(agent.handle_text(question))
+            self.response = loop.run_until_complete(agent.handle_text(self.question))
             agent_response_data = agent.tracker_store.retrieve_full_tracker("default")._latest_message_data()
             intent = agent_response_data.get('intent',{})
+            confidence = intent.get('confidence', 0)
+            print("rasa response => ", self.response[0].get("text"))
             
-            if intent > 50:
-                return self.response
+            if confidence >= 0.20:
+                return self.response[0].get("text")
             else:
                 return "Im sorry can you elaborate?"
         else:
