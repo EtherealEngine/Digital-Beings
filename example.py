@@ -1,16 +1,19 @@
-import openai
-import os
+
 import requests
+import openai
 import json
+import os
 
 
 def handle_message(sender, message):
     print("Handle messages to respond to here!")
     if sender and message:
-        engine = 'curie-instruct-beta'
-        context = 'Agent is a teacher expert in Web Development. You have skills in HTML And the problem your student is telling you about is I have been trying to center a div inside another div for over an hour now, I just can not do it, i need help with it..'
-        gpt3_agent = Gpt3Agent(engine, context, message)
-        response = gpt3_agent.invoke_api()
+        rasa_agent = RasaAgent('1', message)
+        response = rasa_agent.invoke()
+        # engine = 'curie-instruct-beta'
+        # context = 'Agent is a teacher expert in Web Development. You have skills in HTML And the problem your student is telling you about is I have been trying to center a div inside another div for over an hour now, I just can not do it, i need help with it..'
+        # gpt3_agent = Gpt3Agent(engine, context, message)
+        # response = gpt3_agent.invoke_api()
         # return "Respond to message from " + sender + " | " + message + "\n\n" + "Agent Response" + " | " + response
         return "@" + sender + " " + response
 
@@ -57,10 +60,36 @@ class Gpt3Agent():
         return self.agent_response
 
 
+from rasa.core.agent import Agent
+from rasa.utils.endpoints import EndpointConfig
+from rasa import train
+
+
 class RasaAgent():
-    engine_name = ''
+    model_name = ''
+    response = ''
+    question = ''
     
     
-    def __init__(self, engine, context, question):
-        self.engine = engine
+    def __init__(self, model, question):
+        self.model_name = model
+        self.question = question
+        
     
+    def invoke(self):
+        action_endpoint = "http://localhost:5055/webhook"
+        output_path	= "rasa/models/"
+        full_modal_path = output_path+self.model_name+".tar.gz"
+        agent = Agent.load(full_modal_path, action_endpoint=EndpointConfig(action_endpoint))
+        if agent.is_ready():
+            loop = asyncio.get_event_loop()
+            self.response = loop.run_until_complete(agent.handle_text(question))
+            agent_response_data = agent.tracker_store.retrieve_full_tracker("default")._latest_message_data()
+            intent = agent_response_data.get('intent',{})
+            
+            if intent > 50:
+                return self.response
+            else:
+                return "Im sorry can you elaborate?"
+        else:
+            return "No Agent Found"
