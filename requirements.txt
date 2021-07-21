@@ -1,6 +1,6 @@
 six==1.16.0
 spacy
-grpcio==1.38.1
+grpcio==1.39.0
 grpcio-tools==1.38.1
 openai==0.10.1
 rasa==2.8.0
