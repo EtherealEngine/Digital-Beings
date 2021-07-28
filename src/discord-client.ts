@@ -6,10 +6,8 @@ const createDiscordClient = (messageResponseHandler) => {
     const client = new Discord.Client();
 
     client.on('ready', async function () {
-        console.log(`the client becomes ready to start`);
-        console.log(`I am ready! Logged in as ${client.user.tag}!`);
-        console.log(client.users)
-        console.log(client.channels)
+       // console.log(`the client becomes ready to start`);
+       // console.log(`I am ready! Logged in as ${client.user.tag}!`);
        /// console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
 
         client.on('message', async (message) => {
@@ -18,6 +16,7 @@ const createDiscordClient = (messageResponseHandler) => {
                 return; // Skip own messages
             if (message.channel.type === 'text') {
                 if (message.content) {
+                  console.log(message)
                     message.reply(message.content);
                 }
             }

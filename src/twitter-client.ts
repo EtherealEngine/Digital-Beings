@@ -8,6 +8,7 @@ const {
 } = require('crypto');
 
 const TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY;
+console.log(TWITTER_CONSUMER_KEY)
 const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET;
 const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
 const TWITTER_ACCESS_TOKEN_SECRET = process.env.TWITTER_ACCESS_TOKEN_SECRET;
@@ -19,7 +20,7 @@ const SERVER_PORT = process.env.SERVER_PORT;
 let TwitClient;
 
 const createTwitterClient = async (messageResponseHandler) => {
-  if(!TWITTER_CONSUMER_SECRET || TWITTER_CONSUMER_SECRET || TWITTER_ACCESS_TOKEN || TWITTER_ACCESS_TOKEN_SECRET)
+  if(!TWITTER_CONSUMER_SECRET || !TWITTER_CONSUMER_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_TOKEN_SECRET)
     return console.warn("No credentials for Twitter, skipping");
 
   const SendMessage = (id, twitterUserId, messageType, text) => {
@@ -39,6 +40,7 @@ const createTwitterClient = async (messageResponseHandler) => {
           }
         }
       }, (error, data, response) => {
+        console.log(response)
         if (error)
           console.log(error);
       });

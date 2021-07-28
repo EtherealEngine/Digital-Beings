@@ -5,4 +5,4 @@ grpcio-tools==1.39.0
 openai==0.10.1
 rasa==2.8.1
 rasa-sdk==2.8.1
-numpy==1.21.1
+numpy==1.18.5
