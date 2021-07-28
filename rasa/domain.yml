@@ -1,0 +1,454 @@
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- ask_circle_tool
+- teach_circle_tool
+- find_circle_tool
+- help
+- Accounting
+- ask_ISP
+- class_schedule
+- Software_blender
+- Software_construct
+- Software_pyxel
+- Software_piskel
+- Software_krita
+- Software_beepbox
+- Software_wix
+- Software_itch.io
+- Software_unity
+- Software_unreal
+- General_Question_3d_modeling
+- General_Question_3d_artist
+- General_Question_technical_artist
+- General_Question_programmer
+- General_Question_game_artist
+- General_Question_2d_artist
+- General_Question_environment_artist
+- General_Question_dresser
+- General_Question_rigger
+- General_Question_unity
+- General_Question_unreal
+- General_Question_level_designer
+- General_Question_texture_artist
+- General_Question_discord
+- Community_Question_guidelines
+- General_Question_pixelart
+- General_Question_game_developers
+- General_Question_indie_developers
+- ask_Handbook_duties
+- ask_Handbook_responsibilities
+- ask_Director_regional_center
+- ask_Director_code
+- ask_Handbook_teacher
+- ask_Handbook_portfolio
+- ask_Handbook_blog
+- ask_IPP
+- ask_Surveys
+- ask_Scrum
+- General_Question_constructive_criticism
+- General_Question_capstone
+- General_Question_quire
+- General_Question_contact
+- ask_Director_client_info
+- ask_Director_cordinator
+- ask_Director_consumer
+- ask_Director_consumenr_assesment
+- ask_Director_pass_assesment
+- ask_Director_icu_number
+- ask_Director_ail_assesment
+- ask_Director_first_day
+- ask_Staff_stressed_student
+- ask_Staff_disobey_rule
+- ask_Staff_feeling_stressed
+- ask_Director_authorization
+- ask_Staff_stuck
+- ask_Staff_student_lesson
+- ask_CareerServices
+- General_Question_game_company
+- General_Question_money
+- General_Question_sketchfab
+- General_Question_magicvoxel
+- ask_Social
+- General_Question_social_events
+- General_Question_jam
+- General_Question_mapping
+- General_Question_pixel_density
+- ask_Director_submitted_isp
+- General_Question_gamegen_type
+responses:
+  utter_ask_circle_tool:
+  - text: 'yes this is the circle tool. '
+  - text: '''Ellipse'' tool. Make circles and ovals by selecting this tool and dragging
+      the computer mouse diagonally after clicking on a place in your image.'
+  utter_teach_circle_tool:
+  - text: To draw a circle, use the oval tool and hold down the shift key while dragging
+      out an ellipse, this constrains the form to a circle.
+  utter_find_circle_tool:
+  - text: 'This is the location of circle tool in ms paint. Check this:https://www.wikihow.com/images/thumb/1/13/Draw-a-Perfect-Circle-on-Microsoft-Paint-Step-2-Version-3.jpg/v4-460px-Draw-a-Perfect-Circle-on-Microsoft-Paint-Step-2-Version-3.jpg.webp '
+  utter_help:
+  - text: Yes let me know your issue. I' will resolve it at the highestpriority.
+  utter_Accounting:
+  - text: Game Gen employees are paid twice a month on the 1st and 15th. If either
+      of those days land on a holiday then you will be paid the day before.
+  utter_ask_ISP:
+  - text: The Individual Service Plan (ISP) is the written details of the supports,
+      activities, and resources required for the individual to achieve personal goals.
+      The Individual Service Plan is developed to articulate decisions and agreements
+      made during a person-centered process of planning and information gathering.
+  utter_class_schedule:
+  - text: Dev Session 1 - 09:00 AM - 11:30 AMEarly Lunch - 11:30 AM - 12:15 PMDev
+      Session 2 - 12:15 PM - 02:30 PMLate Lunch - 02:30 PM - 03:15 PMDev Session 3
+      -  03:15 PM - 06:00 PM
+  utter_Software_blender:
+  - text: Blender is a free and open-source 3D computer graphics software toolset
+      used for creating animated films, visual effects, art, 3D printed models, motion
+      graphics, interactive 3D applications, virtual reality, and computer games
+  utter_Software_construct:
+  - text: Construct 3 is a 2D game engine that can be used to design and create your
+      own games, such as puzzles, platformers, role-playing games (RPGs), shooters,
+      racing games, or even storybooks. Construct 3 also includes the Box2D physics
+      engine for creating physics-based games.
+  utter_Software_pyxel:
+  - text: Pyxel is a retro game engine for Python. Thanks to its simple specifications
+      inspired by retro gaming consoles, such as only 16 colors can be displayed and
+      only 4 sounds can be played back at the same time, you can feel free to enjoy
+      making pixel art style games.
+  utter_Software_piskel:
+  - text: Piskel is a free online editor animated sprites & pixel art. Create animations
+      in your browser. Try an example, use Google sign in to access your gallery or
+      simply create a new sprite.
+  utter_Software_krita:
+  - text: Krita is a free and open-source raster graphics editor designed primarily
+      for digital painting and 2D animation. It runs on Windows, macOS, Linux, Android
+      and Chrome OS.
+  utter_Software_beepbox:
+  - text: BeepBox is an online tool for sketching and sharing instrumental melodies.
+      Make sure that your volume is turned up, then press the play button! All song
+      data is contained in the URL at the top of your browser. When you make changes
+      to the song, the URL is updated to reflect your changes.
+  utter_Software_wix:
+  - text: Wix.com Ltd. is an Israeli software company, providing cloud-based web development
+      services. It allows users to create HTML5 websites and mobile sites through
+      the use of online drag and drop tools.
+  utter_Software_itch.io:
+  - text: Itch.io is a website for users to host, sell and download indie games. Released
+      in March 2013 by Leaf Corcoran, the service hosts nearly 100,000 games and items
+      as of February 2018. Itch.io also allows users to host game jams, events where
+      participants have limited time to create a game.
+  utter_Software_unity:
+  - text: Unity is a cross-platform game engine developed by Unity Technologies, first
+      announced and released in June 2005 at Apple Inc.'s Worldwide Developers Conference
+      as a Mac OS X-exclusive game engine. As of 2018, the engine had been extended
+      to support more than 25 platforms
+  utter_Software_unreal:
+  - text: Unreal Engine is the world's most open and advanced real-time 3D creation
+      platform for photoreal visuals and immersive experiences.
+  utter_General_Question_3d_modeling:
+  - text: In 3D computer graphics, 3D modeling is the process of developing a mathematical
+      representation of any surface of an object in three dimensions via specialized
+      software. The product is called a 3D model. Someone who works with 3D models
+      may be referred to as a 3D artist or a 3D modeler
+  utter_General_Question_3d_artist:
+  - text: "3D Artists are CGI Artists. CGI stands for \u201Ccomputer-generated imagery\u201D\
+      \ and they create still and moving images and visual effects using computers.\
+      \ These images could be anything from characters to environments to special\
+      \ effects. 3D animations can be created for things like film, TV, or video games."
+  utter_General_Question_technical_artist:
+  - text: Technical artists (TAs) make the work of the artists easier. They develop
+      the games engines, so they work as well as possible for the people making the
+      art. ... They act as a bridge between the artists and the programmers.
+  utter_General_Question_programmer:
+  - text: A computer programmer, sometimes called a software developer, a programmer
+      or more recently a coder, is a person who creates computer software. The term
+      computer programmer can refer to a specialist in one area of computers, or to
+      a generalist who writes code for many kinds of software.
+  utter_General_Question_game_artist:
+  - text: A game artist is an artist who creates art for one or more types of games.
+      In video games, game artists are responsible for all of the aspects of game
+      development that call for visual art. Game artists play a vital role and are
+      often credited in role-playing games, collectible card games and video games
+  utter_General_Question_2d_artist:
+  - text: Their work involves drawing sprites and textures for the characters, environments,
+      effects, and more. 2D artists are required for 3D games as well
+  utter_General_Question_environment_artist:
+  - text: An environment artist is a specialized artist that focuses on the construction
+      of world assets for a game or film. An environment artist may build anything
+      from structures to terrain, or even environmental props.
+  utter_General_Question_dresser:
+  - text: A set dresser is given a blank slate within the physical space of a scene.
+      Their primary role is to fill the set with furniture, decor and other interior
+      design elements. This is separate from a prop master who handles various props
+      and objects that appear in a scene.
+  utter_General_Question_rigger:
+  - text: Riggers create digital skeletons for 3D computer-generated (CG) characters.
+      These skeletons, or rigs, are like puppets that define the movements of a character
+      or creature, such as how a big cat runs or how a person's face and mouth move
+      when they sing or how someone raises an eyebrow.
+  utter_General_Question_unity:
+  - text: C# is a general-purpose, multi-paradigm programming language encompassing
+      static typing, strong typing, lexically scoped, imperative, declarative, functional,
+      generic, object-oriented, and component-oriented programming disciplines
+  utter_General_Question_unreal:
+  - text: The Blueprints Visual Scripting system in Unreal Engine is a complete gameplay
+      scripting system based on the concept of using a node-based interface to create
+      gameplay elements from within Unreal Editor. As with many common scripting languages,
+      it is used to define object-oriented (OO) classes or objects in the engine.
+  utter_General_Question_level_designer:
+  - text: "Level designers understand what makes good gameplay. They design the game\
+      \ \u2013 but only a portion of it, normally referred to as a 'level'. They take\
+      \ the specification defined by the gameplay designer, and get into the detail\
+      \ - the actions, events, objects and environment."
+  utter_General_Question_texture_artist:
+  - text: A texture artist is an individual who develops textures for digital media,
+      usually for video games, movies, web sites and television shows. These textures
+      can be in the form of 2D or 3D art that may be overlaid onto a polygon mesh
+      to create a realistic 3D model.
+  utter_General_Question_discord:
+  - text: Discord is an American VoIP, instant messaging and digital distribution
+      platform designed for creating communities. Users communicate with voice calls,
+      video calls, text messaging, media and files in private chats or as part of
+      communities called 'servers.'
+  utter_Community_Question_guidelines:
+  - text: Game Gen Community Guidelines1.  Respect the value and dignity of all individuals.2.  Do
+      your best to create a climate of learning, trust, and respect.3.  Support an
+      Atmosphere of positive Productivity.4.  Strive for personal and professional
+      Growth.
+  utter_General_Question_pixelart:
+  - text: Pixel art is a form of digital art, created through the use of software,
+      where images are edited on the pixel level. The aesthetic for this kind of graphics
+      comes from 8-bit and 16-bit computers and video game consoles, in addition to
+      other limited systems such as graphing calculators
+  utter_General_Question_game_developers:
+  - text: Game developers work on teams to plan, design, and produce video games for
+      computers, mobile devices, or game consoles. Their work involves creating visual
+      content for the game and writing code to implement all the game's features and
+      functionality.
+  utter_General_Question_indie_developers:
+  - text: An independent video game or indie game is a video game typically created
+      by individuals or smaller development teams without the financial and technical
+      support of a large game publisher, in contrast to most 'AAA' games.
+  utter_ask_Handbook_duties:
+  - text: "It is important to understand that while you will be perceived as and called\
+      \ a student, your dutieswill fall more in line with that of a game developer.\
+      \ For simplicity\u2019s sake, however, we shall usethe word student.At Game\
+      \ Gen we redefine the term this way: A Game Gen Student is a person who createsgames\
+      \ and projects at a Game Gen Studio.To that end, our students do whatever is\
+      \ necessary for the success of their work. You will learnthe knowledge and skills\
+      \ to create amazing games, apps, websites and grow your passion intoan employable\
+      \ skill. You wouldn\u2019t be here if you didn\u2019t love video games. Being\
+      \ a Game Genstudent is going to allow you to nurture your passion and grow your\
+      \ knowledge"
+  utter_ask_Handbook_responsibilities:
+  - text: "Growing your skills in the field of computer science.This is the most important\
+      \ concept for a Game Gen student to grasp. Through your commitment and dedication\
+      \ you will make amazing projects and games.Barriers will stand in the way to\
+      \ making these amazing projects. These barriers can beintellectual, mental,\
+      \ or physical. Your job is to identify your barriers and overcome them with\
+      \ thehelp of your teachers and fellow students. Your goals everyday should include:\u25CF\
+      Rewarding JourneyThe process of creating a game/project should be fun. The journey\
+      \ is the best part. Wewant you to love the coding and art of making games.\u25CF\
+      Growth MindsetIf you work at it...you will get better at it.\u25CFSharing your\
+      \ WorkA project needs to be finished and then shared. This is the way to show\
+      \ what you havelearned.Have a good time. Making games is challenging but so\
+      \ fun. Be proud of what you accomplish.You will naturally grow your skills in\
+      \ computer science. Each project you create will be betterthan the last. Sharing\
+      \ your project will result in a great portfolio that will hopefully lead toemployment\
+      \ in the field.Your second responsibility is to socialize productivelyYour goal\
+      \ as a student should be to learn to socialize productively. This means understandingwe\
+      \ are all a team and our goals are aligned. You should comment on others' work,\
+      \ helpstudents in need, and look to work with other students who share your\
+      \ same passions. Interactwith your teachers and fellow students everyday. You\
+      \ and your fellow students care about thesame things. You are going to make\
+      \ amazing things together. The more you interact with themthe stronger of a\
+      \ social network you will build.Just showing up is half the battle. Be there.\
+      \ Consistent attendance means better projects. Thefurther you go on our curriculum,\
+      \ the more skills you will gain. The more you attend, the morepeople you will\
+      \ meet. The more people you meet, the more people you will find that share yourgoals\
+      \ and interests."
+  utter_ask_Director_regional_center:
+  - text: Central Valley, East LA, Harbor, Inland, Lanterman, North LA, South Central,
+      Westside
+  utter_ask_Director_code:
+  - text: Westside, Harbor, East LA = PW7787North LA, Lanterman, South Central, Central
+      Valley = PL1855Inland Empire = PJ5253
+  utter_ask_Handbook_teacher:
+  - text: 8 students to 1 teacher.
+  utter_ask_Handbook_portfolio:
+  - text: Fridays Portfolio show is soft-mandatory.  Which means unless there is a
+      event that makes it impossible for you to be there.  We expect you to be on
+      and ready to present.
+  utter_ask_Handbook_blog:
+  - text: A blog is a discussion or informational website published on the World Wide
+      Web consisting of discrete, often informal diary-style text entries. Posts are
+      typically displayed in reverse chronological order, so that the most recent
+      post appears first, at the top of the web page.Think of it as a weekly online
+      Journal of your work, what you finished, what you're currently working on, your
+      thoughts and struggles with the projects, etc...
+  utter_ask_IPP:
+  - text: "Person-centered individual program planning assists persons with developmental\
+      \ disabilities and their families to build their capacities and capabilities.\
+      \ This planning effort is not a single event or meeting, but a series of discussions\
+      \ or interactions among a team of people including the person with a developmental\
+      \ disability, their family (when appropriate), regional center representative(s)\
+      \ and others.As part of the planning process, this team assists the individual\
+      \ in developing a description that includes: a preferred place to live, favorite\
+      \ people with whom to socialize, and preferred types of daily activities, including\
+      \ preferred jobs. This description is called a preferred future, and is based\
+      \ on the individual\u2019s strengths, capabilities, preferences, lifestyle and\
+      \ cultural background.The planning team decides what needs to be done, by whom,\
+      \ when, and how, if the individual is to begin (or continue) working toward\
+      \ the preferred future. The document known as the Individual Program Plan (IPP)\
+      \ is a record of the decisions made by the planning team."
+  utter_ask_Surveys:
+  - text: 'Surveys are a monthly occurance to give Game Gen insight about how the
+      consumer is doing in the program.  What part of our education process is working
+      and if we have any missed oppurtunities we need to address.  It is the first
+      step before we meet with the consumer for their Monthly ISP meeting.  '
+  utter_ask_Scrum:
+  - text: A Framework for managment of a project.  Scrum is an agile framework for
+      developing, delivering, and sustaining complex products, with an initial emphasis
+      on software development, although it has been used in other fields including
+      research, sales, marketing and advanced technologies
+  utter_General_Question_constructive_criticism:
+  - text: Constructive criticism is a helpful way of giving feedback that provides
+      specific, actionable suggestions. Rather than providing general advice, constructive
+      criticism gives specific recommendations on how to make positive improvements.
+      Constructive criticism is clear, to the point and easy to put into action.
+  utter_General_Question_capstone:
+  - text: "Also called a capstone experience, culminating project, or senior exhibition,\
+      \ among many other terms, a capstone project is a multifaceted assignment that\
+      \ serves as a culminating academic and intellectual experience for students,\
+      \ typically during their final year of high school or middle school, or at the\
+      \ end of an academic program or learning-pathway experience. While similar in\
+      \ some ways to a college thesis, capstone projects may take a wide variety of\
+      \ forms, but most are long-term investigative projects that culminate in a final\
+      \ product, presentation, or performance. For example, students may be asked\
+      \ to select a topic, profession, or social problem that interests them, conduct\
+      \ research on the subject, maintain a portfolio of findings or results, create\
+      \ a final product demonstrating their learning acquisition or conclusions (a\
+      \ paper, short film, or multimedia presentation, for example), and give an oral\
+      \ presentation on the project to a panel of teachers, experts, and community\
+      \ members who collectively evaluate its quality.Capstone projects are generally\
+      \ designed to encourage students to think critically, solve challenging problems,\
+      \ and develop skills such as oral communication, public speaking, research skills,\
+      \ media literacy, teamwork, planning, self-sufficiency, or goal setting\u2014\
+      i.e., skills that will help prepare them for college, modern careers, and adult\
+      \ life. In most cases, the projects are also interdisciplinary, in the sense\
+      \ that they require students to apply skills or investigate issues across many\
+      \ different subject areas or domains of knowledge. Capstone projects also tend\
+      \ to encourage students to connect their projects to community issues or problems,\
+      \ and to integrate outside-of-school learning experiences, including activities\
+      \ such as interviews, scientific observations, or internships."
+  utter_General_Question_quire:
+  - text: Quire is a simple project management tool that helps you accomplish your
+      dreams in the dynamic world. Whether it's for developing a cool app, launching
+      a new product, or making a masterpiece film, Quire is there to help boost productivity
+      for you and your team. Capture Your Ideas in Seconds.
+  utter_General_Question_contact:
+  - text: (833) GameGen or (833) 426-3436
+  utter_ask_Director_client_info:
+  - text: "We use Grasshopper for all phone calls.  Grasshopper is a small-business\
+      \ phone service, designed to work on top of your existing landline or mobile\
+      \ service. Like many virtual phone systems, Grasshopper offers a mobile app\
+      \ that lets you make and receive calls from your business number\u2014even when\
+      \ using your personal mobile devices."
+  utter_ask_Director_cordinator:
+  - text: Input the consumers information in the Regional Sales pipeline, call consumer,
+      if you get in touch with consumer see if they are the right fit.  If they are
+      send them the coorosponding email template with a brochure.  If they dont answer,
+      follow up with a email. (template is in templates).  If you still dont get a
+      response, repeat once a week.  After 3 attempts switch status to attempted 3
+      times no response.
+  utter_ask_Director_consumer:
+  - text: Send them an email with a brochure allowing them to book an appointment.
+  utter_ask_Director_consumenr_assesment:
+  - text: Start off going through the slides with possible consumer, dont rush, ask
+      questions.  Let the student feel like you're there for them, you're listening
+      to them.  Rushing can diminish this feeling.  Once Presentation is done ask
+      student if they have time for their first game?  If they dont have them reschedule.  If
+      they do have the time, open up the check list and as the student is working
+      fill it out and see how the student does with the lesson.
+  utter_ask_Director_pass_assesment:
+  - text: Make the student a file in Prospective students in google drive, copy over
+      all the temp files into it.  Fill out the form Assesment passed, email it to
+      his coordinator and request to have student start on specific start date.  (preferably
+      on mondays).  Ask for Authorization and ICU#'s as well.  Mark Waiting on Regional
+      Center in Regional Sales pipline.
+  utter_ask_Director_icu_number:
+  - text: 'No'
+  utter_ask_Director_ail_assesment:
+  - text: Make a copy and fill out Assesment failed template and send it to coordinator.  Mark
+      student doesn't fit program in Regional Sales Pipeline.
+  utter_ask_Director_first_day:
+  - text: 'Create the students file in LMS, make sure you fill it out, grab the students
+      folder and put them in the location they are with.  Open up the student checklist,
+      follow through the student checklist.  Run videos for Handbook, and Rights.  '
+  utter_ask_Staff_stressed_student:
+  - text: We want everyone to stay cool, but if this case should ever come up.  We
+      are a team, tag another teacher in.
+  utter_ask_Staff_disobey_rule:
+  - text: Direct the student to the director or director to student.  Teachers job
+      is to teach.
+  utter_ask_Staff_feeling_stressed:
+  - text: I think its time for a break.  Step away from the computer.  Go outside
+      see some sun, walk outside a bit, exercise, change your routine.  Change your
+      current scenario so you'll be able to calm down and be more focused.
+  utter_ask_Director_authorization:
+  - text: Authorization forms are submitted for approval on the 1st and the 15th of
+      the month from the coordinator.  It's likely to have a 2 week wait time because
+      of this.
+  utter_ask_Staff_stuck:
+  - text: Going back to basics is something everyone does.  When you feel like you
+      hit a wall, go back to simplier exercises.  Do a couple of different things
+      in the same realm but spend two or three minutes on them.  This warm up should
+      help you back into gear of things.  Smaller quicker projects help with practice
+      and since you complete them quickly it helps with confidence building as well.
+  utter_ask_Staff_student_lesson:
+  - text: Ask student to send a copy of their file to you so you can look at it.  While
+      you're trying to fix the problem ask them to work on something else.  If you
+      can't figure out the issue ask more staff members if they dont mind taking a
+      look.
+  utter_ask_CareerServices:
+  - text: After your first 4 months of your enrollment with Game Gen.
+  utter_General_Question_game_company:
+  - text: You can utilize www.gamedevmap.com to locate all game companies around you.
+  utter_General_Question_money:
+  - text: You can sell your assets on multiple websites like itch.io, Fivver.com,
+      Artstation.com, TurboSquid.com, Secondlife.com, Shapeways.com, and many more.  Contact
+      Career services to locate one that is right for you.
+  utter_General_Question_sketchfab:
+  - text: Sketchfab is a platform to publish, share, discover, buy and sell 3D, VR
+      and AR content. It provides a viewer based on the WebGL and WebXR technologies
+      that allows users to display 3D models on the web, to be viewed on any mobile
+      browser, desktop browser or Virtual Reality headset.
+  utter_General_Question_magicvoxel:
+  - text: 'MagicaVoxel is a free, open source software package that provides simple,
+      yet surprisingly powerful 3D modeling capability. Creator ephtracy explains:
+      A free lightweight 8-bit voxel art editor and interactive path tracing renderer.'
+  utter_ask_Social:
+  - text: Mondays - Monster MondayTuesdays - Figure Drawing, Open LegendsWednesdays
+      - Movie NightsThursdays - 3D Art Jams, D&DFriday - Gaming after portfolios,
+      Master Class, VHS Nights
+  utter_General_Question_social_events:
+  - text: No, but we highly recomend them.  Its a great way to practice networking
+      skills, get to know your peers and work together.
+  utter_General_Question_jam:
+  - text: A game or studio jam is a contest where participants try to make a video
+      game from scratch. Depending on the format, participants work independently,
+      or preferably in teams. The contest duration varies.
+  utter_General_Question_mapping:
+  - text: A UV map is the flat representation of the surface of a 3D model used to
+      easily wrap textures. The process of creating a UV map is called UV unwrapping.
+      The U and V refer to the horizontal and vertical axes of the 2D space, as X,
+      Y and Z are already being used in the 3D space.
+  utter_General_Question_pixel_density:
+  - text: 'To explain it simply, pixel density is used to measure how close together
+      the pixels are on a mobile display. Typically, the most common way to measure
+      pixel density is how many pixels there are per inch of display space. '
+  utter_ask_Director_submitted_isp:
+  - text: Check within first 3 days of submission, have ISP meeting with student within
+      the first 10 days of submission.
+  utter_General_Question_gamegen_type:
+  - text: Game Gen is a Vocational school.
