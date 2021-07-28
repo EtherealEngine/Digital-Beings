@@ -1,9 +1,12 @@
 {
     "compilerOptions": {
 <<<<<<< HEAD
+<<<<<<< HEAD
         "target": "ES2018"
     }
 =======
+=======
+>>>>>>> 2e91cdface6bc9b20269e5640dbebb7f54c1f30e
         "module": "commonjs",
         "target": "es2018",
         "noEmitHelpers" :false,
@@ -16,5 +19,8 @@
         "node_modules",
         "**/node_modules/*"
     ]
+<<<<<<< HEAD
 >>>>>>> tsconfig added
+=======
+>>>>>>> 2e91cdface6bc9b20269e5640dbebb7f54c1f30e
 }
