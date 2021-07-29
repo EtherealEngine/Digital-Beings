@@ -2,7 +2,7 @@ six==1.16.0
 spacy
 grpcio==1.39.0
 grpcio-tools==1.39.0
-openai==0.10.1
+openai==0.10.2
 rasa==2.8.1
 rasa-sdk==2.8.1
 numpy==1.21.1
