@@ -24,8 +24,6 @@ const createTwitterClient = async (messageResponseHandler) => {
     return console.warn("No credentials for Twitter, skipping");
 
   const SendMessage = (id, twitterUserId, messageType, text) => {
-    console.log('on SendMessage');
-    console.log({ id, messageType, text });
     if (messageType === 'DM') {
       TwitClient.post('direct_messages/events/new', {
         "event": {
@@ -40,13 +38,12 @@ const createTwitterClient = async (messageResponseHandler) => {
           }
         }
       }, (error, data, response) => {
-        console.log(response)
         if (error)
           console.log(error);
       });
     } else {
+       console.log('working here for post')
       TwitClient.post('statuses/update', { status: '@' + twitterUserId + ' ' + text, id, in_reply_to_status_id: id }, function (err, data, response) {
-        console.log("Posted ", '@' + twitterUserId + ' ' + text);
       });
     }
   };
@@ -106,8 +103,6 @@ const createTwitterClient = async (messageResponseHandler) => {
       return;
 
     if (route.query.crc_token) {
-      console.log("Validating webhook");
-      console.log(route.query.crc_token);
       const crc = validateWebhook(route.query.crc_token, TWITTER_CONSUMER_SECRET);
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify(crc));

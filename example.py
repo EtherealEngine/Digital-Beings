@@ -11,11 +11,11 @@ def handle_message(sender, message):
         engine = 'curie-instruct-beta'
         context = 'Agent is a teacher expert in Web Development. You have skills in HTML And the problem your student is telling you about is I have been trying to center a div inside another div for over an hour now, I just can not do it, i need help with it..'
         rasa_model_name = '1'
-        gpt3_agent = Gpt3Agent(engine, context, message)
-        rasa_agent = RasaAgent(rasa_model_name, message)
-        gpt3_response = gpt3_agent.invoke_api()
-        rasa_response = rasa_agent.invoke()
-        return "Respond to message from " + sender + " | " + message + "\n\n" + "GPT3 Response" + " | " + gpt3_response + "\n\n" + "Rasa Response" + " | " + rasa_response
+        # gpt3_agent = Gpt3Agent(engine, context, message)
+        # rasa_agent = RasaAgent(rasa_model_name, message)
+        # gpt3_response = gpt3_agent.invoke_api()
+        # rasa_response = rasa_agent.invoke()
+        return message
 
 
 class Gpt3Agent():

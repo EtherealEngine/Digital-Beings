@@ -3,8 +3,8 @@ const path = require('path');
 const grpc = require('grpc');
 
 const proto = grpc.load(`${__dirname}/../example.proto`)
-const PORT = 50060
-const IP = 'localhost'
+const PORT = process.env.GPRC_SERVER_PORT;
+const IP = process.env.IP
 
 class PyConnect {
     static connected: any;
