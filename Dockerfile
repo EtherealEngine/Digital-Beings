@@ -1,4 +1,9 @@
-FROM python:3.8
+# FROM python:3.8
+FROM ubuntu:20.04
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    python3.8 python3-pip python3.8-dev
 
 # install node 16 and npm using nvm
 # replace shell with bash so we can source files
@@ -14,8 +19,8 @@ RUN apt-get update \
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 16.4.2
 
-RUN apt-get update && apt-get install -y build-essential libssl-dev \
-	gnupg2
+# RUN apt-get update && apt-get install -y build-essential libssl-dev \
+# 	gnupg2
 
 # install nvm
 # https://github.com/creationix/nvm#install-script
@@ -43,6 +48,7 @@ COPY . .
 
 # supervisor to run multiple processes
 RUN apt install -y supervisor
+
 Run npm install
 Run pip install -r requirements.txt
 
