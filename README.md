@@ -27,7 +27,7 @@ You can run it using docker, if you don't have node installed or need to test.
 # Build the image
 docker build digital_being .
 
-# Run the image (deletes itself when you close it)
+# Run the image
 docker run -d digital_being
 ```
 
