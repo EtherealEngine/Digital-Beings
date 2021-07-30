@@ -20,3 +20,14 @@ Under the hood you'll find an instance of Chrome (using Puppeteer) which can be 
 2. Run example.py to connect the default hello world implementation
 3. Copy and paste the code from example.py into your project and hook your models into it.
 
+### Docker
+
+You can run it using docker, if you don't have node installed or need to test.
+``` bash
+# Build the image
+docker build digital_being .
+
+# Run the image (deletes itself when you close it)
+docker run -d digital_being
+```
+
