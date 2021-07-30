@@ -8,11 +8,14 @@ Under the hood you'll find an instance of Chrome (using Puppeteer) which can be 
 
 ### Setup
 1. Install python dependencies in requirements.txt
+    ```pip install -r requirements.txt```
 2. Install node.js dependencies
     ```npm install```
-3. Run the host bot framework
+4. Create a local .env file with configuration variable for example.
+    ```DISCORD_API_TOKEN=<Your Discord Bot API Token>```
+    This will create a discord bot client which will listen for incomming messages when the bot gets mentioned in your server chat.
+5. Run the host bot framework
     ```npm run start-gui```
-4. Run the python example
 
 ### Getting Started
 
