@@ -47,5 +47,7 @@ RUN apt install -y supervisor
 
 Run npm install
 Run pip install -r requirements.txt
+RUN python3 -m spacy download en_core_web_md
+RUN python3 -m spacy link en_core_web_md en
 
 CMD ["supervisord","-c","/digitalbeing/supervisor/service_script.conf"]
