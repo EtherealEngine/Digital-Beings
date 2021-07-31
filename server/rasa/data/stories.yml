@@ -1,0 +1,301 @@
+stories:
+- story: ask circle tool
+  steps:
+  - intent: ask_circle_tool
+  - action: utter_ask_circle_tool
+- story: teach circle tool
+  steps:
+  - intent: teach_circle_tool
+  - action: utter_teach_circle_tool
+- story: find circle tool
+  steps:
+  - intent: find_circle_tool
+  - action: utter_find_circle_tool
+- story: help
+  steps:
+  - intent: help
+  - action: utter_help
+- story: Accounting
+  steps:
+  - intent: Accounting
+  - action: utter_Accounting
+- story: ask ISP
+  steps:
+  - intent: ask_ISP
+  - action: utter_ask_ISP
+- story: class schedule
+  steps:
+  - intent: class_schedule
+  - action: utter_class_schedule
+- story: Software blender
+  steps:
+  - intent: Software_blender
+  - action: utter_Software_blender
+- story: Software construct
+  steps:
+  - intent: Software_construct
+  - action: utter_Software_construct
+- story: Software pyxel
+  steps:
+  - intent: Software_pyxel
+  - action: utter_Software_pyxel
+- story: Software piskel
+  steps:
+  - intent: Software_piskel
+  - action: utter_Software_piskel
+- story: Software krita
+  steps:
+  - intent: Software_krita
+  - action: utter_Software_krita
+- story: Software beepbox
+  steps:
+  - intent: Software_beepbox
+  - action: utter_Software_beepbox
+- story: Software wix
+  steps:
+  - intent: Software_wix
+  - action: utter_Software_wix
+- story: Software itch.io
+  steps:
+  - intent: Software_itch.io
+  - action: utter_Software_itch.io
+- story: Software unity
+  steps:
+  - intent: Software_unity
+  - action: utter_Software_unity
+- story: Software unreal
+  steps:
+  - intent: Software_unreal
+  - action: utter_Software_unreal
+- story: General Question 3d modeling
+  steps:
+  - intent: General_Question_3d_modeling
+  - action: utter_General_Question_3d_modeling
+- story: General Question 3d artist
+  steps:
+  - intent: General_Question_3d_artist
+  - action: utter_General_Question_3d_artist
+- story: General Question technical artist
+  steps:
+  - intent: General_Question_technical_artist
+  - action: utter_General_Question_technical_artist
+- story: General Question programmer
+  steps:
+  - intent: General_Question_programmer
+  - action: utter_General_Question_programmer
+- story: General Question game artist
+  steps:
+  - intent: General_Question_game_artist
+  - action: utter_General_Question_game_artist
+- story: General Question 2d artist
+  steps:
+  - intent: General_Question_2d_artist
+  - action: utter_General_Question_2d_artist
+- story: General Question environment artist
+  steps:
+  - intent: General_Question_environment_artist
+  - action: utter_General_Question_environment_artist
+- story: General Question dresser
+  steps:
+  - intent: General_Question_dresser
+  - action: utter_General_Question_dresser
+- story: General Question rigger
+  steps:
+  - intent: General_Question_rigger
+  - action: utter_General_Question_rigger
+- story: General Question unity
+  steps:
+  - intent: General_Question_unity
+  - action: utter_General_Question_unity
+- story: General Question unreal
+  steps:
+  - intent: General_Question_unreal
+  - action: utter_General_Question_unreal
+- story: General Question level designer
+  steps:
+  - intent: General_Question_level_designer
+  - action: utter_General_Question_level_designer
+- story: General Question texture artist
+  steps:
+  - intent: General_Question_texture_artist
+  - action: utter_General_Question_texture_artist
+- story: General Question discord
+  steps:
+  - intent: General_Question_discord
+  - action: utter_General_Question_discord
+- story: Community Question guidelines
+  steps:
+  - intent: Community_Question_guidelines
+  - action: utter_Community_Question_guidelines
+- story: General Question pixelart
+  steps:
+  - intent: General_Question_pixelart
+  - action: utter_General_Question_pixelart
+- story: General Question game developers
+  steps:
+  - intent: General_Question_game_developers
+  - action: utter_General_Question_game_developers
+- story: General Question indie developers
+  steps:
+  - intent: General_Question_indie_developers
+  - action: utter_General_Question_indie_developers
+- story: ask Handbook duties
+  steps:
+  - intent: ask_Handbook_duties
+  - action: utter_ask_Handbook_duties
+- story: ask Handbook responsibilities
+  steps:
+  - intent: ask_Handbook_responsibilities
+  - action: utter_ask_Handbook_responsibilities
+- story: ask Director regional center
+  steps:
+  - intent: ask_Director_regional_center
+  - action: utter_ask_Director_regional_center
+- story: ask Director code
+  steps:
+  - intent: ask_Director_code
+  - action: utter_ask_Director_code
+- story: ask Handbook teacher
+  steps:
+  - intent: ask_Handbook_teacher
+  - action: utter_ask_Handbook_teacher
+- story: ask Handbook portfolio
+  steps:
+  - intent: ask_Handbook_portfolio
+  - action: utter_ask_Handbook_portfolio
+- story: ask Handbook blog
+  steps:
+  - intent: ask_Handbook_blog
+  - action: utter_ask_Handbook_blog
+- story: ask IPP
+  steps:
+  - intent: ask_IPP
+  - action: utter_ask_IPP
+- story: ask Surveys
+  steps:
+  - intent: ask_Surveys
+  - action: utter_ask_Surveys
+- story: ask Scrum
+  steps:
+  - intent: ask_Scrum
+  - action: utter_ask_Scrum
+- story: General Question constructive criticism
+  steps:
+  - intent: General_Question_constructive_criticism
+  - action: utter_General_Question_constructive_criticism
+- story: General Question capstone
+  steps:
+  - intent: General_Question_capstone
+  - action: utter_General_Question_capstone
+- story: General Question quire
+  steps:
+  - intent: General_Question_quire
+  - action: utter_General_Question_quire
+- story: General Question contact
+  steps:
+  - intent: General_Question_contact
+  - action: utter_General_Question_contact
+- story: ask Director client info
+  steps:
+  - intent: ask_Director_client_info
+  - action: utter_ask_Director_client_info
+- story: ask Director cordinator
+  steps:
+  - intent: ask_Director_cordinator
+  - action: utter_ask_Director_cordinator
+- story: ask Director consumer
+  steps:
+  - intent: ask_Director_consumer
+  - action: utter_ask_Director_consumer
+- story: ask Director consumenr assesment
+  steps:
+  - intent: ask_Director_consumenr_assesment
+  - action: utter_ask_Director_consumenr_assesment
+- story: ask Director pass assesment
+  steps:
+  - intent: ask_Director_pass_assesment
+  - action: utter_ask_Director_pass_assesment
+- story: ask Director icu number
+  steps:
+  - intent: ask_Director_icu_number
+  - action: utter_ask_Director_icu_number
+- story: ask Director ail assesment
+  steps:
+  - intent: ask_Director_ail_assesment
+  - action: utter_ask_Director_ail_assesment
+- story: ask Director first day
+  steps:
+  - intent: ask_Director_first_day
+  - action: utter_ask_Director_first_day
+- story: ask Staff stressed student
+  steps:
+  - intent: ask_Staff_stressed_student
+  - action: utter_ask_Staff_stressed_student
+- story: ask Staff disobey rule
+  steps:
+  - intent: ask_Staff_disobey_rule
+  - action: utter_ask_Staff_disobey_rule
+- story: ask Staff feeling stressed
+  steps:
+  - intent: ask_Staff_feeling_stressed
+  - action: utter_ask_Staff_feeling_stressed
+- story: ask Director authorization
+  steps:
+  - intent: ask_Director_authorization
+  - action: utter_ask_Director_authorization
+- story: ask Staff stuck
+  steps:
+  - intent: ask_Staff_stuck
+  - action: utter_ask_Staff_stuck
+- story: ask Staff student lesson
+  steps:
+  - intent: ask_Staff_student_lesson
+  - action: utter_ask_Staff_student_lesson
+- story: ask CareerServices
+  steps:
+  - intent: ask_CareerServices
+  - action: utter_ask_CareerServices
+- story: General Question game company
+  steps:
+  - intent: General_Question_game_company
+  - action: utter_General_Question_game_company
+- story: General Question money
+  steps:
+  - intent: General_Question_money
+  - action: utter_General_Question_money
+- story: General Question sketchfab
+  steps:
+  - intent: General_Question_sketchfab
+  - action: utter_General_Question_sketchfab
+- story: General Question magicvoxel
+  steps:
+  - intent: General_Question_magicvoxel
+  - action: utter_General_Question_magicvoxel
+- story: ask Social
+  steps:
+  - intent: ask_Social
+  - action: utter_ask_Social
+- story: General Question social events
+  steps:
+  - intent: General_Question_social_events
+  - action: utter_General_Question_social_events
+- story: General Question jam
+  steps:
+  - intent: General_Question_jam
+  - action: utter_General_Question_jam
+- story: General Question mapping
+  steps:
+  - intent: General_Question_mapping
+  - action: utter_General_Question_mapping
+- story: General Question pixel density
+  steps:
+  - intent: General_Question_pixel_density
+  - action: utter_General_Question_pixel_density
+- story: ask Director submitted isp
+  steps:
+  - intent: ask_Director_submitted_isp
+  - action: utter_ask_Director_submitted_isp
+- story: General Question gamegen type
+  steps:
+  - intent: General_Question_gamegen_type
+  - action: utter_General_Question_gamegen_type
