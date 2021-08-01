@@ -10,9 +10,11 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # update the repository sources list
 # and install dependencies
+# supervisor to run multiple processes
 RUN apt-get update \
     && apt-get install -y curl \
-    && apt-get -y autoclean
+    && apt-get -y autoclean \
+    && apt-get install -y supervisor
 
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
@@ -37,17 +39,15 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 # Create app directory
 WORKDIR /digitalbeing
 
-# to make use of caching, copy only package files and install dependencies
+# to make use of caching, copy only package and pip requirement files and install dependencies
 COPY package.json .
-
-COPY . .
-
-# supervisor to run multiple processes
-RUN apt install -y supervisor
+COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 RUN python3 -m spacy download en_core_web_md
 RUN python3 -m spacy link en_core_web_md en
 Run npm install
+
+COPY . .
 
 CMD ["supervisord","-c","/digitalbeing/supervisor/service_script.conf"]
