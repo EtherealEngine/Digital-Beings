@@ -45,16 +45,9 @@ COPY . .
 # supervisor to run multiple processes
 RUN apt install -y supervisor
 
-# Create a virtual environment for pip
-RUN apt install python3.8-venv
-RUN python3 -m venv /opt/venv
+RUN pip install -r requirements.txt
 RUN python3 -m spacy download en_core_web_md
 RUN python3 -m spacy link en_core_web_md en
-
-# Install dependencies:
-RUN . /opt/venv/bin/activate && pip install -r requirements.txt
-# RUN python -m spacy download en_core_web_md
-# RUN python -m spacy link en_core_web_md en
 Run npm install
 
 CMD ["supervisord","-c","/digitalbeing/supervisor/service_script.conf"]
