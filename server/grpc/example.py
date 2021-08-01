@@ -1,12 +1,13 @@
 
-import sys
-sys.path.append("..")
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
 from openchat.agents.dialogpt import DialoGPTAgent
 from openchat.agents.gptneo import GPTNeoAgent
 import requests
 import openai
 import json
-import os
 
 
 def handle_message(sender, message):
@@ -22,8 +23,8 @@ def handle_message(sender, message):
             gpt_neo_model = 'gptneo.medium'
             gpt3_agent = Gpt3Agent(engine, context, message)
             rasa_agent = RasaAgent(rasa_model_name, message)
-            dialog_gpt_agent = DialoGPTAgent(model=dialog_gpt_model, device="cpu")
-            gpt_neo_agent = GPTNeoAgent(model=gpt_neo_model, device="cpu")
+            dialog_gpt_agent = DialoGPTAgent(model=dialog_gpt_model, device="cpu", maxlen=48)
+            gpt_neo_agent = GPTNeoAgent(model=gpt_neo_model, device="cpu", maxlen=48)
             dialog_gpt_response = dialog_gpt_agent.predict(message)
             gpt_neo_response = gpt_neo_agent.predict(message)
             gpt3_response = gpt3_agent.invoke_api()
