@@ -7,6 +7,7 @@ from openchat.agents.dialogpt import DialoGPTAgent
 from openchat.agents.gptneo import GPTNeoAgent
 from openchat.agents.gpt3 import GPT3Agent
 from openchat.agents.rasa import RasaAgent
+from openchat import OpenChat
 
 
 def handle_message(sender, message):
@@ -22,10 +23,12 @@ def handle_message(sender, message):
         gpt_neo_model = 'gptneo.small'
         gpt3_agent = GPT3Agent(engine, context, message)
         rasa_agent = RasaAgent(rasa_model_name, message)
-        dialog_gpt_agent = DialoGPTAgent(model=dialog_gpt_model, device="cpu", maxlen=48)
-        gpt_neo_agent = GPTNeoAgent(model=gpt_neo_model, device="cpu", maxlen=48)
-        dialog_gpt_response = dialog_gpt_agent.predict(message)
-        gpt_neo_response = gpt_neo_agent.predict(message)
+        dialog_gpt_agent = OpenChat(model=dialog_gpt_model, device="cpu")
+        gpt_neo_agent = OpenChat(model=gpt_neo_model, device="cpu")
+        dialog_gpt_env = dialog_gpt_agent.create_environment_by_name(dialog_gpt_agent.environment)
+        gpt_neo_env = gpt_neo_agent.create_environment_by_name(gpt_neo_agent.environment)
+        dialog_gpt_response = dialog_gpt_env.environment.start(dialog_gpt_agent.agent, user_message=message)
+        gpt_neo_response = gpt_neo_env.environment.start(gpt_neo_agent.agent, user_message=message)
         gpt3_response = gpt3_agent.invoke_api()
         rasa_response = rasa_agent.invoke()
         
