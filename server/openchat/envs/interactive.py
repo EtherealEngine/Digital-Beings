@@ -1,6 +1,7 @@
 import random
 import sys
 import torch
+import gc
 
 from openchat.base.envs.base import BaseEnvironment
 from openchat.base import (
@@ -34,7 +35,8 @@ class InteractiveEnvironment(BaseEnvironment):
         self.special_color = special_color
         self.system_color = system_color
 
-    def start(self, agent: BaseAgent, **kwargs):
+    def start(self, agent: BaseAgent):
+
         cprint(
             f"\n[SYSTEM]: Let's talk with [{agent.name.upper()}].\n"
             f"[SYSTEM]: Enter '.exit', if you want to exit chatting.\n"
@@ -42,6 +44,7 @@ class InteractiveEnvironment(BaseEnvironment):
             color=self.system_color)
 
         self.clear_histories(self.user_id)
+        gc.enable()
 
         while True:
             torch.cuda.empty_cache()
@@ -93,11 +96,10 @@ class InteractiveEnvironment(BaseEnvironment):
                     model_input,
                     person_1=user_name,
                     person_2=bot_name,
-                    **kwargs,
                 )["output"]
 
             else:
-                bot_message = agent.predict(model_input, **kwargs)["output"]
+                bot_message = agent.predict(model_input)["output"]
 
             cprint(
                 f"[{agent.name.upper()}]: {bot_message}",
@@ -105,6 +107,7 @@ class InteractiveEnvironment(BaseEnvironment):
             )
 
             self.add_bot_message(self.user_id, bot_message)
+            gc.collect()
 
     def pre_dialog_for_special_tasks(self, agent):
         if isinstance(agent, ConvAI2Agent):

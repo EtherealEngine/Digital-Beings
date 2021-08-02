@@ -98,6 +98,8 @@ class UnlikelihoodAgent(ParlaiGenerationAgent, Seq2SeqLM):
             "n_image_tokens": 1,
             "n_image_channels": 1,
             "image_fusion_type": "late",
+            "image_features_dim" : 2048,
+            "image_encoder_num_layers" : 1,
         }
         add_datapath_and_model_args(option)
         datapath = option.get('datapath')
@@ -105,6 +107,12 @@ class UnlikelihoodAgent(ParlaiGenerationAgent, Seq2SeqLM):
         option["override"] = {
             "no_cuda": False if "cuda" in device else True,
         }
+
+        if "cuda:" in device:
+            option["override"]["gpu"] = int(device.split(":")[1])
+        elif "cuda" in device:
+            option["override"]["gpu"] = 0
+
         my_module = importlib.import_module(path)
         model_class = getattr(my_module, class_name)
         return option, model_class

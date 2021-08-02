@@ -1,8 +1,10 @@
 from abc import abstractmethod
 from typing import Dict, List, Union
-from parlai.core.message import Message
-from openchat.base import BaseAgent
+
 import torch
+from parlai.core.message import Message
+
+from openchat.base import BaseAgent
 
 
 class ParlaiAgent(BaseAgent):
@@ -15,6 +17,7 @@ class ParlaiAgent(BaseAgent):
         maxlen,
         model,
     ):
+
         super(ParlaiAgent, self).__init__(
             name=name,
             suffix=suffix,
@@ -23,6 +26,11 @@ class ParlaiAgent(BaseAgent):
             model=model,
             tokenizer=self.tokenizer,
         )
+
+        if "cuda:" in device:
+            self.model.opt["gpu"] = int(device.split(":")[1])
+        elif "cuda" in device:
+            self.model.opt["gpu"] = 0
 
     def tokenizer(self, message: Union[str, List[str]], padding=False):
         if isinstance(message, str):
@@ -97,7 +105,11 @@ class ParlaiGenerationAgent(ParlaiAgent):
         message["text_vec"] = vector
         message["full_text_vec"] = vector
 
-        batch = self.model.batchify([message])
+        if "cuda" in self.device:
+            batch = self.model.batchify([message]).to(self.model.opt["gpu"])
+        else:
+            batch = self.model.batchify([message])
+
         tokens = self.model._generate(
             batch=batch,
             beam_size=num_beams,

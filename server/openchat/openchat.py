@@ -7,6 +7,8 @@ from openchat.agents.reddit import RedditAgent
 from openchat.agents.unlikelihood import UnlikelihoodAgent
 from openchat.agents.wow import WizardOfWikipediaGenerationAgent
 from openchat.envs.interactive import InteractiveEnvironment
+from openchat.envs.web import WebServerEnvironment
+from openchat.envs.custom import CustomEnvironment
 from openchat.utils.terminal_utils import draw_openchat
 
 
@@ -16,9 +18,9 @@ class OpenChat(object):
         self,
         model,
         device,
+        text,
         maxlen=-1,
-        environment="interactive",
-        **kwargs,
+        environment="custom",
     ):
         draw_openchat()
         self.agent = self.check_agent(model)
@@ -27,10 +29,11 @@ class OpenChat(object):
             device=device,
             maxlen=maxlen,
         )
+        self.user_message = text
 
         self.environment = self.check_environment(environment)
         self.environment = self.create_environment_by_name(environment)
-        self.environment.start(self.agent, **kwargs)
+        self.environment.start(self.agent, user_message=self.user_message)
 
     def check_agent(self, model) -> str:
         model = model.lower()
@@ -53,8 +56,10 @@ class OpenChat(object):
     def create_environment_by_name(self, name):
         if name == "interactive":
             return InteractiveEnvironment()
+        elif name == "custom":
+            return CustomEnvironment()
         elif name == "webserver":
-            raise NotImplemented
+            raise WebServerEnvironment()
         elif name == "facebook":
             raise NotImplemented
         elif name == "kakaotalk":
@@ -114,8 +119,8 @@ class OpenChat(object):
     def available_environments():
         return [
             "interactive",
-            # "webserver",
-            # "facebook",
+            "custom",
+            "webserver",
             # "kakaotalk",
             # "flask",
             # "whatsapp",
