@@ -29,8 +29,8 @@ def handle_message(sender, message):
             gpt_neo_agent = OpenChat(model=gpt_neo_model, device="cpu")
             dialog_gpt_env = dialog_gpt_agent.create_environment_by_name(dialog_gpt_agent.environment)
             gpt_neo_env = gpt_neo_agent.create_environment_by_name(gpt_neo_agent.environment)
-            dialog_gpt_response = dialog_gpt_env.environment.start(dialog_gpt_agent.agent, user_message=message)
-            gpt_neo_response = gpt_neo_env.environment.start(gpt_neo_agent.agent, user_message=message)
+            dialog_gpt_response = dialog_gpt_env.start(dialog_gpt_agent.agent, user_message=message)
+            gpt_neo_response = gpt_neo_env.start(gpt_neo_agent.agent, user_message=message)
             gpt3_response = gpt3_agent.invoke_api()
             rasa_response = rasa_agent.invoke()
             
