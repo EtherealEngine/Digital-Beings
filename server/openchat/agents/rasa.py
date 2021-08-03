@@ -16,7 +16,7 @@ class RasaAgent():
     
     def invoke(self):
         action_endpoint = "http://localhost:5055/webhook"
-        output_path	= "rasa/models/"
+        output_path	= "/digitalbeing/server/rasa/models/"
         full_modal_path = output_path+self.model_name+".tar.gz"
         agent = Agent.load(full_modal_path, action_endpoint=EndpointConfig(action_endpoint))
         if agent.is_ready():
