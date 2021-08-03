@@ -9,3 +9,5 @@ rasa-sdk==2.2.0
 transformers>=4.5.0
 torch
 parlai==1.1.0
+flask==2.0.1
+flask-cors==3.0.10
