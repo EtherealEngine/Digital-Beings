@@ -31,7 +31,7 @@ class GPT3Agent():
     
     def invoke_api(self):
         url = f"https://api.openai.com/v1/engines/{self.engine_name}/completions"
-        payload = "{\n\t \"prompt\": \"" + self.chat_context + "\\nQ:" + self.question + "\\nAgent:\",\n\t  \"max_tokens\": 25,\n\t  \"temperature\": 1,\n\t  \"top_p\": 1,\n\t  \"n\": 1,\n\t  \"stream\": false,\n\t  \"logprobs\": null,\n\t  \"stop\": \"\\n\"\n}"        
+        payload = "{\n\t \"prompt\": \"" + self.chat_context + "\\nuser:" + self.question + "\\neinstein:\",\n\t  \"max_tokens\": 25,\n\t  \"temperature\": 1,\n\t  \"top_p\": 1,\n\t  \"n\": 1,\n\t  \"stream\": false,\n\t  \"logprobs\": null,\n\t  \"stop\": \"\\n\"\n}"        
         api_key = os.getenv("OPENAI_API_KEY")
         headers = {
             'content-type': "application/json",
