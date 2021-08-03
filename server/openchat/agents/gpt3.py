@@ -1,6 +1,7 @@
 import openai
 import requests
 import json
+import os
 
 class GPT3Agent():
     engine_name = ''
