@@ -8,6 +8,6 @@ rasa==2.2.4
 rasa-sdk==2.2.0
 transformers==4.9.1
 torch
-parlai==1.1.0
+parlai==1.4.1
 flask==2.0.1
 flask-cors==3.0.10
