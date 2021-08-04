@@ -19,7 +19,7 @@ class OpenChat(object):
         model,
         device,
         maxlen=-1,
-        environment="custom",
+        environment,
     ):
         draw_openchat()
         self.agent = self.check_agent(model)
@@ -30,8 +30,6 @@ class OpenChat(object):
         )
 
         self.environment = self.check_environment(environment)
-        # self.environment = self.create_environment_by_name(environment)
-        # self.environment.start(self.agent, user_message=self.user_message)
 
     def check_agent(self, model) -> str:
         model = model.lower()
