@@ -6,6 +6,7 @@ sys.path.append(parentdir)
 from openchat.agents.gpt3 import GPT3Agent
 from openchat.agents.rasa import RasaAgent
 from openchat import OpenChat
+import digital_being_params
 import textwrap
 
 
@@ -20,8 +21,8 @@ def handle_message(sender, message):
             gpt_neo_model = 'gptneo.small'
             gpt3_agent = GPT3Agent(engine, context, message)
             rasa_agent = RasaAgent(rasa_model_name, message)
-            dialog_gpt_agent = OpenChat(model=dialog_gpt_model, device="cpu")
-            gpt_neo_agent = OpenChat(model=gpt_neo_model, device="cpu")
+            dialog_gpt_agent = OpenChat(model=dialog_gpt_model, device=digital_being_params.DEVICE, environment=digital_being_params.ENVIRONMENT)
+            gpt_neo_agent = OpenChat(model=gpt_neo_model, device=digital_being_params.DEVICE, environment=digital_being_params.ENVIRONMENT)
             dialog_gpt_env = dialog_gpt_agent.create_environment_by_name(dialog_gpt_agent.environment)
             gpt_neo_env = gpt_neo_agent.create_environment_by_name(gpt_neo_agent.environment)
             dialog_gpt_response = dialog_gpt_env.start(dialog_gpt_agent.agent, user_message=message)
@@ -30,11 +31,10 @@ def handle_message(sender, message):
             rasa_response = rasa_agent.invoke()
             
             return textwrap.dedent(f'''Respond to message from  {sender} | {message} \n\n 
-                        GPT3 Response | {gpt3_response} \n\n
-                        Rasa Response | {rasa_response} \n\n 
-                        Dialog GPT Response | {dialog_gpt_response} \n\n
-                        GPT NEO Response | {gpt_neo_response}
-                    ''')
+            GPT3 Response | {gpt3_response} \n\n
+            Rasa Response | {rasa_response} \n\n 
+            Dialog GPT Response | {dialog_gpt_response} \n\n
+            GPT NEO Response | {gpt_neo_response}''')
         except Exception as err:
             return "Exception: " + str(err)
 
