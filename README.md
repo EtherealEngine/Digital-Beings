@@ -14,7 +14,19 @@ Under the hood you'll find an instance of Chrome (using Puppeteer) which can be 
 4. Create a local .env file with configuration variable for example.
     ```DISCORD_API_TOKEN=<Your Discord Bot API Token>```
     This will create a discord bot client which will listen for incomming messages when the bot gets mentioned in your server chat.
-5. Run the host bot framework
+5. Use the parameters file for the agent inside ```server/agent_params.py``` here you can select which agents to launch along with some other flags. 
+   you only need to edit the following parameter to launch the specific agents. Right now not all agents are working but the following list of agents have been tested and are working.
+   ```
+    SELECTED_AGENTS = [
+                        'dialogpt.small',
+                        'dialogpt.medium',
+                        'dialogpt.large',
+                        'gptneo.small',    
+                        'gptneo.large',    
+                        'gptneo.xlarge'    
+                      ]
+   ``` 
+6. Run the host bot framework
     ```npm run start-gui```
 
 ### Getting Started
