@@ -43,7 +43,7 @@ WORKDIR /digitalbeing
 COPY package.json .
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
 RUN python3 -m spacy download en_core_web_md
 RUN python3 -m spacy link en_core_web_md en
 Run npm install
