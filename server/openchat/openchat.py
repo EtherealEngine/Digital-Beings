@@ -18,8 +18,8 @@ class OpenChat(object):
         self,
         model,
         device,
-        maxlen=-1,
         environment,
+        maxlen=-1,
     ):
         draw_openchat()
         self.agent = self.check_agent(model)
