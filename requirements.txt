@@ -5,7 +5,7 @@ grpcio==1.39.0
 grpcio-tools==1.39.0
 numpy==1.18.5
 openai==0.10.1
-rasa==2.2.4
+rasa==2.8.2
 rasa-sdk==2.2.0
 transformers==4.9.1
 torch
