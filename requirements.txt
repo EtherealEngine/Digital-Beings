@@ -1,5 +1,6 @@
 six==1.16.0
 spacy==3.1.1
+click<8.0
 grpcio==1.39.0
 grpcio-tools==1.39.0
 numpy==1.18.5
@@ -11,4 +12,3 @@ torch
 parlai==1.4.1
 flask==2.0.1
 flask-cors==3.0.10
-click==8.0.1
