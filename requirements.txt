@@ -1,6 +1,6 @@
 six==1.16.0
 spacy==3.1.1
-click<8.0
+click==7.1.2
 grpcio==1.39.0
 grpcio-tools==1.39.0
 numpy==1.18.5
