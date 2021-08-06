@@ -128,7 +128,7 @@ class CustomEnvironment(BaseEnvironment):
                 )
 
     def pre_dialog_for_wow(self, agent):
-        cprint(
+        print(
             f"[SYSTEM]: Please input topic for Wizard of wikipedia.\n"
             f"[SYSTEM]: Enter '.topic' if you want to check random topic examples.\n",
             color=self.system_color)
