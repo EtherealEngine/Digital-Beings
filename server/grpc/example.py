@@ -30,7 +30,7 @@ def handle_message(sender, message):
                                     environment=agent_params.ENVIRONMENT
                                 )
                 agent_env = agent.create_environment_by_name(agent.environment)
-                agent_response += (f'\n\n {model_name.split(".")[0].upper()} Response | ' + agent_env.start(agent.agent, user_message=message))
+                agent_response += f'\n\n {model_name.split(".")[0].upper()} Response | ' + agent_env.start(agent.agent, user_message=message)
             gpt3_response = gpt3_agent.invoke_api()
             rasa_response = rasa_agent.invoke()
             
