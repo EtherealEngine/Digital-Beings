@@ -1,6 +1,6 @@
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
-const browserLauncher= require('./browser-launcher')
+const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
 
 function getOS() {
