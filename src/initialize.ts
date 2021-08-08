@@ -25,6 +25,6 @@ const messageResponseHandler = async (sender, message, callback) => {
 }
 
 // Initialize bots 
-require("./discord-client").createDiscordClient(messageResponseHandler);
-// require("./twitter-client").createTwitterClient(messageResponseHandler);
-// require("./xrengine-client").createXREngineClient(messageResponseHandler);
+require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
+require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
+require("../client/twitter/xrengine-client").createXREngineClient(messageResponseHandler);
