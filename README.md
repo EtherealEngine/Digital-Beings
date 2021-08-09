@@ -9,6 +9,11 @@ Under the hood you'll find an instance of Chrome (using Puppeteer) which can be 
 ### Setup
 1. Install python dependencies in requirements.txt
     ```pip install -r requirements.txt```
+2. Download and link spacy model for rasa.
+    ```
+        python3 -m spacy download en_core_web_md
+        python3 -m spacy link en_core_web_md en
+    ```
 2. Install node.js dependencies
     ```npm install```
 4. Create a local .env file with configuration variable for example.
