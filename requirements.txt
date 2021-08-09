@@ -12,3 +12,4 @@ torch
 parlai==1.4.1
 flask==2.0.1
 flask-cors==3.0.10
+pysqlite3==0.4.6
