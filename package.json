@@ -35,7 +35,7 @@
     "@types/node": "14.17.9",
     "@types/react": "17.0.16",
     "@types/react-dom": "17.0.9",
-    "@types/three": "0.130.1",
+    "@types/three": "0.131.0",
     "config": "3.3.6",
     "cross-env": "7.0.3",
     "eslint": "7.32.0",
