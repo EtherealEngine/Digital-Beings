@@ -9,7 +9,7 @@ Under the hood you'll find an instance of Chrome (using Puppeteer) which can be 
 ### Setup
 1. Install python dependencies in requirements.txt
     ```pip install -r requirements.txt```
-2. Download and link spacy model for rasa.
+2. Download and link spacy model for rasa. Spacy is used for pre-processing of the utterances, tokenization, and featurization.
     ```
         python3 -m spacy download en_core_web_md
         python3 -m spacy link en_core_web_md en
