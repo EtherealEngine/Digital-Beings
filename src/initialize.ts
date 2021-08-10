@@ -20,7 +20,13 @@ const pyConnect = require('./pyconnect');
 (async function(){  await pyConnect.invoke({'sender':'client', 'message':'listen'}); })();
 
 const messageResponseHandler = async (sender, message, callback) => {
-    const response = await pyConnect.invoke({'sender':sender, 'message':message})
+    let response;
+    if(message === '.agents'){
+        response = await pyConnect.invoke({})
+    }else{
+        response = await pyConnect.invoke({'sender':sender, 'message':message})
+    }
+    
     callback(response);
 }
 

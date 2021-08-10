@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rexample.proto\"*\n\x07Request\x12\x0e\n\x06sender\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x19\n\x08Response\x12\r\n\x05value\x18\x01 \x01(\t2/\n\x05\x41gent\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\rexample.proto\"*\n\x07Request\x12\x0e\n\x06sender\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x19\n\x08Response\x12\r\n\x05value\x18\x01 \x01(\t\"\x1b\n\tAllAgents\x12\x0e\n\x06\x61gents\x18\x01 \x03(\t\"\x07\n\x05\x45mpty2R\n\x05\x41gent\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x12!\n\tgetAgents\x12\x06.Empty\x1a\n.AllAgents\"\x00\x62\x06proto3'
 )
 
 
@@ -95,8 +95,67 @@ _RESPONSE = _descriptor.Descriptor(
   serialized_end=86,
 )
 
+
+_ALLAGENTS = _descriptor.Descriptor(
+  name='AllAgents',
+  full_name='AllAgents',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='agents', full_name='AllAgents.agents', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=88,
+  serialized_end=115,
+)
+
+
+_EMPTY = _descriptor.Descriptor(
+  name='Empty',
+  full_name='Empty',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=117,
+  serialized_end=124,
+)
+
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
+DESCRIPTOR.message_types_by_name['AllAgents'] = _ALLAGENTS
+DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), {
@@ -113,6 +172,20 @@ Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Messag
   })
 _sym_db.RegisterMessage(Response)
 
+AllAgents = _reflection.GeneratedProtocolMessageType('AllAgents', (_message.Message,), {
+  'DESCRIPTOR' : _ALLAGENTS,
+  '__module__' : 'example_pb2'
+  # @@protoc_insertion_point(class_scope:AllAgents)
+  })
+_sym_db.RegisterMessage(AllAgents)
+
+Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
+  'DESCRIPTOR' : _EMPTY,
+  '__module__' : 'example_pb2'
+  # @@protoc_insertion_point(class_scope:Empty)
+  })
+_sym_db.RegisterMessage(Empty)
+
 
 
 _AGENT = _descriptor.ServiceDescriptor(
@@ -122,8 +195,8 @@ _AGENT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=88,
-  serialized_end=135,
+  serialized_start=126,
+  serialized_end=208,
   methods=[
   _descriptor.MethodDescriptor(
     name='HandleMessage',
@@ -132,6 +205,16 @@ _AGENT = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_REQUEST,
     output_type=_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='getAgents',
+    full_name='Agent.getAgents',
+    index=1,
+    containing_service=None,
+    input_type=_EMPTY,
+    output_type=_ALLAGENTS,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

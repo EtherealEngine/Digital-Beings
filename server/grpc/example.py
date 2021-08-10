@@ -8,6 +8,7 @@ from openchat.agents.gpt3 import GPT3Agent
 from openchat.agents.rasa import RasaAgent
 from openchat import OpenChat
 import agent_params
+import sqlite3 as lite
 
 
 def handle_message(sender, message):
@@ -39,3 +40,13 @@ def handle_message(sender, message):
             return "Exception: " + str(err)
 
 
+def get_agents():
+    con = lite.connect('../DigitalBeing/server/digitalbeing.db')
+    cursor = con.cursor()
+    cursor.execute("SELECT name FROM Agents")
+    agents_tuple = cursor.fetchall()
+    
+    from itertools import chain
+    agents_list = list(chain.from_iterable(agents_tuple))
+
+    return agents_list

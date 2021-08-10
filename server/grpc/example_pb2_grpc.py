@@ -19,12 +19,23 @@ class AgentStub(object):
                 request_serializer=example__pb2.Request.SerializeToString,
                 response_deserializer=example__pb2.Response.FromString,
                 )
+        self.getAgents = channel.unary_unary(
+                '/Agent/getAgents',
+                request_serializer=example__pb2.Empty.SerializeToString,
+                response_deserializer=example__pb2.AllAgents.FromString,
+                )
 
 
 class AgentServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def HandleMessage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getAgents(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -37,6 +48,11 @@ def add_AgentServicer_to_server(servicer, server):
                     servicer.HandleMessage,
                     request_deserializer=example__pb2.Request.FromString,
                     response_serializer=example__pb2.Response.SerializeToString,
+            ),
+            'getAgents': grpc.unary_unary_rpc_method_handler(
+                    servicer.getAgents,
+                    request_deserializer=example__pb2.Empty.FromString,
+                    response_serializer=example__pb2.AllAgents.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -62,5 +78,22 @@ class Agent(object):
         return grpc.experimental.unary_unary(request, target, '/Agent/HandleMessage',
             example__pb2.Request.SerializeToString,
             example__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getAgents(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/getAgents',
+            example__pb2.Empty.SerializeToString,
+            example__pb2.AllAgents.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

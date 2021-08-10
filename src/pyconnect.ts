@@ -34,6 +34,7 @@ class PyConnect {
     static async invoke(method, ...args) {
         try {
             return await PyConnect.server().then(async (grpc) => {
+                console.log("method", method)
                 return await promisify(grpc, method, ...args);
             });
         }
@@ -43,8 +44,11 @@ class PyConnect {
     }
 }
 
+
 var promisify = (ctx, ...args) => {
-    const fn = ctx.HandleMessage;
+    let fn;
+    let fnArgs = [];
+
     return new Promise((resolve, reject) => {
         args.push((err, data) => {
             if (err) {
@@ -54,7 +58,17 @@ var promisify = (ctx, ...args) => {
                 resolve(data);
             }
         });
-        fn.apply(ctx, [args[0], args[1]])
+        
+        for (let argCount = 0; argCount < args.length; argCount++) {
+            fnArgs.push(args[argCount]);
+        }
+        
+        if(Object.keys(args[0]).length === 0){
+            fn = ctx.getAgents;
+        }else{
+            fn = ctx.HandleMessage;
+        }
+        fn.apply(ctx, fnArgs)
     });
 };
 

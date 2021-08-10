@@ -19,7 +19,7 @@ def sql_table(con):
 
     cursorObj = con.cursor()
 
-    cursorObj.execute("CREATE TABLE Agents(id integer PRIMARY KEY AUTOINCREMENT, name text, question text, reaponse text)")
+    cursorObj.execute("CREATE TABLE IF NOT EXISTS Agents(id integer PRIMARY KEY AUTOINCREMENT, name text, type text topic text  question text, reaponse text)")
 
     # Insert default selected agents
     entities = res = [(agent,) for agent in agent_params.SELECTED_AGENTS]
@@ -28,8 +28,12 @@ def sql_table(con):
         cursorObj.executemany('INSERT INTO Agents(name) VALUES(?)', entities)
     else:
         cursorObj.execute('INSERT INTO Agents(name) VALUES(?)', entities)
+    
+    cursorObj.execute("SELECT name FROM Agents")
 
     con.commit()
+    cursorObj.close()
+    con.close()
 
 con = sql_connection()
 sql_table(con)

@@ -19,7 +19,7 @@ const createDiscordClient = (messageResponseHandler) => {
           let removeMentions= message.content.split(" ").slice(1).join(" ")
           message.content = removeMentions.replace(/<@[!&]?\d+>/, '[mention]');
           await messageResponseHandler(message.author.username, message.content, (response) => {
-            message.channel.send(response.value)
+            message.channel.send(Object.values(response).join().replace(",", "\n\n"));
             message.channel.stopTyping();
           });
         }
@@ -29,7 +29,7 @@ const createDiscordClient = (messageResponseHandler) => {
           let removeMentions= message.content.split(" ").slice(1).join(" ")
           message.content = removeMentions.replace(/<@[!&]?\d+>/, '[mention]');
           await messageResponseHandler(message.author.username, message.content, (response) => {
-            message.author.send(response.value)
+            message.author.send(Object.values(response).join().replace(",", "\n\n"));
             message.channel.stopTyping();
           });
         }

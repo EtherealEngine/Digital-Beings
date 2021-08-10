@@ -10,6 +10,13 @@ message Response {
     string value = 1;
 }
 
+message AllAgents {
+    repeated string agents = 1;
+}
+
+message Empty {}
+
 service Agent {
     rpc HandleMessage(Request) returns (Response) {}
+    rpc getAgents(Empty) returns (AllAgents) {}
 }
