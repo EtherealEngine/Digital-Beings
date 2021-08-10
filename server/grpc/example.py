@@ -34,7 +34,7 @@ def handle_message(sender, message):
             gpt3_response = gpt3_agent.invoke_api()
             rasa_response = rasa_agent.invoke()
             
-            return f'Respond to message from  {sender} | {message} \n\n GPT3 Response | {gpt3_response} \n\n Rasa Response | {rasa_response} {agent_response} '
+            return f'GPT3 Response | {gpt3_response} \n\n Rasa Response | {rasa_response} {agent_response} '
         except Exception as err:
             return "Exception: " + str(err)
 
