@@ -11,21 +11,28 @@ const createDiscordClient = (messageResponseHandler) => {
             if (message.channel.type === 'text') {
                 if (message.mentions.has(client.user)) {
                     message.channel.startTyping();
-                    let removeMentions = message.content.split(" ").slice(1).join(" ")
+                    const removeMentions= message.content.split(" ").slice(1).join(" ")
                     message.content = removeMentions.replace(/<@[!&]?\d+>/, '[mention]');
                     await messageResponseHandler(message.author.username, message.content, (response) => {
-                        message.reply(response.value)
+                        message.channel.send(Object.values(response).join().replace(",", "\n"));
                         message.channel.stopTyping();
                     });
                 } else {
                     message.reply(message.content);
                 }
             } else if (message.channel.type === 'dm') {
-                message.channel.startTyping();
-                await messageResponseHandler(message.author.username, message.content, (response) => {
-                    message.author.send(response.value)
-                    message.channel.stopTyping();
-                });
+                if (message.mentions.has(client.user)) {
+                    message.channel.startTyping();
+                    const removeMentions= message.content.split(" ").slice(1).join(" ")
+                    message.content = removeMentions.replace(/<@[!&]?\d+>/, '[mention]');
+                    console.log(message.content)
+                    await messageResponseHandler(message.author.username, message.content, (response) => {
+                        message.channel.send(Object.values(response).join().replace(",", "\n"));
+                        message.channel.stopTyping();
+                    });
+                }else {
+                    message.reply(message.content);
+                }
             }
         });
     });
