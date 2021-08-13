@@ -122,29 +122,7 @@ const createDiscordClient = (messageResponseHandler) => {
                 });
                 
                 await messageResponseHandler(args_dict, (response) => {
-                  // let filter = m => m.author.id === message.author.id
                   message.channel.send(Object.values(response).join().replace(",", "\n"))
-                  // .then(() => {
-                  //   message.channel.awaitMessages(filter, {
-                  //       max: 1,
-                  //       time: 30000,
-                  //       errors: ['time']
-                  //     })
-                  //     .then(message => {
-                  //       message = message.first()
-                  //       if (message.content.toUpperCase() == 'YES' || message.content.toUpperCase() == 'Y') {
-                  //         message.channel.send(`Deleted`)
-                  //       } else if (message.content.toUpperCase() == 'NO' || message.content.toUpperCase() == 'N') {
-                  //         message.channel.send(`Terminated`)
-                  //       } else {
-                  //         message.channel.send(`Terminated: Invalid Response`)
-                  //       }
-                  //     })
-                  //     .catch(collected => {
-                  //         message.channel.send('Timeout');
-                  //     });
-                  //   }
-                  // );
                   message.channel.stopTyping();
                   });
               }else {
