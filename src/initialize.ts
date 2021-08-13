@@ -17,20 +17,22 @@ globalThis.requestAnimationFrame = (f) => {
 }
 const pyConnect = require('./pyconnect');
 
-(async function(){  await pyConnect.invoke({'sender':'client', 'message':'listen'}); })();
+(async function(){  await pyConnect.invoke({'request_args': {'sender':'client', 'message':'listen'}, 'grpc_method':'HandleMessage'}); })();
 
-const messageResponseHandler = async (sender, message, callback) => {
-    let response;
-    if(message === '.agents'){
-        response = await pyConnect.invoke({})
-    }else{
-        response = await pyConnect.invoke({'sender':sender, 'message':message})
+const messageResponseHandler = async (args, callback) => {
+    if(args.command === '.agents'){
+        args.response = await pyConnect.invoke({'grpc_method':args.grpc_method})
+    }else if(args.command === '.setagent'){
+        args.response = await pyConnect.invoke(args)
+    }
+    else{
+        args.response = await pyConnect.invoke(args)
     }
     
-    callback(response);
+    callback(args.response);
 }
 
 // Initialize bots 
 require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
 require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
-//require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
+require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);

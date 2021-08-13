@@ -58,17 +58,18 @@ var promisify = (ctx, ...args) => {
                 resolve(data);
             }
         });
+
+        fn = ctx[args[0].grpc_method];
         
         for (let argCount = 0; argCount < args.length; argCount++) {
-            fnArgs.push(args[argCount]);
+            if(args[argCount].constructor == Object){ //check if dictionary
+                fn = ctx[args[argCount].grpc_method]
+                fnArgs.push(args[argCount]['request_args']);
+            }else{
+                fnArgs.push(args[argCount]);
+            }
         }
-        
-        if(Object.keys(args[0]).length === 0){
-            fn = ctx.getAgents;
-        }else{
-            fn = ctx.HandleMessage;
-        }
-        fn.apply(ctx, fnArgs)
+        fn.apply(ctx, fnArgs);
     });
 };
 

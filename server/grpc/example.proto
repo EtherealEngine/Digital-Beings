@@ -3,7 +3,6 @@ syntax = "proto3";
 message Request {
     string sender = 1;
     string message = 2;
-
 }
 
 message Response {
@@ -14,9 +13,18 @@ message AllAgents {
     repeated string agents = 1;
 }
 
+message AgentFields {
+    string name = 1;
+    string context = 2;
+    optional string sender = 3;
+    optional string message = 4;
+    optional string type = 5;
+}
+
 message Empty {}
 
 service Agent {
     rpc HandleMessage(Request) returns (Response) {}
-    rpc getAgents(Empty) returns (AllAgents) {}
+    rpc GetAgents(Empty) returns (AllAgents) {}
+    rpc SetAgentFields(AgentFields) returns (AgentFields) {}
 }

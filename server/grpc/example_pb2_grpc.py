@@ -19,10 +19,15 @@ class AgentStub(object):
                 request_serializer=example__pb2.Request.SerializeToString,
                 response_deserializer=example__pb2.Response.FromString,
                 )
-        self.getAgents = channel.unary_unary(
-                '/Agent/getAgents',
+        self.GetAgents = channel.unary_unary(
+                '/Agent/GetAgents',
                 request_serializer=example__pb2.Empty.SerializeToString,
                 response_deserializer=example__pb2.AllAgents.FromString,
+                )
+        self.SetAgentFields = channel.unary_unary(
+                '/Agent/SetAgentFields',
+                request_serializer=example__pb2.AgentFields.SerializeToString,
+                response_deserializer=example__pb2.AgentFields.FromString,
                 )
 
 
@@ -35,7 +40,13 @@ class AgentServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def getAgents(self, request, context):
+    def GetAgents(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetAgentFields(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -49,10 +60,15 @@ def add_AgentServicer_to_server(servicer, server):
                     request_deserializer=example__pb2.Request.FromString,
                     response_serializer=example__pb2.Response.SerializeToString,
             ),
-            'getAgents': grpc.unary_unary_rpc_method_handler(
-                    servicer.getAgents,
+            'GetAgents': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAgents,
                     request_deserializer=example__pb2.Empty.FromString,
                     response_serializer=example__pb2.AllAgents.SerializeToString,
+            ),
+            'SetAgentFields': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetAgentFields,
+                    request_deserializer=example__pb2.AgentFields.FromString,
+                    response_serializer=example__pb2.AgentFields.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -82,7 +98,7 @@ class Agent(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def getAgents(request,
+    def GetAgents(request,
             target,
             options=(),
             channel_credentials=None,
@@ -92,8 +108,25 @@ class Agent(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Agent/getAgents',
+        return grpc.experimental.unary_unary(request, target, '/Agent/GetAgents',
             example__pb2.Empty.SerializeToString,
             example__pb2.AllAgents.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetAgentFields(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/SetAgentFields',
+            example__pb2.AgentFields.SerializeToString,
+            example__pb2.AgentFields.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

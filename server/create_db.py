@@ -19,7 +19,7 @@ def sql_table(con):
 
     cursorObj = con.cursor()
 
-    cursorObj.execute("CREATE TABLE IF NOT EXISTS Agents(id integer PRIMARY KEY AUTOINCREMENT, name text, type text topic text  question text, reaponse text)")
+    cursorObj.execute("CREATE TABLE IF NOT EXISTS Agents(id integer PRIMARY KEY AUTOINCREMENT, name text, type text, topic text,  question text, reaponse text)")
 
     # Insert default selected agents
     entities = res = [(agent,) for agent in agent_params.SELECTED_AGENTS]

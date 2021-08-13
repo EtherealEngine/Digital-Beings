@@ -22,11 +22,19 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
         return response
     
 
-    # example.getAgents is exposed here
-    def getAgents(self, request, context):
+    # example.GetAgents is exposed here
+    def GetAgents(self, request, context):
         agent = example_pb2.AllAgents()
         agent.agents[:] = example.get_agents()
         return agent
+    
+
+     # example.SetAgentFields is exposed here
+    def SetAgentFields(self, request, context):
+        agent_fields = example_pb2.AgentFields()
+        agent_fields.name, agent_fields.context  = example.set_agent_fields(request.name, request.context, request.sender, request.message, '')
+        return agent_fields
+       
 
 
 # create a gRPC server
