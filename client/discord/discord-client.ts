@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const {Util} = require('discord.js')
 const config = require("./config.json");
 const util = require('./util.ts')
-console.log("util ==> ", util)
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 
 
