@@ -3,7 +3,7 @@ const path = require('path');
 const grpc = require('grpc');
 
 const proto = grpc.load(`${__dirname}/../server/grpc/example.proto`)
-const PORT = 50051
+const PORT = 50052
 const IP = 'localhost'
 
 class PyConnect {
@@ -64,7 +64,13 @@ var promisify = (ctx, ...args) => {
         for (let argCount = 0; argCount < args.length; argCount++) {
             if(args[argCount].constructor == Object){ //check if dictionary
                 fn = ctx[args[argCount].grpc_method]
-                fnArgs.push(args[argCount]['request_args']);
+                const filtered_params = Object.keys(args[argCount].grpc_args)
+                .filter(key => args[argCount].grpc_method_params.includes(key))
+                .reduce((obj, key) => {
+                    obj[key] = args[argCount].grpc_args[key];
+                    return obj;
+                }, {});
+                fnArgs.push(filtered_params);
             }else{
                 fnArgs.push(args[argCount]);
             }
