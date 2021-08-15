@@ -40,6 +40,12 @@ Under the hood you'll find an instance of Chrome (using Puppeteer) which can be 
 2. Run example.py to connect the default hello world implementation
 3. Copy and paste the code from example.py into your project and hook your models into it.
 
+### WSL
+1. If you use WSL in Windows, you might get an error about Chromium, file or directory not found.
+2. To fix this install Chromium by using 
+3. wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+4. sudo apt -y install ./google-chrome-stable_current_amd64.deb
+
 ### Docker
 
 You can run it using docker, if you don't have node installed or need to test.
