@@ -35,8 +35,12 @@ with sr.AudioFile('sample.wav') as source:
 # Reading Microphone as source
 # listening the speech and store in audio_text variable
 
-with sr.Microphone() as source:
+sr.Microphone.list_microphone_names()
+mic = sr.Microphone(device_index=3)
+
+with mic as source:
     print("Talk")
+    r.adjust_for_ambient_noise(source)
     audio_text = r.listen(source)
     print("Time over, thanks")
 # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
