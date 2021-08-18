@@ -7,7 +7,7 @@ In partnership with SuperReality, a free open source teaching platform for every
 
 - Twitter
 - Discord
-- XREngine - Bot Package
+- XREngine - [Bot Package](https://github.com/XRFoundation/XREngine/tree/dev/packages/bot)
 - XR Engine API
 
 ## Supported Agents
