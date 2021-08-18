@@ -229,10 +229,30 @@ class XREngineBot {
 
         this.browser = await browserLauncher.browser(options);
         this.page = await this.browser.newPage();
-
-        if (this.autoLog) {
-            this.page.on('console', consoleObj => console.log(">> ", consoleObj.text()));
-        }
+        this.page.on('console', message => {
+            if (message.text().startsWith('scene_metadata')) {
+                const data = message.text().split('|', 2)
+                if (data.length === 2) {
+                    const _data = data[1]
+                    console.log('Scene Metadata: Data:' + _data)
+                }
+                else
+                    console.log('invalid scene metadata length ('+data.length+'): ' + data)
+            }
+            else if (message.text().startsWith('metadata')) {
+                const data = message.text().split('|', 3)
+                if (data.length === 3) {
+                    const xyz = data[1]
+                    const _data = data[2]
+                    console.log('Metadata: Position: ' + xyz + ', Data: ' + _data)
+                }
+                else
+                    console.log('invalid metadata length ('+data.length+'): ' + data)
+            }
+                
+            if (this.autoLog)
+                console.log(">> ", message.text())
+        })
 
         this.page.setViewport({ width: 0, height: 0 });
         await this.page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
@@ -269,6 +289,7 @@ class XREngineBot {
         }
 
         let parsedUrl = new URL(url.includes('https') ? url : 'https://' + url);
+        parsedUrl.searchParams.set('bot', 'true')
         console.log("parsed url is", parsedUrl);
         const context = this.browser.defaultBrowserContext();
         console.log("permission allow for ", parsedUrl.origin);
