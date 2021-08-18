@@ -3,6 +3,29 @@ A platform for letting researchers connect an intelligent AI directly to realtim
 
 In partnership with SuperReality, a free open source teaching platform for everyone.
 
+## Supported Endpoints
+
+- Twitter
+- Discord
+- XREngine - Bot Package
+- XR Engine API
+
+## Supported Agents
+
+- XR Engine Testing Bot
+- Echo Bot
+
+#### Deep Learning
+- DialoGPT
+  - dialogpt.small
+  - dialogpt.medium
+  - dialogpt.large
+
+- GTPneo
+  - gptneo.small    
+  - gptneo.large    
+  - gptneo.xlarge  
+
 ### How It Works
 Under the hood you'll find an instance of Chrome (using Puppeteer) which can be run in headless or GUI mode. The bot uses control surfaces from the user API to interact, and also has some extra access to world state.
 
