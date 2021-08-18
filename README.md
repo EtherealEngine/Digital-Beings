@@ -14,7 +14,7 @@ In partnership with SuperReality, a free open source teaching platform for every
 
 - [XR Engine Testing Bot - Sequence of commands](https://github.com/XRFoundation/XREngine/blob/dev/packages/bot/src/run-bot.ts)
 - Echo Bot - Echo what's said in a room by everyone, bots, people, 1 person
-- Rasa - Managing other models
+- [Rasa](https://rasa.com/) - Chat bot mainly used for managing models.
 
 #### Deep Learning
 - [DialoGPT](https://github.com/microsoft/DialoGPT)
