@@ -15,6 +15,12 @@ const createDiscordClient = (messageResponseHandler) => {
     client._findCommand = util._findCommand;
     client._parseWords = util._parseWords;
     client.messageResponseHandler = messageResponseHandler
+
+    const embed = new Discord.MessageEmbed()
+    .setColor(0x00AE86)
+    .setTimestamp()
+
+    client.embed = embed;
     
     const fs = require('fs');
     fs.readdir(`${__dirname}/events/`, (err, files) => {

@@ -18,7 +18,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # example_pb2.Request
     def HandleMessage(self, request, context):
         response = example_pb2.Response()
-        response.value = example.handle_message(request.sender, request.message)
+        response.responses.update(example.handle_message(request.sender, request.message))
         return response
     
 

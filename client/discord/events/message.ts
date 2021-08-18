@@ -40,7 +40,6 @@ module.exports = (client, message) => {
 
     const splitArgs = args['grpc_args']['message'].trim().split(",");
     splitArgs.forEach(element => {
-        console.log("element", element)
         args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
     });
   

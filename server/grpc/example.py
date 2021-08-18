@@ -13,6 +13,7 @@ from itertools import chain
 
 
 def handle_message(sender, message):
+    responses_dict = {}
     if sender and message:
         try:
             gpt3_agent = GPT3Agent(
@@ -24,7 +25,6 @@ def handle_message(sender, message):
                                     agent_params.RASA_MODEL_NAME,
                                     message
                                   )
-            agent_response = ''
             for model_name in agent_params.SELECTED_AGENTS:
                 agent = OpenChat( 
                                     model=model_name,
@@ -32,11 +32,11 @@ def handle_message(sender, message):
                                     environment=agent_params.ENVIRONMENT
                                 )
                 agent_env = agent.create_environment_by_name(agent.environment)
-                agent_response += f'\n\n {model_name.split(".")[0].upper()} Response | ' + agent_env.start(agent.agent, user_message=message)
-            gpt3_response = gpt3_agent.invoke_api()
-            rasa_response = rasa_agent.invoke()
-            
-            return f'GPT3 Response | {gpt3_response} \n\n Rasa Response | {rasa_response} {agent_response} '
+                responses_dict[model_name] = agent_env.start(agent.agent, user_message=message)
+
+            responses_dict['gpt3'] = gpt3_agent.invoke_api()
+            responses_dict['rasa'] = rasa_agent.invoke()
+            return responses_dict
         except Exception as err:
             return "Exception: " + str(err)
 
