@@ -26,6 +26,11 @@ In partnership with SuperReality, a free open source teaching platform for every
   - gptneo.large    
   - gptneo.xlarge  
 
+#### In Development
+- Wizard of Wikipedia
+- GTPj
+- Droidlet
+
 ### How It Works
 Under the hood you'll find an instance of Chrome (using Puppeteer) which can be run in headless or GUI mode. The bot uses control surfaces from the user API to interact, and also has some extra access to world state.
 
