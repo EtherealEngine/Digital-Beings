@@ -12,24 +12,25 @@ In partnership with SuperReality, a free open source teaching platform for every
 
 ## Supported Agents
 
-- XR Engine Testing Bot
-- Echo Bot
+- XR Engine Testing Bot - Sequence of commands
+- Echo Bot - Echo what's said in a room by everyone, bots, people, 1 person
 
 #### Deep Learning
-- DialoGPT
+- [DialoGPT](https://github.com/microsoft/DialoGPT)
   - dialogpt.small
   - dialogpt.medium
   - dialogpt.large
 
-- GTPneo
+- [GPTneo](https://github.com/EleutherAI/gpt-neo)
   - gptneo.small    
   - gptneo.large    
   - gptneo.xlarge  
 
 #### In Development
-- Wizard of Wikipedia
-- GTPj
-- Droidlet
+- [Wizard of Wikipedia](https://parl.ai/projects/wizard_of_wikipedia/)
+- [OpenChat](https://github.com/hyunwoongko/openchat)
+- [GPTj](https://6b.eleuther.ai/)
+- [Droidlet](https://github.com/facebookresearch/droidlet)
 
 ### How It Works
 Under the hood you'll find an instance of Chrome (using Puppeteer) which can be run in headless or GUI mode. The bot uses control surfaces from the user API to interact, and also has some extra access to world state.
