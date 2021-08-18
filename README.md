@@ -12,7 +12,7 @@ In partnership with SuperReality, a free open source teaching platform for every
 
 ## Supported Agents
 
-- XR Engine Testing Bot - Sequence of commands
+- [XR Engine Testing Bot - Sequence of commands](https://github.com/XRFoundation/XREngine/blob/dev/packages/bot/src/run-bot.ts)
 - Echo Bot - Echo what's said in a room by everyone, bots, people, 1 person
 
 #### Deep Learning
