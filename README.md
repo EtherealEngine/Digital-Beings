@@ -36,6 +36,24 @@ In partnership with SuperReality, a free open source teaching platform for every
 ### How It Works
 Under the hood you'll find an instance of Chrome (using Puppeteer) which can be run in headless or GUI mode. The bot uses control surfaces from the user API to interact, and also has some extra access to world state.
 
+# Getting Started
+
+Getting up and running requires only a few steps. 
+
+Requirements
+------------
+
+Paddington requires the following to run:
+
+  * [Node.js][node] 16.x.x
+  * [npm][npm] (normally comes with Node.js)
+  * [Python][python] 3.8.x
+
+
+[node]: https://nodejs.org/
+[npm]: https://www.npmjs.com/
+[python]: https://www.python.org/ 
+
 ### Setup
 1. Install python dependencies in requirements.txt
     ```pip install -r requirements.txt```
