@@ -7,7 +7,6 @@ numpy==1.21.2
 openai==0.10.1
 rasa==2.8.3
 rasa-sdk==2.2.0
-openchat==1.1.12
 transformers==4.9.2
 torch
 parlai==1.4.1

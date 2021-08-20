@@ -2,7 +2,6 @@
 import os
 import sys
 
-from openchat import OpenChat
 import sqlite3 as lite
 from itertools import chain
 
@@ -15,6 +14,7 @@ sys.path.append(parentdir)
 import agent_params
 from agents.openchat.agents.gpt3 import GPT3Agent
 from agents.openchat.agents.rasa import RasaAgent
+from agents.openchat.openchat import OpenChat
 
 
 def handle_message(sender, message):
