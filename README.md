@@ -4,8 +4,6 @@ A platform for letting researchers connect an intelligent AI directly to realtim
 [In partnership with SuperReality, a free open source teaching platform for everyone.](https://superreality.com)
 
 
-Breaking apart the Digital Being toolbox into 4 parts
-
 # 2D/3D Interactive Endpoint API
 
 Interactive Endpoint Connector tools for Brosers, JS, TypeScript
