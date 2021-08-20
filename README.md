@@ -1,7 +1,7 @@
 # Digital Being
 A platform for letting researchers connect an intelligent AI directly to realtime communication networks and 3D worlds.
 
-In partnership with SuperReality, a free open source teaching platform for everyone.
+[In partnership with SuperReality, a free open source teaching platform for everyone.](https://superreality.com)
 
 
 Breaking apart the Digital Being toolbox into 4 parts
