@@ -1,15 +1,20 @@
 
 import os
 import sys
+
+from openchat import OpenChat
+import sqlite3 as lite
+from itertools import chain
+
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
-from openchat.agents.gpt3 import GPT3Agent
-from openchat.agents.rasa import RasaAgent
-from openchat import OpenChat
+
+
+# These might be red in your IDE, since we are adding parent dir to path (above)
 import agent_params
-import sqlite3 as lite
-from itertools import chain
+from agents.openchat.agents.gpt3 import GPT3Agent
+from agents.openchat.agents.rasa import RasaAgent
 
 
 def handle_message(sender, message):
