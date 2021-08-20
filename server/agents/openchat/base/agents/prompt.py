@@ -1,6 +1,6 @@
 import torch
 
-from openchat.base import HuggingfaceAgent
+from ..agents.huggingface import HuggingfaceAgent
 
 
 class PromptAgent(HuggingfaceAgent):

@@ -1,6 +1,8 @@
 from parlai.core.agents import add_datapath_and_model_args, create_agent_from_opt_file
 from parlai.core.build_data import modelzoo_path
-from openchat.base import ConvAI2Agent, Seq2SeqLM
+
+from ..base.agents.base import Seq2SeqLM
+from ..base.agents.convai2 import ConvAI2Agent
 
 
 class BlenderGenerationAgent(ConvAI2Agent, Seq2SeqLM):

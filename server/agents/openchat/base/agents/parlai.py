@@ -4,7 +4,7 @@ from typing import Dict, List, Union
 import torch
 from parlai.core.message import Message
 
-from openchat.base import BaseAgent
+from ..agents.base import BaseAgent
 
 
 class ParlaiAgent(BaseAgent):

@@ -1,7 +1,8 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from openchat.base import DecoderLM
-from openchat.base.agents.prompt import PromptAgent
+
+from ..base.agents.base import DecoderLM
+from ..base.agents.prompt import PromptAgent
 
 
 class GPTNeoAgent(PromptAgent, DecoderLM):

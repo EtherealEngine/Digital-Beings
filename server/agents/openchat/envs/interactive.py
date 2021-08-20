@@ -3,20 +3,12 @@ import sys
 import torch
 import gc
 
-from openchat.base.envs.base import BaseEnvironment
-from openchat.base import (
-    BaseAgent,
-    ConvAI2Agent,
-    WizardOfWikipediaAgent,
-    SingleTurn,
-    PromptAgent,
-)
-
-from openchat.utils.terminal_utils import (
-    cprint,
-    cinput,
-    Colors,
-)
+from ..base.agents.base import BaseAgent, SingleTurn
+from ..base.agents.convai2 import ConvAI2Agent
+from ..base.agents.prompt import PromptAgent
+from ..base.agents.wow import WizardOfWikipediaAgent
+from ..base.envs.base import BaseEnvironment
+from ..utils.terminal_utils import Colors, cprint, cinput
 
 
 class InteractiveEnvironment(BaseEnvironment):
