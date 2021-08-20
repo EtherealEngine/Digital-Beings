@@ -1,12 +1,12 @@
 # Digital Being
 A platform for letting researchers connect an intelligent AI directly to realtime communication networks and 3D worlds.
 
-[In partnership with SuperReality, a free open source teaching platform for everyone.](https://superreality.com)
+[In partnership with **SuperReality**, a free open source teaching platform for everyone.](https://superreality.com)
 
 
 # 2D/3D Interactive Endpoint API
 
-Interactive Endpoint Connector tools for Brosers, JS, TypeScript
+Interactive Endpoint Connector tools for Browsers, JS, TypeScript
 
 ## Supported Endpoints
 
@@ -46,7 +46,7 @@ Interaction API goals: Listen, Speak, Interact, Move, Emote
 - [GPTj](https://6b.eleuther.ai/)
 - [Droidlet](https://github.com/facebookresearch/droidlet)
 
-### How It Works
+## How It Works
 Under the hood you'll find an instance of Chrome (using Puppeteer) which can be run in headless or GUI mode. The bot uses control surfaces from the user API to interact, and also has some extra access to world state.
 
 Requirements
@@ -63,7 +63,7 @@ DigitalBeing requires the following to run:
 [npm]: https://www.npmjs.com/
 [python]: https://www.python.org/ 
 
-### Setup
+## Setup
 1. Install python dependencies in requirements.txt
     ```pip install -r requirements.txt```
 2. Download and link spacy model for rasa. Spacy is used for pre-processing of the utterances, tokenization, and featurization.
@@ -91,7 +91,7 @@ DigitalBeing requires the following to run:
 6. Run the host bot framework
     ```npm run start-gui```
 
-### Getting Started
+## Getting Started
 
 1. Run the bot with `npm start` -- by default it will connect to a test room on our dev server and open a port on gRPC
 2. Run example.py to connect the default hello world implementation
