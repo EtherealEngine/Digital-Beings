@@ -1,7 +1,14 @@
-# DigitalBeing
+# Digital Being
 A platform for letting researchers connect an intelligent AI directly to realtime communication networks and 3D worlds.
 
 In partnership with SuperReality, a free open source teaching platform for everyone.
+
+
+Breaking apart the Digital Being toolbox into 4 parts
+
+# 2D/3D Interactive Endpoint API
+
+Interactive Endpoint Connector tools for Brosers, JS, TypeScript
 
 ## Supported Endpoints
 
@@ -9,6 +16,14 @@ In partnership with SuperReality, a free open source teaching platform for every
 - Discord
 - XREngine - [Bot Package](https://github.com/XRFoundation/XREngine/tree/dev/packages/bot)
 - XR Engine API
+
+# Digital Being Agent API 
+
+### Python GRPC Agent API Bridge 
+
+Connector tools for Python 3, Machine Learing tools such as TensorFlow, PyTorch, etc.
+
+Interaction API goals: Listen, Speak, Interact, Move, Emote
 
 ## Supported Agents
 
