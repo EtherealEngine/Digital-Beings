@@ -3,13 +3,12 @@ from parlai.core.agents import (
     add_datapath_and_model_args,
     create_agent_from_opt_file,
 )
-from openchat.utils import inherit
-from openchat.base import (
-    ParlaiGenerationAgent,
-    ConvAI2Agent,
-    WizardOfWikipediaAgent,
-    Seq2SeqLM,
-)
+
+from ..base.agents.base import Seq2SeqLM
+from ..base.agents.convai2 import ConvAI2Agent
+from ..base.agents.parlai import ParlaiGenerationAgent
+from ..base.agents.wow import WizardOfWikipediaAgent
+from ..utils.class_utils import inherit
 
 
 class DodecathlonAgent(ParlaiGenerationAgent, Seq2SeqLM):

@@ -1,4 +1,4 @@
-from openchat.base import ParlaiGenerationAgent
+from ..agents.parlai import ParlaiGenerationAgent
 
 
 class ConvAI2Agent(ParlaiGenerationAgent):

@@ -1,7 +1,8 @@
 import torch
 
 from typing import Dict
-from openchat.base import BaseAgent, DecoderLM
+
+from ..agents.base import BaseAgent
 
 
 class HuggingfaceAgent(BaseAgent):

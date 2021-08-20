@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from openchat.base import BaseAgent, DecoderLM
+
+from ..agents.base import DecoderLM, BaseAgent
 
 
 @dataclass

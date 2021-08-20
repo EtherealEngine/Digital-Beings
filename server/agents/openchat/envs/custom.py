@@ -2,14 +2,12 @@ import random
 import torch
 import gc
 
-from openchat.base.envs.base import BaseEnvironment
-from openchat.base import (
-    BaseAgent,
-    ConvAI2Agent,
-    WizardOfWikipediaAgent,
-    SingleTurn,
-    PromptAgent,
-)
+from ..base.agents.base import BaseAgent, SingleTurn
+from ..base.agents.convai2 import ConvAI2Agent
+from ..base.agents.prompt import PromptAgent
+from ..base.agents.wow import WizardOfWikipediaAgent
+from ..base.envs.base import BaseEnvironment
+from ..utils.terminal_utils import cprint, cinput
 
 import sqlite3 as lite
 import agent_params
@@ -64,7 +62,7 @@ class CustomEnvironment(BaseEnvironment):
 
         self.add_bot_message(self.user_id, bot_message)
         gc.collect()
-        
+
         return bot_message
 
     def pre_dialog_for_special_tasks(self, agent):

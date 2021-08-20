@@ -8,7 +8,7 @@ from parlai.core.message import Message
 from parlai.core.params import ParlaiParser
 from parlai.tasks.wizard_of_wikipedia.build import build
 from projects.wizard_of_wikipedia.knowledge_retriever.knowledge_retriever import KnowledgeRetrieverAgent
-from openchat.base import ParlaiGenerationAgent
+from ..agents.parlai import ParlaiGenerationAgent
 
 
 def load_topics():
