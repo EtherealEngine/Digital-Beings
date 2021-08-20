@@ -19,6 +19,7 @@ const helpFields = [
       ['ping', ['HandleMessage'],['sender', 'message'], 'ping agents'],
       ['agents', ['GetAgents'], [''], 'show all selected agents'],
       ['setagent', ['SetAgentFields'],['name', 'context'], 'update agents parameters'],
+      ['commands', [''],[''], 'Shows all available commands'],
     ],
     value: ''
   },

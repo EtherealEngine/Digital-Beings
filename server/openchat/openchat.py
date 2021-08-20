@@ -22,6 +22,7 @@ class OpenChat(object):
         maxlen=-1,
     ):
         draw_openchat()
+        self.model_name = model
         self.agent = self.check_agent(model)
         self.agent = self.create_agent_by_name(
             name=self.agent,

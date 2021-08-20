@@ -46,8 +46,8 @@ example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
 # listen on port 50050
-print('Starting server. Listening on port 50052.')
-server.add_insecure_port('[::]:50052')
+print('Starting server. Listening on port 50061.')
+server.add_insecure_port('[::]:50061')
 server.start()
 
 # since server.start() will not block,

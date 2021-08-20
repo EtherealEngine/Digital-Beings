@@ -3,7 +3,7 @@ const path = require('path');
 const grpc = require('grpc');
 
 const proto = grpc.load(`${__dirname}/../server/grpc/example.proto`)
-const PORT = 50052
+const PORT = 50061
 const IP = 'localhost'
 
 class PyConnect {
@@ -34,6 +34,7 @@ class PyConnect {
     static async invoke(method, ...args) {
         try {
             return await PyConnect.server().then(async (grpc) => {
+                console.log(method)
                 return await promisify(grpc, method, ...args);
             });
         }

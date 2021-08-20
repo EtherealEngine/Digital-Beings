@@ -20,7 +20,7 @@ ALL_AGENTS_LIST = [
                   ]
 SELECTED_AGENTS = [
                     'dialogpt.small',
-                    'gptneo.small'    
+                    'gptneo.small'
                   ]
 DEVICE = 'cpu'  # cpu or gpu
 ENVIRONMENT = 'custom' 

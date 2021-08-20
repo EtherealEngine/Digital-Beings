@@ -11,6 +11,9 @@ from openchat.base import (
     PromptAgent,
 )
 
+import sqlite3 as lite
+import agent_params
+
 
 class CustomEnvironment(BaseEnvironment):
 
@@ -128,37 +131,24 @@ class CustomEnvironment(BaseEnvironment):
                 )
 
     def pre_dialog_for_wow(self, agent):
+
+        # while True:
+        con = lite.connect(agent_params.SQLITE_DB)
+        cursor = con.cursor()
+        cursor.execute(f"SELECT topic FROM Agents WHERE name = '{agent.model_name.lstrip()}'")
+        topic_tuple = cursor.fetchall()
+        print("agent.model_name.lstrip() => ", agent.model_name.lstrip())
+        _topic = topic_tuple[0]
+
+        # if _topic in agent.topic_list:
         print(
-            f"[SYSTEM]: Please input topic for Wizard of wikipedia.\n"
-            f"[SYSTEM]: Enter '.topic' if you want to check random topic examples.\n",
-            color=self.system_color)
-
-        while True:
-            _topic = cinput(
-                "[TOPIC]: ",
-                color=self.special_color,
-            )
-
-            if _topic == ".topic":
-                random_list = agent.topic_list
-                random.shuffle(random_list)
-                random_list = random_list[:4]
-
-                _topic = cprint(
-                    f"[TOPIC]: {random_list}\n",
-                    color=self.special_color,
-                )
-
-            else:
-                if _topic in agent.topic_list:
-                    cprint(
-                        f"[TOPIC]: Topic setting complete.\n",
-                        color=self.special_color,
-                    )
-                    agent.set_topic(_topic)
-                    break
-                else:
-                    _topic = cprint(
-                        f"[TOPIC]: Wrong topic: {_topic}. Please enter validate topic.\n",
-                        color=self.special_color,
-                    )
+            f"[TOPIC]: Topic setting complete.\n",
+            color=self.special_color,
+        )
+        agent.set_topic(_topic)
+        # break
+        # else:
+        #     _topic = print(
+        #         f"[TOPIC]: Wrong topic: {_topic}. Please enter validate topic.\n",
+        #         color=self.special_color,
+        #     )
