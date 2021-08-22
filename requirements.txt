@@ -24,6 +24,6 @@ torch==1.8.1
 torchtext==0.9.1
 tqdm==4.42.0
 transformers==4.9.2
-twilio==6.49.0
+twilio==6.63.0
 typeguard==2.12.0
 typer==0.3.2
