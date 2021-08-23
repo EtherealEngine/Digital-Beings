@@ -279,7 +279,6 @@ class XREngineBot {
         await this.page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
 
         this.pu = new PageUtils(this);
-        this.sendMovementCommand("1", "1", "1")
     }
 
     async keyPress(key, numMilliSeconds) {
