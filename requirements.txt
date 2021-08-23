@@ -22,7 +22,7 @@ threadpoolctl==2.2.0
 tokenizers==0.10.3
 torch==1.9.0
 torchtext==0.10.0
-tqdm==4.62.1
+tqdm==4.62.2
 transformers==4.9.2
 twilio==6.63.0
 typeguard==2.12.1
