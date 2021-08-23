@@ -34,7 +34,6 @@ class PyConnect {
     static async invoke(method, ...args) {
         try {
             return await PyConnect.server().then(async (grpc) => {
-                console.log(method)
                 return await promisify(grpc, method, ...args);
             });
         }
