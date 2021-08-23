@@ -73,6 +73,27 @@ class XREngineBot {
         await this.clickElementByClass('button', 'sendMessage');
     }
 
+    async sendMovementCommand(x : any, y: any, z : any) {
+        if (x === undefined || y === undefined || z == undefined) {
+            console.log("Invalid parameters! (" + x + ", " + y + ", " + z + ")")
+            return
+        }
+
+        var _x : number = parseFloat(x)
+        var _y : number = parseFloat(y)
+        var _z : number = parseFloat(z)
+        await this._sendMovementCommand(_x, _y, _z)
+    }
+    async _sendMovementCommand(x : number, y : number, z : number) {
+        if (x === undefined || y === undefined || z === undefined) {
+            console.log("Invalid parameters! (" + x + ", " + y + ", " + z + ")")
+            return
+        }
+
+        var message : string = "/walk (" + x + "|" + y + "|" + z + ")"
+        await this.sendMessage(message)
+    }
+
     async getInstanceMessages() {
         if(!this.activeChannel) return;
         console.log("Getting messages from instance channel: ", this.activeChannel);
@@ -258,6 +279,7 @@ class XREngineBot {
         await this.page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
 
         this.pu = new PageUtils(this);
+        this.sendMovementCommand("1", "1", "1")
     }
 
     async keyPress(key, numMilliSeconds) {
@@ -403,28 +425,33 @@ class PageUtils {
         }, selector, classRegex.toString().slice(1, -1));
     }
     async clickSelectorId(selector, id) {
-        if (this.autoLog)
-            console.log(`Clicking for a ${selector} matching ${id}`);
-
-        await this.page.evaluate((selector, id) => {
-            let matches = Array.from(document.querySelectorAll(selector));
-            let singleMatch = matches.find(button => button.id === id);
-            let result;
+        if (this.autoLog) console.log(`Clicking for a ${selector} matching ${id}`)
+        
+        await this.page.evaluate(
+          (selector, id) => {
+            let matches = Array.from(document.querySelectorAll(selector))
+            let singleMatch = matches.find((button) => button.id === id)
+            let result
             if (singleMatch && singleMatch.click) {
-                console.log('normal click');
-                result = singleMatch.click();
+              console.log('normal click')
+              result = singleMatch.click()
             }
             if (singleMatch && !singleMatch.click) {
-                console.log('on click');
-                result = singleMatch.dispatchEvent(new MouseEvent('click', { 'bubbles': true }));
+              console.log('on click')
+              result = singleMatch.dispatchEvent(new MouseEvent('click', { bubbles: true }))
             }
             if (!singleMatch) {
-                console.log('event click', matches.length);
-                const m = matches[0];
-                result = m.dispatchEvent(new MouseEvent('click', { 'bubbles': true }));
+              console.log('event click', matches.length)
+              if (matches.length > 0) {
+                  const m = matches[0]
+                  result = m.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+              }
             }
-        }, selector, id);
-    }
+          },
+          selector,
+          id
+        )
+      }
     async clickSelectorFirstMatch(selector) {
         if (this.autoLog)
             console.log(`Clicking for first ${selector}`);
