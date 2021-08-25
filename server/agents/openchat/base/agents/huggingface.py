@@ -1,7 +1,7 @@
 import torch
 
 from typing import Dict
-
+from ..agents.base import DecoderLM
 from ..agents.base import BaseAgent
 
 
