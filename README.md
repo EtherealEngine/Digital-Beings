@@ -19,7 +19,7 @@ Interactive Endpoint Connector tools for Browsers, JS, TypeScript
 
 ### Python GRPC Agent API Bridge 
 
-Connector tools for Python 3, Machine Learing tools such as TensorFlow, PyTorch, etc.
+Connector tools for Python 3, Machine Learning tools such as TensorFlow, PyTorch, etc.
 
 Interaction API goals: Listen, Speak, Interact, Move, Emote
 
