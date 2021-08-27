@@ -6,7 +6,7 @@ message Request {
 }
 
 message Response {
-    string value = 1;
+    map<string, string> responses = 1;
 }
 
 message AllAgents {

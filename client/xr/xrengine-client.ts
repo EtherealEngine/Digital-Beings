@@ -439,7 +439,6 @@ class PageUtils {
         }, selector, classRegex.toString().slice(1, -1));
     }
     async clickSelectorId(selector, id) {
-        console.log('clickSelectorId: '  + selector + ' ' + id)
         if (this.autoLog) console.log(`Clicking for a ${selector} matching ${id}`)
         
         await this.page.evaluate(

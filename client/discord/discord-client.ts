@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const {Util, Intents} = require('discord.js')
 const config = require("./config.json");
 const util = require('./util.ts')
-console.log("util ==> ", util)
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 
 
@@ -17,6 +16,12 @@ const createDiscordClient = (messageResponseHandler) => {
     client._findCommand = util._findCommand;
     client._parseWords = util._parseWords;
     client.messageResponseHandler = messageResponseHandler
+
+    const embed = new Discord.MessageEmbed()
+    .setColor(0x00AE86)
+    .setTimestamp()
+
+    client.embed = embed;
     
     const fs = require('fs');
     fs.readdir(`${__dirname}/events/`, (err, files) => {

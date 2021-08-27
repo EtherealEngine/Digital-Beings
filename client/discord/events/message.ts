@@ -37,13 +37,13 @@ module.exports = (client, message) => {
         args['grpc_method'] = args['command_info'][1][0];
         args['grpc_method_params'] = args['command_info'][2];
     }
-
-    const splitArgs = args['grpc_args']['message'].trim().split(",");
-    splitArgs.forEach(element => {
-        console.log("element", element)
-        args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
-    });
-  
+    if(args['command'] == 'setagent'){
+        const splitArgs = args['grpc_args']['message'].trim().split(",");
+        splitArgs.forEach(element => {
+            args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
+        });
+    }
+    
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
     

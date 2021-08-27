@@ -3,7 +3,7 @@ const path = require('path');
 const grpc = require('grpc');
 
 const proto = grpc.load(`${__dirname}/../server/grpc/example.proto`)
-const PORT = 50052
+const PORT = 50051
 const IP = 'localhost'
 
 class PyConnect {
@@ -34,7 +34,6 @@ class PyConnect {
     static async invoke(method, ...args) {
         try {
             return await PyConnect.server().then(async (grpc) => {
-                console.log("method", method)
                 return await promisify(grpc, method, ...args);
             });
         }
@@ -46,9 +45,7 @@ class PyConnect {
 
 
 var promisify = (ctx, ...args) => {
-    let fn;
-    let fnArgs = [];
-
+    const fnArgs = [];
     return new Promise((resolve, reject) => {
         args.push((err, data) => {
             if (err) {
@@ -58,12 +55,9 @@ var promisify = (ctx, ...args) => {
                 resolve(data);
             }
         });
-
-        fn = ctx[args[0].grpc_method];
-        
+        const fn = ctx[args[0].grpc_method];
         for (let argCount = 0; argCount < args.length; argCount++) {
             if(args[argCount].constructor == Object){ //check if dictionary
-                fn = ctx[args[argCount].grpc_method]
                 const filtered_params = Object.keys(args[argCount].grpc_args)
                 .filter(key => args[argCount].grpc_method_params.includes(key))
                 .reduce((obj, key) => {
