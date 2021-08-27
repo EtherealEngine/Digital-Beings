@@ -1,3 +1,5 @@
+import { waitForClientReady } from "grpc";
+
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
 const browserLauncher= require('../../src/browser-launcher')
@@ -26,14 +28,23 @@ async function createXREngineClient(messageResponseHandler) {
     xrengineBot.delay(Math.random() * 100000);
     console.log("Connecting to server...");
     await xrengineBot.launchBrowser();
+    xrengineBot.enterRoom(XRENGINE_URL, { name: "TestBot" })
+
+    /*console.log('delay bot')
+    await xrengineBot.delay(10000)
+    console.log('bot delay done')*/
+    
+/*await xrengineBot.sendMessage("Hello World! I have connected.")
 
     await new Promise((resolve) => {
         setTimeout(() => xrengineBot.enterRoom(XRENGINE_URL, { name: "TestBot" }), 1000);
     });
 
+console.log('bot loaded')
     await new Promise((resolve) => {
         setTimeout(() => xrengineBot.sendMessage("Hello World! I have connected."), 5000);
-    });
+    });*/
+console.log('bot fully loaded')
 }
 
 /**
@@ -90,13 +101,14 @@ class XREngineBot {
             return
         }
 
-        var message : string = "/walk (" + x + "|" + y + "|" + z + ")"
+        var message : string = '/move ' + x + ',' + y + ',' + z
         await this.sendMessage(message)
     }
 
     async getInstanceMessages() {
+        console.log('active channel: ' + this.activeChannel)
         if(!this.activeChannel) return;
-        console.log("Getting messages from instance channel: ", this.activeChannel);
+        console.log("Getting messages from instance channel: ", this.activeChannel + ' ' + this.activeChannel.chatState)
         // TODO: Fix because we don't want the whole chat state spamming every time
         this.messageResponseHandler("replaceme", this.activeChannel.chatState, (response) => this.sendMessage(response));
         return this.activeChannel && this.activeChannel.chatState;
@@ -350,7 +362,8 @@ class XREngineBot {
 
         await this.page.mouse.click(0, 0);
 
-        this.evaluate(() => {
+        await this.delay(10000)
+        this.activeChannel = this.evaluate(() => {
             if (globalThis.store === undefined) {
                 return console.warn("Store was not found, ignoring chat");
             }
@@ -360,9 +373,11 @@ class XREngineBot {
             const activeChannelMatch = [...channels].find(([, channel]) => channel.channelType === 'instance');
             if (activeChannelMatch && activeChannelMatch.length > 0) {
                 this.activeChannel = activeChannelMatch[1];
-                console.log("Joined room, received chat state");
+                console.log("Joined room, received chat state, channel: " + this.activeChannel)
+                return activeChannelMatch[0];
             } else {
                 console.warn("Couldn't get chat state")
+                return undefined;
             }
         });
     }
@@ -424,6 +439,7 @@ class PageUtils {
         }, selector, classRegex.toString().slice(1, -1));
     }
     async clickSelectorId(selector, id) {
+        console.log('clickSelectorId: '  + selector + ' ' + id)
         if (this.autoLog) console.log(`Clicking for a ${selector} matching ${id}`)
         
         await this.page.evaluate(
@@ -441,7 +457,7 @@ class PageUtils {
             }
             if (!singleMatch) {
               console.log('event click', matches.length)
-              if (matches.length > 0) {
+             if (matches.length > 0) {
                   const m = matches[0]
                   result = m.dispatchEvent(new MouseEvent('click', { bubbles: true }))
               }
