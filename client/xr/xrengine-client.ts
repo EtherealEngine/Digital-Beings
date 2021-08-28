@@ -62,6 +62,7 @@ class XREngineBot {
     page: any;
     browser: any;
     pu: PageUtils;
+    userId : string = '';
     chatHistory: string[] = [];
     constructor({
         name = "Bot",
@@ -77,14 +78,14 @@ class XREngineBot {
         this.fakeMediaPath = fakeMediaPath;
 
         setInterval(() => this.getInstanceMessages(), 1000)
+        setInterval(() => this.getLocalUserId(), 15000)
     }
 
     async sendMessage(message) {
-        if(message === null) return;
-        await this.clickElementByClass('button', 'openChat');
-        await this.clickElementById('input', 'newMessage');
+        if(message === null || message === undefined) return;
+        console.log('send message: ' + message)
         await this.typeMessage(message);
-        await this.clickElementByClass('button', 'sendMessage');
+        await this.pressKey('Enter')
     }
 
     async sendMovementCommand(x : any, y: any, z : any) {
@@ -119,25 +120,42 @@ class XREngineBot {
         await this.requestWorldMetadata(Number.MAX_SAFE_INTEGER)
     }
 
+    counter : number = 0
     async getInstanceMessages() {
         await this.updateChannelState()
         if(!this.activeChannel) return;
-        var messages = this.activeChannel.messages;
-        for(var i = 0; i < messages.length; i++ ){
-            var message = messages[i]
-            var messageId = message.id
-            var sender = message.sender.name
-            var text = message.text
+        const messages = this.activeChannel.messages;
+        if (messages === undefined || messages === null) return;
 
-            if (this.chatHistory.includes(messageId)) {
+        for(var i = 0; i < messages.length; i++ ){
+            const message = messages[i]
+            const messageId = message.id
+            const senderId = message.sender.id
+            //var sender = message.sender.name
+            //var text = message.text
+
+            if (senderId === this.userId || this.chatHistory.includes(messageId)) {
                 const index : number = await this.getMessageIndex(messages, messageId)
                 if (index > -1) messages.splice(index, 1)
             }
 
             this.chatHistory.push(messageId)
         }
-        this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
-        return this.activeChannel && this.activeChannel.chatState;
+        this.counter++
+        if (this.counter === 20)
+        this.requestSceneMetadata()
+
+        if (this.counter === 25)
+        this.sendMovementCommand(0.01, 0.01, 0.01)
+
+        if (this.counter === 35)
+        this.requestWorldMetadata(5)
+
+        if (this.counter === 40)
+        this.requestAllWorldMetadata()
+
+        //this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
+        return this.activeChannel && messages;
     }
 
     async getMessageIndex(messages: any, messageId: string) {
@@ -399,8 +417,20 @@ class XREngineBot {
 
         await this.delay(10000)
 
-        console.log('retrieving channe')
+        await this.getLocalUserId()
         await this.updateChannelState()
+    }
+
+    async getLocalUserId() {
+        this.userId = await this.evaluate(() => {
+            if (globalThis.store === undefined) {
+                return console.warn("Store was not found, ignoring user id fetch");
+            }
+            
+            const selfUser = globalThis.store.getState().get('auth').get('user')
+            const userId = selfUser.id
+            return userId
+        })
     }
 
     async updateChannelState() {
@@ -438,8 +468,9 @@ class XREngineBot {
         await this.pu.clickSelectorId(elemType, id);
     }
 
-    async typeMessage(message) {
-        await this.page.keyboard.type(message);
+    async typeMessage(message: string) {
+        await this.page.type('input[name="newMessage"]', message);
+        //await this.page.keyboard.type(message);
     }
 
     async setFocus(selector) {
@@ -466,6 +497,14 @@ class PageUtils {
         this.page = page;
         this.autoLog = autoLog;
     }
+
+    async clickButton(buttonName: string) {
+        await this.page.evaluate((selector) => { const v = document.querySelector(selector)
+    if (v != undefined && v != null)
+        v.click()
+    }, buttonName)
+}
+    
     async clickSelectorClassRegex(selector, classRegex) {
         if (this.autoLog)
             console.log(`Clicking for a ${selector} matching ${classRegex}`);
@@ -474,7 +513,7 @@ class PageUtils {
             classRegex = new RegExp(classRegex);
             let buttons = Array.from(document.querySelectorAll(selector));
             let enterButton = buttons.find(button => Array.from(button.classList).some(c => classRegex.test(c)));
-            if (enterButton)
+            if (enterButton) 
                 enterButton.click();
         }, selector, classRegex.toString().slice(1, -1));
     }
