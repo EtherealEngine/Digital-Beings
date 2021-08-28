@@ -1,4 +1,5 @@
 import { waitForClientReady } from "grpc";
+import { resolve } from "path";
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
@@ -22,6 +23,7 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
+    console.log('creating xr engine client')
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
 
     console.log("Preparing to connect to ", XRENGINE_URL);
@@ -60,6 +62,7 @@ class XREngineBot {
     page: any;
     browser: any;
     pu: PageUtils;
+    chatHistory: string[] = [];
     constructor({
         name = "Bot",
         fakeMediaPath = "",
@@ -104,14 +107,46 @@ class XREngineBot {
         var message : string = '/move ' + x + ',' + y + ',' + z
         await this.sendMessage(message)
     }
+    async requestSceneMetadata() {
+        await this.sendMessage('/metadata scene')
+    }
+    async requestWorldMetadata(maxDistance: number) {
+        if (maxDistance === undefined || maxDistance <= 0) return
+
+        await this.sendMessage('/metadata world,' + maxDistance)
+    }
+    async requestAllWorldMetadata() {
+        await this.requestWorldMetadata(Number.MAX_SAFE_INTEGER)
+    }
 
     async getInstanceMessages() {
-        console.log('active channel: ' + this.activeChannel)
+        await this.updateChannelState()
         if(!this.activeChannel) return;
-        console.log("Getting messages from instance channel: ", this.activeChannel + ' ' + this.activeChannel.chatState)
-        // TODO: Fix because we don't want the whole chat state spamming every time
-        this.messageResponseHandler("replaceme", this.activeChannel.chatState, (response) => this.sendMessage(response));
+        var messages = this.activeChannel.messages;
+        for(var i = 0; i < messages.length; i++ ){
+            var message = messages[i]
+            var messageId = message.id
+            var sender = message.sender.name
+            var text = message.text
+
+            if (this.chatHistory.includes(messageId)) {
+                const index : number = await this.getMessageIndex(messages, messageId)
+                if (index > -1) messages.splice(index, 1)
+            }
+
+            this.chatHistory.push(messageId)
+        }
+        this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && this.activeChannel.chatState;
+    }
+
+    async getMessageIndex(messages: any, messageId: string) {
+        for(var i = 0; i < messages.length; i++) {
+            if (messages[i].id === messageId)
+               return i
+        }
+
+        return -1
     }
 
 
@@ -363,23 +398,28 @@ class XREngineBot {
         await this.page.mouse.click(0, 0);
 
         await this.delay(10000)
-        this.activeChannel = this.evaluate(() => {
-            if (globalThis.store === undefined) {
-                return console.warn("Store was not found, ignoring chat");
-            }
-            const chatState = globalThis.store.getState().get('chat');
-            const channelState = chatState.get('channels');
-            const channels = channelState.get('channels');
-            const activeChannelMatch = [...channels].find(([, channel]) => channel.channelType === 'instance');
-            if (activeChannelMatch && activeChannelMatch.length > 0) {
-                this.activeChannel = activeChannelMatch[1];
-                console.log("Joined room, received chat state, channel: " + this.activeChannel)
-                return activeChannelMatch[0];
-            } else {
-                console.warn("Couldn't get chat state")
-                return undefined;
-            }
-        });
+
+        console.log('retrieving channe')
+        await this.updateChannelState()
+    }
+
+    async updateChannelState() {
+        this.activeChannel = await this.evaluate(() => {
+        if (globalThis.store === undefined) {
+            return console.warn("Store was not found, ignoring chat");
+        }
+        const chatState = globalThis.store.getState().get('chat');
+        const channelState = chatState.get('channels');
+        const channels = channelState.get('channels');
+        const activeChannelMatch = [...channels].find(([, channel]) => channel.channelType === 'instance');
+        if (activeChannelMatch && activeChannelMatch.length > 0) {
+            this.activeChannel = activeChannelMatch[1];
+            return this.activeChannel;
+        } else {
+            console.warn("Couldn't get chat state")
+            return undefined;
+        }
+    })
     }
 
     async waitForTimeout(timeout) {
