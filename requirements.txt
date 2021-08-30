@@ -26,4 +26,4 @@ tqdm==4.42.0
 transformers==4.9.2
 twilio==6.63.1
 typeguard==2.12.1
-typer==0.3.2
+typer==0.4.0
