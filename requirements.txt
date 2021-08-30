@@ -6,7 +6,7 @@ grpcio-tools==1.39.0
 numpy==1.18.5
 oauthlib==3.1.0
 openai==0.10.2
-parlai==1.4.1
+parlai==1.5.0
 pysqlite3==0.4.6
 rasa==2.8.3
 rasa-sdk==2.8.1
@@ -24,6 +24,6 @@ torch==1.8.1
 torchtext==0.9.1
 tqdm==4.42.0
 transformers==4.9.2
-twilio==6.49.0
-typeguard==2.12.0
+twilio==6.63.1
+typeguard==2.12.1
 typer==0.3.2
