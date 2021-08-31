@@ -119,6 +119,27 @@ class XREngineBot {
     async requestAllWorldMetadata() {
         await this.requestWorldMetadata(Number.MAX_SAFE_INTEGER)
     }
+    async goTo(landmark: string) { 
+        if (landmark === undefined || landmark === '') return
+
+        await this.sendMessage('/goTo ' + landmark)
+    }
+    async playEmote(emote: string) {
+        if (emote === undefined || emote === '') return
+
+        await this.sendMessage('/emote ' + emote)
+    }
+    async playFaceExpression(types: string[], perc: string[], time: string) {
+        if (types === undefined || types.length <= 0) return
+        if (types.length !== perc.length) return
+
+        var message: string = '/face '
+        for(var i = 0; i < types.length; i++) 
+            message += types[i] + ' ' + perc[i] + ' '
+        message += time
+
+        await this.sendMessage(message)
+    }
 
     counter : number = 0
     async getInstanceMessages() {
@@ -139,6 +160,7 @@ class XREngineBot {
                 if (index > -1) messages.splice(index, 1)
             }
 
+            //console.log('new message: ' + text)
             this.chatHistory.push(messageId)
         }
         this.counter++
