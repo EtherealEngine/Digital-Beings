@@ -16,7 +16,8 @@ const helpFields = [
     name: 'Tweak',
     shortname: 'tweak',
     commands: [
-      ['ping', ['HandleMessage'],['sender', 'message'], 'ping agents'],
+      ['ping', ['HandleMessage'],['sender', 'message'], 'ping all agents'],
+      ['pingagent', ['InvokeSoloAgent'],['sender', 'message', 'agent'], 'ping a single agent'],
       ['agents', ['GetAgents'], [''], 'show all selected agents'],
       ['setagent', ['SetAgentFields'],['name', 'context'], 'update agents parameters'],
       ['commands', [''],[''], 'Shows all available commands'],

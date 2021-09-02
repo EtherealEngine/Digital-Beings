@@ -20,7 +20,7 @@ class CustomEnvironment(BaseEnvironment):
         self.user_id = "dummy_value"
 
     def start(self, agent: BaseAgent, **kwargs):
-
+        self.model_name = kwargs.get('model_name')
         self.clear_histories(self.user_id)
         gc.enable()
         torch.cuda.empty_cache()
@@ -129,24 +129,9 @@ class CustomEnvironment(BaseEnvironment):
                 )
 
     def pre_dialog_for_wow(self, agent):
-
-        # while True:
         con = lite.connect(agent_params.SQLITE_DB)
         cursor = con.cursor()
-        cursor.execute(f"SELECT topic FROM Agents WHERE name = '{agent.model_name.lstrip()}'")
+        cursor.execute(f"SELECT topic FROM Agents WHERE name = '{self.model_name.lstrip()}'")
         topic_tuple = cursor.fetchall()
-        print("agent.model_name.lstrip() => ", agent.model_name.lstrip())
-        _topic = topic_tuple[0]
-
-        # if _topic in agent.topic_list:
-        print(
-            f"[TOPIC]: Topic setting complete.\n",
-            color=self.special_color,
-        )
+        _topic = topic_tuple[0][0]
         agent.set_topic(_topic)
-        # break
-        # else:
-        #     _topic = print(
-        #         f"[TOPIC]: Wrong topic: {_topic}. Please enter validate topic.\n",
-        #         color=self.special_color,
-        #     )

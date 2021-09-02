@@ -17,7 +17,7 @@ globalThis.requestAnimationFrame = (f) => {
 }
 const pyConnect = require('./pyconnect');
 
-(async function(){  await pyConnect.invoke({'grpc_args': {'sender':'client', 'message':'listen'}, 'grpc_method':'HandleMessage', 'grpc_method_params':['sender', 'message']}); })();
+(async function(){  await pyConnect.invoke({'grpc_args': {}, 'grpc_method':'GetAgents', 'grpc_method_params':['']}); })();
 
 const messageResponseHandler = async (args, callback) => {
     args.response = await pyConnect.invoke(args)
@@ -25,7 +25,7 @@ const messageResponseHandler = async (args, callback) => {
 }
 
 // Initialize bots 
-//require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-require("../server/agents/echo/echo").createEcho(messageResponseHandler)
+require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
+// require("../server/agents/echo/echo").createEcho(messageResponseHandler)
 //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
 //require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);

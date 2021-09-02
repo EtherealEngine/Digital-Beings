@@ -35,6 +35,13 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
         agent_fields = example_pb2.AgentFields()
         agent_fields.name, agent_fields.context  = example.set_agent_fields(request.name, request.context, request.sender, request.message, '')
         return agent_fields
+    
+    # example.InvokeSoloAgent is exposed here
+    def InvokeSoloAgent(self, request, context):
+        response = example_pb2.Response()
+        agent_response = example.invoke_solo_agent(request.sender, request.message, request.agent)
+        response.responses.update(agent_response)
+        return response
        
 
 

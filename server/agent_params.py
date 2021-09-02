@@ -19,8 +19,8 @@ ALL_AGENTS_LIST = [
                     'wizard_of_wikipedia.end2end_generator'
                   ]
 SELECTED_AGENTS = [
-                    'dialogpt.small',
-                    'gptneo.small'
+                    'gpt3',
+                    'dodecathlon.wizard_of_wikipedia',
                   ]
 DEVICE = 'cpu'  # cpu or gpu
 ENVIRONMENT = 'custom' 
