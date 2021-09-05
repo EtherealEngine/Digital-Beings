@@ -1,5 +1,6 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { generateVoice } from '../tts'
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
@@ -23,7 +24,9 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
+    //generateVoice('hello there', (buf, path) => { console.log('buf: ' + buf) })
     console.log('creating xr engine client')
+
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
 
     console.log("Preparing to connect to ", XRENGINE_URL);
@@ -118,6 +121,9 @@ class XREngineBot {
     }
     async requestAllWorldMetadata() {
         await this.requestWorldMetadata(Number.MAX_SAFE_INTEGER)
+    }  
+    async requestPlayers() {
+        await this.sendMessage('/listAllusers ')
     }
     async goTo(landmark: string) { 
         if (landmark === undefined || landmark === '') return
@@ -394,6 +400,11 @@ class XREngineBot {
                 else
                     console.log('invalid metadata length ('+data.length+'): ' + data)
             }
+            else if (message.text().startsWith('players|')) {
+                const cmd = message.text().split('|')[0]
+                const data = message.text().substring(cmd.length + 1)
+                console.log('Players: ' + data)
+            }
                 
             if (this.autoLog)
                 console.log(">> ", message.text())
@@ -478,6 +489,7 @@ class XREngineBot {
 
         await this.getLocalUserId()
         await this.updateChannelState()
+        await this.requestPlayers()
     }
 
     async getLocalUserId() {

@@ -114,3 +114,36 @@ docker build digital_being .
 docker run -d digital_being
 ```
 
+### TTS 
+
+TTS Model is made by Mozilla - [http://phoenix.yizimg.com/mozilla/TTS](link)
+In order to run it you will need to install it using the command 
+```
+pip install TTS
+```
+or if you want to build it through the source 
+```
+git clone https://github.com/mozilla/TTS
+pip install -e .
+```
+
+It supports multiple Models and Vocoders
+an example command to run it is
+```
+tts --text "hello there" \
+    --model_name "tts_models/en/ljspeech/glow-tts" \
+    --vocoder_name "vocoder_models/universal/libri-tts/wavegrad" \
+    --out_path output_path
+```
+In order to get all the installed models and vocoders
+```
+tts --list_models
+```
+
+Finally in order to use it in code
+```
+import { generateVoice } from '../tts'
+
+generateVoice('hello there', (buf, path) => { console.log('buf: ' + buf) })
+```
+The callback is called when the voice file is generated and read, it has the buffer which includes the bytes of the file and the path of the file.
