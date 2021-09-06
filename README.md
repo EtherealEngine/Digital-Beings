@@ -114,7 +114,7 @@ docker build digital_being .
 docker run -d digital_being
 ```
 
-### TTS 
+### TTS - Text to Speech
 
 TTS Model is made by Mozilla - [http://phoenix.yizimg.com/mozilla/TTS](link)
 In order to run it you will need to install it using the command 
@@ -147,3 +147,33 @@ import { generateVoice } from '../tts'
 generateVoice('hello there', (buf, path) => { console.log('buf: ' + buf) })
 ```
 The callback is called when the voice file is generated and read, it has the buffer which includes the bytes of the file and the path of the file.
+
+### STT - Speech To Text
+
+STT Model is made by Mozilla - [https://github.com/mozilla/DeepSpeech](link)
+In order to run it you will need to install it using the command
+```
+pip3 install deepspeech
+```
+or clone it from their [https://github.com/mozilla/DeepSpeech](repository)
+
+Example Usage:
+```
+# Download pre-trained English model files
+curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
+curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
+
+# Download example audio files
+curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/audio-0.9.3.tar.gz
+tar xvf audio-0.9.3.tar.gz
+
+deepspeech --model deepspeech-0.9.3-models.pbmm --scorer deepspeech-0.9.3-models.scorer --audio audio/2830-3980-0043.wav
+```
+
+Finally in order to use it in code
+```
+import { speechToText } from "../stt";
+
+speechToText(pathToFile, (res) => { console.log('Res: ' + res); })
+```
+The callback is called when the voice file is decoded and the result is the text from the file
