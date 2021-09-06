@@ -1,5 +1,6 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { speechToText } from "../stt";
 import { generateVoice } from '../tts'
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
@@ -24,7 +25,8 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
-    //generateVoice('hello there', (buf, path) => { console.log('buf: ' + buf) })
+    //generateVoice('hello there', (buf, path) => {}, false)
+    //speechToText('', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
 
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });

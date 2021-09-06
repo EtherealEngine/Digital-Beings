@@ -2,7 +2,7 @@ import { exec } from 'child_process'
 import * as fs from 'fs'
 import * as _path from 'path'
 
-export async function generateVoice(text: string, callback: (buf, path: string) => void) {
+export async function generateVoice(text: string, callback: (buf, path: string) => void, deleteFile: boolean) {
     if (text === undefined || text === '') return
 
     const selfPath = process.cwd()
@@ -43,6 +43,7 @@ export async function generateVoice(text: string, callback: (buf, path: string) 
                         }
         
                         callback(_buffer, path)
+                        if (deleteFile)
                         fs.unlinkSync(path)
                     })
                 }
