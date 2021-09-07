@@ -11,14 +11,14 @@ module.exports = (client, message) => {
     if (message.channel.type === 'text') {
         if (message.mentions.has(client.user)) {
         }else {
-            message.reply(message.content);
+            // message.reply(message.content);
         }
     } 
     else if (message.channel.type === 'dm') {
         if (message.mentions.has(client.user)) {
 
         }else {
-            message.reply(message.content);
+            // message.reply(message.content);
         }
     }
     

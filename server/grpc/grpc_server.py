@@ -33,7 +33,6 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
      # example.SetAgentFields is exposed here
     def SetAgentFields(self, request, context):
         response_obj = example_pb2.Response()
-        print(request)
         response_obj.response.update(example.set_agent_fields(**request.kwargs))
         return response_obj
     
