@@ -16,7 +16,7 @@ class PyConnect {
                 console.log('PythonConnector – making a new connection to the python layer');
                 PyConnect.grpcProcess = spawn('python3', ['-u', path.join(__dirname, '../server/grpc/grpc_server.py')]);
                 PyConnect.grpcProcess.stdout.on('data', function(data) {
-                    console.info('python:', data.toString());
+                    console.info('python:','\n\n', data.toString());
                     PyConnect.grpc = new proto.Agent(IP + ':' + PORT, grpc.credentials.createInsecure());
                     PyConnect.connected = true;
                     resolve(PyConnect.grpc);
