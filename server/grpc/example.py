@@ -44,10 +44,10 @@ def handle_message(**kwargs):
     responses_dict = {}
     try:
         for model_name in param.SELECTED_AGENTS:
+            select_query = f"SELECT topic FROM Agents WHERE name = '{model_name.lstrip()}'"
+            agents_list = execute_db_transaction(select_query)
+            context = agents_list[0].get('topic')
             if model_name == 'gpt3':
-                select_query = f"SELECT topic FROM Agents WHERE name = '{model_name.lstrip()}'"
-                agents_list = execute_db_transaction(select_query)
-                context = agents_list[0].get('topic')
                 gpt3_agent = GPT3Agent(param.GPT3_ENGINE, context, message)
                 responses_dict['gpt3'] = gpt3_agent.invoke_api()
             elif model_name == 'rasa':
@@ -56,7 +56,7 @@ def handle_message(**kwargs):
             else:
                 agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
                 agent_env = agent.create_environment_by_name(agent.environment)
-                responses_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name)
+                responses_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name, context=context)
         return responses_dict
     except Exception as err:
         return {"Exception: ": str(err)}
@@ -91,10 +91,10 @@ def invoke_solo_agent(**kwargs):
     model_name = kwargs.get('agent')
     response_dict = {}
     try:
+        select_query = f"SELECT topic FROM Agents WHERE name = '{model_name.lstrip()}'"
+        agents_list = execute_db_transaction(select_query)
+        context = agents_list[0].get('topic')
         if model_name == 'gpt3':
-            select_query = f"SELECT topic FROM Agents WHERE name = '{model_name.lstrip()}'"
-            agents_list = execute_db_transaction(select_query)
-            context = agents_list[0].get('topic')
             gpt3_agent = GPT3Agent(param.GPT3_ENGINE, context, message)
             response_dict['gpt3'] = gpt3_agent.invoke_api()
         elif model_name == 'rasa':
@@ -103,7 +103,7 @@ def invoke_solo_agent(**kwargs):
         else:
             agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
             agent_env = agent.create_environment_by_name(agent.environment)
-            response_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name)
+            response_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name, context=context)
         return response_dict
     except Exception as err:
         return {"Exception: ": str(err)}
