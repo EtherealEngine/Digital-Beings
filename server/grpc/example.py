@@ -68,7 +68,7 @@ def get_agents():
         agents_list = execute_db_transaction(select_query)
         agents_dict = {}
         for dic in agents_list:
-            agents_dict.update({dic[k]:k for k in dic})
+            agents_dict.update({dic[key]:key for key in dic})
         return agents_dict
     except Exception as err:
         return {"Exception: ": str(err)}
