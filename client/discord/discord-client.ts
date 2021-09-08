@@ -6,10 +6,10 @@ const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 
 
 const createDiscordClient = (messageResponseHandler) => {
-    
+
     if (!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
 	//The discord client was crashing with intents, so i've added some Core Intents
-    const client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS] });
+    const client = new Discord.Client({ intents:  [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES]  });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     client.config = config;
     client.helpFields = util.helpFields;
@@ -21,7 +21,7 @@ const createDiscordClient = (messageResponseHandler) => {
     .setColor(0x00AE86)
 
     client.embed = embed;
-    
+
     const fs = require('fs');
     fs.readdir(`${__dirname}/events/`, (err, files) => {
       if (err) return console.error(err);
