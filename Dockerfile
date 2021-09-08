@@ -37,7 +37,7 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Create app directory
-WORKDIR /digitalbeing
+WORKDIR /DigitalBeing
 
 # to make use of caching, copy only package and pip requirement files and install dependencies
 COPY package.json .
@@ -46,7 +46,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
 RUN python3 -m spacy download en_core_web_md
 RUN python3 -m spacy link en_core_web_md en
-Run npm install
+RUN npm install
 
 COPY . .
 
