@@ -3,7 +3,6 @@ import os
 import sys
 
 import sqlite3 as lite
-from itertools import chain
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
@@ -15,6 +14,13 @@ import agent_params as param
 from agents.openchat.agents.gpt3 import GPT3Agent
 from agents.openchat.agents.rasa import RasaAgent
 from agents.openchat.openchat import OpenChat
+
+import logging
+import traceback
+import sys
+
+
+logger = logging.getLogger("app.main")
 
 
 def initialize_db():
@@ -39,7 +45,6 @@ def execute_db_transaction(query):
 
 
 def handle_message(**kwargs):
-    sender = kwargs.get('sender')
     message = kwargs.get('message')
     responses_dict = {}
     try:
@@ -58,8 +63,8 @@ def handle_message(**kwargs):
                 agent_env = agent.create_environment_by_name(agent.environment)
                 responses_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name, context=context)
         return responses_dict
-    except Exception as err:
-        return {"Exception: ": str(err)}
+    except:
+        logger.exception("Exception handle_message")
 
 
 def get_agents():
@@ -70,8 +75,8 @@ def get_agents():
         for dic in agents_list:
             agents_dict.update({dic[key]:key for key in dic})
         return agents_dict
-    except Exception as err:
-        return {"Exception: ": str(err)}
+    except:
+        logger.exception("Exception get_agents")
 
 
 def set_agent_fields(**kwargs):
@@ -81,12 +86,11 @@ def set_agent_fields(**kwargs):
     try:
         agents_tuple = execute_db_transaction(update_query)
         return {'name': name, 'context': context}
-    except Exception as err:
-        return {"Exception: ": str(err)}
+    except:
+        logger.exception("Exception set_agent_fields")
 
 
 def invoke_solo_agent(**kwargs):
-    sender = kwargs.get('sender')
     message = kwargs.get('message')
     model_name = kwargs.get('agent')
     response_dict = {}
@@ -105,6 +109,6 @@ def invoke_solo_agent(**kwargs):
             agent_env = agent.create_environment_by_name(agent.environment)
             response_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name, context=context)
         return response_dict
-    except Exception as err:
-        return {"Exception: ": str(err)}
+    except:
+        logger.exception("Exception invoke_solo_agent")
 
