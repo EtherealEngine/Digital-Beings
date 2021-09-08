@@ -50,4 +50,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["supervisord","-c","/digitalbeing/supervisor/service_script.conf"]
+CMD ["supervisord","-c","/DigitalBeing/supervisor/service_script.conf"]
