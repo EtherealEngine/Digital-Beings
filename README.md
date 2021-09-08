@@ -108,7 +108,7 @@ DigitalBeing requires the following to run:
 You can run it using docker, if you don't have node installed or need to test.
 ``` bash
 # Build the image
-docker build digital_being .
+docker build -t digital_being .
 
 # Run the image
 docker run -d digital_being
