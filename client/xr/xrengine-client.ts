@@ -204,7 +204,11 @@ class XREngineBot {
             const senderId = message.sender.id
             //var sender = message.sender.name
             //var text = message.text
-            message.createdBy = 'xr-engine'
+            delete messages[i].senderId
+            delete messages[i].sender
+            messages[i].updatedAt = new Date(messages[i].updatedAt).getTime() / 1000
+            messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
+            messages[i].author = [ 'xr-engine', senderId ]
 
             if (senderId === this.userId || this.chatHistory.includes(messageId)) {
                 const index : number = await this.getMessageIndex(messages, messageId)
