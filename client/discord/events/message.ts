@@ -11,14 +11,13 @@ module.exports = (client, message) => {
         channel.type === 'text' ||
         channel.type === 'dm') && mentions.has(client.user);
 
-    // This is not great, but if the start of a message is any mention,
+    // TODO This is not great, but if the start of a message is any mention,
     // and we are mentioned at all in this message, trim the mention at the start
-    // of the message and continue processing
-    const messageContent = isMention ? content.slice(content.indexOf('>') + 1).trim() : content;
+    // of the message and continue processing. Can we get a more AST-like view of the message?
+    const messageContent = (isMention && content.startsWith('<')) ? content.slice(content.indexOf('>') + 1).trim() : content;
 
-    console.log(`DEBUG messageContent |${messageContent}| , isMention=${isMention}`);
+    // console.log(`DEBUG messageContent |${messageContent}| , isMention=${isMention}`);
 
-    // Ignore messages not starting with the prefix (in config.json), unless a mention
     const containsPrefix = messageContent.indexOf(client.config.prefix) === 0;
 
     // If we are not being messaged and the prefix is not present, ignore message

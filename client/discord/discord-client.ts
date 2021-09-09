@@ -9,7 +9,7 @@ const createDiscordClient = (messageResponseHandler) => {
 
     if (!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
 	//The discord client was crashing with intents, so i've added some Core Intents
-    const client = new Discord.Client({ intents:  [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES]  });
+    const client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     client.config = config;
     client.helpFields = util.helpFields;
