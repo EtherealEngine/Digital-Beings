@@ -15,14 +15,16 @@ module.exports = (client, message) => {
     // Set flag to true to skip using prefix if mentioning or DMing bot
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
 
-    // TODO thorough check that its bot id <@bot id>
-    const msgStartsWithMention = content.startsWith('<');
+    const botMention = '<@!' + client.user + '>';
+    const msgStartsWithMention = content.startsWith(botMention);
 
-    const messageContent = (isMention && msgStartsWithMention) ? content.slice(content.indexOf('>') + 1).trim() : content;
+    const messageContent = (isMention && msgStartsWithMention) ? content.replace(botMention, '').trim() : content;
 
     const containsPrefix = messageContent.indexOf(client.config.prefix) === 0;
 
-    // If we are not being messaged and the prefix is not present (or bypassed via config flag), ignore message
+    // If we are not being messaged and the prefix is not present (or bypassed via config flag), ignore message,
+    // so if msg does not contain prefix and either 1 optional flag is not true or 2 bot has not been DMed or mentioned,
+    // then skip the message.
     if (!containsPrefix && (!prefixOptionalWhenMentionOrDM || (!isMention && !isDM))) return;
 
     // Our standard argument/command name definition.
