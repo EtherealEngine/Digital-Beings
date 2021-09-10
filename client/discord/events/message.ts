@@ -7,15 +7,13 @@ module.exports = (client, message) => {
     // Ignore all bots
     if (author.bot) return;
 
+    const botMention = '<@!' + client.user + '>';
     const isDM = channel.type === 'dm';
-    const isMention = (
-            channel.type === 'text' || channel.type === 'dm')
-        && mentions.has(client.user);
+    const isMention = (channel.type === 'text' || isDM) && mentions.has(client.user);
 
-    // Set flag to true to skip using prefix if mentioning or DMing bot
+    // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
 
-    const botMention = '<@!' + client.user + '>';
     const msgStartsWithMention = content.startsWith(botMention);
 
     const messageContent = (isMention && msgStartsWithMention) ? content.replace(botMention, '').trim() : content;
@@ -23,7 +21,8 @@ module.exports = (client, message) => {
     const containsPrefix = messageContent.indexOf(client.config.prefix) === 0;
 
     // If we are not being messaged and the prefix is not present (or bypassed via config flag), ignore message,
-    // so if msg does not contain prefix and either 1 optional flag is not true or 2 bot has not been DMed or mentioned,
+    // so if msg does not contain prefix and either of
+    //   1. optional flag is not true or 2. bot has not been DMed or mentioned,
     // then skip the message.
     if (!containsPrefix && (!prefixOptionalWhenMentionOrDM || (!isMention && !isDM))) return;
 
