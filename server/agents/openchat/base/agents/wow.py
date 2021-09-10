@@ -67,13 +67,14 @@ class WizardOfWikipediaAgent(ParlaiGenerationAgent):
         return self.topic_list
 
     def set_topic(self, topic):
-        if topic.lower() == "random":
-            self.chosen_topic = choice(self.topic_list)
+        # if topic.lower() == "random":
+        #     self.chosen_topic = choice(self.topic_list)
 
-        else:
-            assert topic in self.topic_list, \
-                f"Wrong topic: {topic}, You can check available topic using `available_topics()`"
-            self.chosen_topic = topic
+        # else:
+        #     assert topic in self.topic_list, \
+        #         f"Wrong topic: {topic}, You can check available topic using `available_topics()`"
+        #     self.chosen_topic = topic
+        self.chosen_topic = topic
 
     def clear_topic(self):
         self.chosen_topic = None

@@ -19,15 +19,20 @@ class AgentStub(object):
                 request_serializer=example__pb2.Request.SerializeToString,
                 response_deserializer=example__pb2.Response.FromString,
                 )
+        self.InvokeSoloAgent = channel.unary_unary(
+                '/Agent/InvokeSoloAgent',
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
+                )
         self.GetAgents = channel.unary_unary(
                 '/Agent/GetAgents',
-                request_serializer=example__pb2.Empty.SerializeToString,
-                response_deserializer=example__pb2.AllAgents.FromString,
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
                 )
         self.SetAgentFields = channel.unary_unary(
                 '/Agent/SetAgentFields',
-                request_serializer=example__pb2.AgentFields.SerializeToString,
-                response_deserializer=example__pb2.AgentFields.FromString,
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
                 )
 
 
@@ -35,6 +40,12 @@ class AgentServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def HandleMessage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def InvokeSoloAgent(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -60,15 +71,20 @@ def add_AgentServicer_to_server(servicer, server):
                     request_deserializer=example__pb2.Request.FromString,
                     response_serializer=example__pb2.Response.SerializeToString,
             ),
+            'InvokeSoloAgent': grpc.unary_unary_rpc_method_handler(
+                    servicer.InvokeSoloAgent,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
+            ),
             'GetAgents': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAgents,
-                    request_deserializer=example__pb2.Empty.FromString,
-                    response_serializer=example__pb2.AllAgents.SerializeToString,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
             ),
             'SetAgentFields': grpc.unary_unary_rpc_method_handler(
                     servicer.SetAgentFields,
-                    request_deserializer=example__pb2.AgentFields.FromString,
-                    response_serializer=example__pb2.AgentFields.SerializeToString,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -98,6 +114,23 @@ class Agent(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def InvokeSoloAgent(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/InvokeSoloAgent',
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def GetAgents(request,
             target,
             options=(),
@@ -109,8 +142,8 @@ class Agent(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Agent/GetAgents',
-            example__pb2.Empty.SerializeToString,
-            example__pb2.AllAgents.FromString,
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -126,7 +159,7 @@ class Agent(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Agent/SetAgentFields',
-            example__pb2.AgentFields.SerializeToString,
-            example__pb2.AgentFields.FromString,
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

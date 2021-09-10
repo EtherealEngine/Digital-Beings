@@ -11,14 +11,14 @@ module.exports = (client, message) => {
     if (message.channel.type === 'text') {
         if (message.mentions.has(client.user)) {
         }else {
-            message.reply(message.content);
+            // message.reply(message.content);
         }
     } 
     else if (message.channel.type === 'dm') {
         if (message.mentions.has(client.user)) {
 
         }else {
-            message.reply(message.content);
+            // message.reply(message.content);
         }
     }
     
@@ -37,7 +37,7 @@ module.exports = (client, message) => {
         args['grpc_method'] = args['command_info'][1][0];
         args['grpc_method_params'] = args['command_info'][2];
     }
-    if(args['command'] == 'setagent'){
+    if(args['command'] == 'setagent' || args['command'] == 'pingagent'){
         const splitArgs = args['grpc_args']['message'].trim().split(",");
         splitArgs.forEach(element => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];

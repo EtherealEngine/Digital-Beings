@@ -19,68 +19,29 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rexample.proto\"*\n\x07Request\x12\x0e\n\x06sender\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"i\n\x08Response\x12+\n\tresponses\x18\x01 \x03(\x0b\x32\x18.Response.ResponsesEntry\x1a\x30\n\x0eResponsesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x1b\n\tAllAgents\x12\x0e\n\x06\x61gents\x18\x01 \x03(\t\"\x8a\x01\n\x0b\x41gentFields\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontext\x18\x02 \x01(\t\x12\x13\n\x06sender\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07message\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x11\n\x04type\x18\x05 \x01(\tH\x02\x88\x01\x01\x42\t\n\x07_senderB\n\n\x08_messageB\x07\n\x05_type\"\x07\n\x05\x45mpty2\x82\x01\n\x05\x41gent\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x12!\n\tGetAgents\x12\x06.Empty\x1a\n.AllAgents\"\x00\x12.\n\x0eSetAgentFields\x12\x0c.AgentFields\x1a\x0c.AgentFields\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\rexample.proto\"^\n\x07Request\x12$\n\x06kwargs\x18\x01 \x03(\x0b\x32\x14.Request.KwargsEntry\x1a-\n\x0bKwargsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"f\n\x08Response\x12)\n\x08response\x18\x01 \x03(\x0b\x32\x17.Response.ResponseEntry\x1a/\n\rResponseEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xa6\x01\n\x05\x41gent\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x12(\n\x0fInvokeSoloAgent\x12\x08.Request\x1a\t.Response\"\x00\x12\"\n\tGetAgents\x12\x08.Request\x1a\t.Response\"\x00\x12\'\n\x0eSetAgentFields\x12\x08.Request\x1a\t.Response\"\x00\x62\x06proto3'
 )
 
 
 
 
-_REQUEST = _descriptor.Descriptor(
-  name='Request',
-  full_name='Request',
+_REQUEST_KWARGSENTRY = _descriptor.Descriptor(
+  name='KwargsEntry',
+  full_name='Request.KwargsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='sender', full_name='Request.sender', index=0,
+      name='key', full_name='Request.KwargsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='message', full_name='Request.message', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=17,
-  serialized_end=59,
-)
-
-
-_RESPONSE_RESPONSESENTRY = _descriptor.Descriptor(
-  name='ResponsesEntry',
-  full_name='Response.ResponsesEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='Response.ResponsesEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='Response.ResponsesEntry.value', index=1,
+      name='value', full_name='Request.KwargsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -98,8 +59,78 @@ _RESPONSE_RESPONSESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=118,
-  serialized_end=166,
+  serialized_start=66,
+  serialized_end=111,
+)
+
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='Request',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='kwargs', full_name='Request.kwargs', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_REQUEST_KWARGSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=17,
+  serialized_end=111,
+)
+
+
+_RESPONSE_RESPONSEENTRY = _descriptor.Descriptor(
+  name='ResponseEntry',
+  full_name='Response.ResponseEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='Response.ResponseEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='Response.ResponseEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=168,
+  serialized_end=215,
 )
 
 _RESPONSE = _descriptor.Descriptor(
@@ -111,7 +142,7 @@ _RESPONSE = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='responses', full_name='Response.responses', index=0,
+      name='response', full_name='Response.response', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -120,7 +151,7 @@ _RESPONSE = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_RESPONSE_RESPONSESENTRY, ],
+  nested_types=[_RESPONSE_RESPONSEENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -129,173 +160,39 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=61,
-  serialized_end=166,
+  serialized_start=113,
+  serialized_end=215,
 )
 
-
-_ALLAGENTS = _descriptor.Descriptor(
-  name='AllAgents',
-  full_name='AllAgents',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='agents', full_name='AllAgents.agents', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=168,
-  serialized_end=195,
-)
-
-
-_AGENTFIELDS = _descriptor.Descriptor(
-  name='AgentFields',
-  full_name='AgentFields',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='AgentFields.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='context', full_name='AgentFields.context', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='sender', full_name='AgentFields.sender', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='message', full_name='AgentFields.message', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='type', full_name='AgentFields.type', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='_sender', full_name='AgentFields._sender',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_message', full_name='AgentFields._message',
-      index=1, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_type', full_name='AgentFields._type',
-      index=2, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=198,
-  serialized_end=336,
-)
-
-
-_EMPTY = _descriptor.Descriptor(
-  name='Empty',
-  full_name='Empty',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=338,
-  serialized_end=345,
-)
-
-_RESPONSE_RESPONSESENTRY.containing_type = _RESPONSE
-_RESPONSE.fields_by_name['responses'].message_type = _RESPONSE_RESPONSESENTRY
-_AGENTFIELDS.oneofs_by_name['_sender'].fields.append(
-  _AGENTFIELDS.fields_by_name['sender'])
-_AGENTFIELDS.fields_by_name['sender'].containing_oneof = _AGENTFIELDS.oneofs_by_name['_sender']
-_AGENTFIELDS.oneofs_by_name['_message'].fields.append(
-  _AGENTFIELDS.fields_by_name['message'])
-_AGENTFIELDS.fields_by_name['message'].containing_oneof = _AGENTFIELDS.oneofs_by_name['_message']
-_AGENTFIELDS.oneofs_by_name['_type'].fields.append(
-  _AGENTFIELDS.fields_by_name['type'])
-_AGENTFIELDS.fields_by_name['type'].containing_oneof = _AGENTFIELDS.oneofs_by_name['_type']
+_REQUEST_KWARGSENTRY.containing_type = _REQUEST
+_REQUEST.fields_by_name['kwargs'].message_type = _REQUEST_KWARGSENTRY
+_RESPONSE_RESPONSEENTRY.containing_type = _RESPONSE
+_RESPONSE.fields_by_name['response'].message_type = _RESPONSE_RESPONSEENTRY
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
-DESCRIPTOR.message_types_by_name['AllAgents'] = _ALLAGENTS
-DESCRIPTOR.message_types_by_name['AgentFields'] = _AGENTFIELDS
-DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), {
+
+  'KwargsEntry' : _reflection.GeneratedProtocolMessageType('KwargsEntry', (_message.Message,), {
+    'DESCRIPTOR' : _REQUEST_KWARGSENTRY,
+    '__module__' : 'example_pb2'
+    # @@protoc_insertion_point(class_scope:Request.KwargsEntry)
+    })
+  ,
   'DESCRIPTOR' : _REQUEST,
   '__module__' : 'example_pb2'
   # @@protoc_insertion_point(class_scope:Request)
   })
 _sym_db.RegisterMessage(Request)
+_sym_db.RegisterMessage(Request.KwargsEntry)
 
 Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
 
-  'ResponsesEntry' : _reflection.GeneratedProtocolMessageType('ResponsesEntry', (_message.Message,), {
-    'DESCRIPTOR' : _RESPONSE_RESPONSESENTRY,
+  'ResponseEntry' : _reflection.GeneratedProtocolMessageType('ResponseEntry', (_message.Message,), {
+    'DESCRIPTOR' : _RESPONSE_RESPONSEENTRY,
     '__module__' : 'example_pb2'
-    # @@protoc_insertion_point(class_scope:Response.ResponsesEntry)
+    # @@protoc_insertion_point(class_scope:Response.ResponseEntry)
     })
   ,
   'DESCRIPTOR' : _RESPONSE,
@@ -303,31 +200,11 @@ Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Messag
   # @@protoc_insertion_point(class_scope:Response)
   })
 _sym_db.RegisterMessage(Response)
-_sym_db.RegisterMessage(Response.ResponsesEntry)
-
-AllAgents = _reflection.GeneratedProtocolMessageType('AllAgents', (_message.Message,), {
-  'DESCRIPTOR' : _ALLAGENTS,
-  '__module__' : 'example_pb2'
-  # @@protoc_insertion_point(class_scope:AllAgents)
-  })
-_sym_db.RegisterMessage(AllAgents)
-
-AgentFields = _reflection.GeneratedProtocolMessageType('AgentFields', (_message.Message,), {
-  'DESCRIPTOR' : _AGENTFIELDS,
-  '__module__' : 'example_pb2'
-  # @@protoc_insertion_point(class_scope:AgentFields)
-  })
-_sym_db.RegisterMessage(AgentFields)
-
-Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
-  'DESCRIPTOR' : _EMPTY,
-  '__module__' : 'example_pb2'
-  # @@protoc_insertion_point(class_scope:Empty)
-  })
-_sym_db.RegisterMessage(Empty)
+_sym_db.RegisterMessage(Response.ResponseEntry)
 
 
-_RESPONSE_RESPONSESENTRY._options = None
+_REQUEST_KWARGSENTRY._options = None
+_RESPONSE_RESPONSEENTRY._options = None
 
 _AGENT = _descriptor.ServiceDescriptor(
   name='Agent',
@@ -336,8 +213,8 @@ _AGENT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=348,
-  serialized_end=478,
+  serialized_start=218,
+  serialized_end=384,
   methods=[
   _descriptor.MethodDescriptor(
     name='HandleMessage',
@@ -350,22 +227,32 @@ _AGENT = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='GetAgents',
-    full_name='Agent.GetAgents',
+    name='InvokeSoloAgent',
+    full_name='Agent.InvokeSoloAgent',
     index=1,
     containing_service=None,
-    input_type=_EMPTY,
-    output_type=_ALLAGENTS,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetAgents',
+    full_name='Agent.GetAgents',
+    index=2,
+    containing_service=None,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='SetAgentFields',
     full_name='Agent.SetAgentFields',
-    index=2,
+    index=3,
     containing_service=None,
-    input_type=_AGENTFIELDS,
-    output_type=_AGENTFIELDS,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
