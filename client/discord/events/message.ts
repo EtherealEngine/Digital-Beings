@@ -7,21 +7,23 @@ module.exports = (client, message) => {
     // Ignore all bots
     if (author.bot) return;
 
+    const isDM = channel.type === 'dm';
     const isMention = (
-        channel.type === 'text' ||
-        channel.type === 'dm') && mentions.has(client.user);
+            channel.type === 'text' || channel.type === 'dm')
+        && mentions.has(client.user);
 
-    // TODO This is not great, but if the start of a message is any mention,
-    // and we are mentioned at all in this message, trim the mention at the start
-    // of the message and continue processing. Can we get a more AST-like view of the message?
-    const messageContent = (isMention && content.startsWith('<')) ? content.slice(content.indexOf('>') + 1).trim() : content;
+    // Set flag to true to skip using prefix if mentioning or DMing bot
+    const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
 
-    // console.log(`DEBUG messageContent |${messageContent}| , isMention=${isMention}`);
+    // TODO thorough check that its bot id <@bot id>
+    const msgStartsWithMention = content.startsWith('<');
+
+    const messageContent = (isMention && msgStartsWithMention) ? content.slice(content.indexOf('>') + 1).trim() : content;
 
     const containsPrefix = messageContent.indexOf(client.config.prefix) === 0;
 
-    // If we are not being messaged and the prefix is not present, ignore message
-    if(!containsPrefix && !isMention) return;
+    // If we are not being messaged and the prefix is not present (or bypassed via config flag), ignore message
+    if (!containsPrefix && (!prefixOptionalWhenMentionOrDM || (!isMention && !isDM))) return;
 
     // Our standard argument/command name definition.
     args['parsed_words'] = (containsPrefix
