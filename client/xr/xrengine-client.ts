@@ -189,6 +189,65 @@ class XREngineBot {
     removeSystemFromChatMessage(text: string): string {
         return text.substring(text.indexOf(']', 0) + 1)
     }
+    async goTo(landmark: string) { 
+        if (landmark === undefined || landmark === '') return
+
+        await this.sendMessage('/goTo ' + landmark)
+    }
+    async playEmote(emote: string) {
+        if (emote === undefined || emote === '') return
+
+        await this.sendMessage('/emote ' + emote)
+    }
+    async playFaceExpression(types: string[], perc: string[], time: string) {
+        if (types === undefined || types.length <= 0) return
+        if (types.length !== perc.length) return
+
+        var message: string = '/face '
+        for(var i = 0; i < types.length; i++) 
+            message += types[i] + ' ' + perc[i] + ' '
+        message += time
+
+        await this.sendMessage(message)
+    }
+    async getPosition(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('/getPosition ' + player)
+    }
+    async getRotation(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('/getRotation ' + player)
+    }
+    async getScale(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendAudio('/getScale ' + player)
+    }
+    async getTransform(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('getTransform ' + player)
+    }
+    async subscribeToChatSystem(system: string) {
+        if (system === undefined || system === '') return
+
+        await this.sendMessage('/subscribe ' + system)
+    }
+    async unsubscribeFromChatSystem(system: string) {
+        if (system === undefined || system === '') return
+
+        await this.sendMessage('/unsubscribe ' + system)
+    }
+    async getSubscribedChatSystems() {
+        await this.sendMessage('/getSubscribed')
+    }
+    async follow(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('/follow ' + player)
+    }
 
         await this.sendMessage('/goTo ' + landmark)
     }
@@ -232,6 +291,18 @@ class XREngineBot {
 
             this.chatHistory.push(messageId)
         }
+        /*this.counter++
+        if (this.counter === 20)
+        this.requestSceneMetadata()
+
+        if (this.counter === 25)
+        this.sendMovementCommand(0.01, 0.01, 0.01)
+
+        if (this.counter === 35)
+        this.requestWorldMetadata(5)
+
+        if (this.counter === 40)
+        this.requestAllWorldMetadata()*/
 
         this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && messages;
