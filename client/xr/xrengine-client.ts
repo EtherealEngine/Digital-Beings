@@ -28,7 +28,6 @@ async function createXREngineClient(messageResponseHandler) {
     //generateVoice('hello there', (buf, path) => {}, false)
     speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
-
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
 
     console.log("Preparing to connect to ", XRENGINE_URL);
@@ -191,6 +190,26 @@ class XREngineBot {
         return text.substring(text.indexOf(']', 0) + 1)
     }
 
+        await this.sendMessage('/goTo ' + landmark)
+    }
+    async playEmote(emote: string) {
+        if (emote === undefined || emote === '') return
+
+        await this.sendMessage('/emote ' + emote)
+    }
+    async playFaceExpression(types: string[], perc: string[], time: string) {
+        if (types === undefined || types.length <= 0) return
+        if (types.length !== perc.length) return
+
+        var message: string = '/face '
+        for(var i = 0; i < types.length; i++) 
+            message += types[i] + ' ' + perc[i] + ' '
+        message += time
+
+        await this.sendMessage(message)
+    }
+
+    counter : number = 0
     async getInstanceMessages() {
         await this.updateChannelState()
         if(!this.activeChannel) return;
