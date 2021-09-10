@@ -17,31 +17,31 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # the request and response are of the data type
     # example_pb2.Request
     def HandleMessage(self, request, context):
-        response = example_pb2.Response()
-        agent_responses = example.handle_message(request.sender, request.message)
-        response.responses.update(agent_responses)
-        return response
+        response_obj = example_pb2.Response()
+        agent_responses = example.handle_message(**request.kwargs)
+        response_obj.response.update(agent_responses)
+        return response_obj
     
 
     # example.GetAgents is exposed here
     def GetAgents(self, request, context):
-        agent = example_pb2.AllAgents()
-        agent.agents[:] = example.get_agents()
-        return agent
+        response_obj = example_pb2.Response()
+        response_obj.response.update(example.get_agents())
+        return response_obj
     
 
      # example.SetAgentFields is exposed here
     def SetAgentFields(self, request, context):
-        agent_fields = example_pb2.AgentFields()
-        agent_fields.name, agent_fields.context  = example.set_agent_fields(request.name, request.context, request.sender, request.message, '')
-        return agent_fields
+        response_obj = example_pb2.Response()
+        response_obj.response.update(example.set_agent_fields(**request.kwargs))
+        return response_obj
     
     # example.InvokeSoloAgent is exposed here
     def InvokeSoloAgent(self, request, context):
-        response = example_pb2.Response()
-        agent_response = example.invoke_solo_agent(request.sender, request.message, request.agent)
-        response.responses.update(agent_response)
-        return response
+        response_obj = example_pb2.Response()
+        agent_response = example.invoke_solo_agent(**request.kwargs)
+        response_obj.response.update(agent_response)
+        return response_obj
        
 
 
@@ -54,8 +54,8 @@ example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
 # listen on port 50050
-print('Starting server. Listening on port 50051.')
-server.add_insecure_port('[::]:50051')
+print('Starting server. Listening on port 50050.')
+server.add_insecure_port('[::]:50050')
 server.start()
 
 # since server.start() will not block,

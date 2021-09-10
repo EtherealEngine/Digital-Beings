@@ -1,13 +1,15 @@
 exports.run = async (client, message, args) => {
-    args['grpc_method'] = args.grpc_method;
-    args['grpc_args'] = {};
-    await client.messageResponseHandler(args, (response) => {  
-        Object.keys(response).map(function(key, index) {
+    await client.messageResponseHandler(args, (res) => {
+        Object.keys(res.response).map(function(key, index) {
+            const label = res.response[key];
+            const agent_name = key;
             client.embed
-            .addFields({name: key, value: response[key]})
+            .addFields({name: label , value: agent_name})
+            
         });
         message.channel.send(client.embed);
         client.embed.fields = [];  // clear previous responses
+
         message.channel.stopTyping();
     });
 }

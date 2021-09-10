@@ -1,5 +1,7 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { speechToText } from "../stt";
+import { generateVoice } from '../tts'
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
@@ -23,7 +25,10 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
+    //generateVoice('hello there', (buf, path) => {}, false)
+    speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
+
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
 
     console.log("Preparing to connect to ", XRENGINE_URL);
@@ -118,6 +123,9 @@ class XREngineBot {
     }
     async requestAllWorldMetadata() {
         await this.requestWorldMetadata(Number.MAX_SAFE_INTEGER)
+    }  
+    async requestPlayers() {
+        await this.sendMessage('/listAllusers ')
     }
     async goTo(landmark: string) { 
         if (landmark === undefined || landmark === '') return
@@ -179,7 +187,69 @@ class XREngineBot {
         await this.sendMessage('/follow ' + player)
     }
 
-    counter : number = 0
+    removeSystemFromChatMessage(text: string): string {
+        return text.substring(text.indexOf(']', 0) + 1)
+    }
+    async goTo(landmark: string) { 
+        if (landmark === undefined || landmark === '') return
+
+        await this.sendMessage('/goTo ' + landmark)
+    }
+    async playEmote(emote: string) {
+        if (emote === undefined || emote === '') return
+
+        await this.sendMessage('/emote ' + emote)
+    }
+    async playFaceExpression(types: string[], perc: string[], time: string) {
+        if (types === undefined || types.length <= 0) return
+        if (types.length !== perc.length) return
+
+        var message: string = '/face '
+        for(var i = 0; i < types.length; i++) 
+            message += types[i] + ' ' + perc[i] + ' '
+        message += time
+
+        await this.sendMessage(message)
+    }
+    async getPosition(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('/getPosition ' + player)
+    }
+    async getRotation(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('/getRotation ' + player)
+    }
+    async getScale(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendAudio('/getScale ' + player)
+    }
+    async getTransform(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('getTransform ' + player)
+    }
+    async subscribeToChatSystem(system: string) {
+        if (system === undefined || system === '') return
+
+        await this.sendMessage('/subscribe ' + system)
+    }
+    async unsubscribeFromChatSystem(system: string) {
+        if (system === undefined || system === '') return
+
+        await this.sendMessage('/unsubscribe ' + system)
+    }
+    async getSubscribedChatSystems() {
+        await this.sendMessage('/getSubscribed')
+    }
+    async follow(player: string) {
+        if (player === undefined || player === '') return
+
+        await this.sendMessage('/follow ' + player)
+    }
+
     async getInstanceMessages() {
         await this.updateChannelState()
         if(!this.activeChannel) return;
@@ -188,10 +258,12 @@ class XREngineBot {
 
         for(var i = 0; i < messages.length; i++ ){
             const message = messages[i]
+            message.text = this.removeSystemFromChatMessage(message.text)
             const messageId = message.id
             const senderId = message.sender.id
             //var sender = message.sender.name
             //var text = message.text
+            message.createdBy = 'xr-engine'
 
             if (senderId === this.userId || this.chatHistory.includes(messageId)) {
                 const index : number = await this.getMessageIndex(messages, messageId)
@@ -394,6 +466,16 @@ class XREngineBot {
                 else
                     console.log('invalid metadata length ('+data.length+'): ' + data)
             }
+            else if (message.text().startsWith('players|')) {
+                const cmd = message.text().split('|')[0]
+                const data = message.text().substring(cmd.length + 1)
+                console.log('Players: ' + data)
+            }
+            else if (message.text().startsWith('messages|')) {
+                const cmd = message.text().split('|')[0]
+                const data = message.text().substring(cmd.length + 1)
+                console.log('Messages: ' + data)
+            }
                 
             if (this.autoLog)
                 console.log(">> ", message.text())
@@ -478,6 +560,7 @@ class XREngineBot {
 
         await this.getLocalUserId()
         await this.updateChannelState()
+        await this.requestPlayers()
     }
 
     async getLocalUserId() {
