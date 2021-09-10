@@ -23,7 +23,7 @@
     "lint": "eslint --fix --quiet \"*.ts\" \"**/*.ts\" \"**/*.tsx\""
   },
   "dependencies": {
-    "discord.js": "13.1.0",
+    "discord.js": "12.5.3",
     "dotenv-flow": "3.2.0",
     "grpc": "1.24.11",
     "puppeteer": "10.2.0",
@@ -32,8 +32,8 @@
     "twitter-autohook": "1.7.2"
   },
   "devDependencies": {
-    "@types/node": "14.17.14",
-    "@types/react": "17.0.19",
+    "@types/node": "14.17.15",
+    "@types/react": "17.0.20",
     "@types/react-dom": "17.0.9",
     "@types/three": "0.131.0",
     "config": "3.3.6",

@@ -9,8 +9,6 @@ from ..base.agents.wow import WizardOfWikipediaAgent
 from ..base.envs.base import BaseEnvironment
 from ..utils.terminal_utils import cprint, cinput
 
-import sqlite3 as lite
-import agent_params
 
 
 class CustomEnvironment(BaseEnvironment):
@@ -21,6 +19,7 @@ class CustomEnvironment(BaseEnvironment):
 
     def start(self, agent: BaseAgent, **kwargs):
         self.model_name = kwargs.get('model_name')
+        self.context = kwargs.get('context')
         self.clear_histories(self.user_id)
         gc.enable()
         torch.cuda.empty_cache()
@@ -129,9 +128,5 @@ class CustomEnvironment(BaseEnvironment):
                 )
 
     def pre_dialog_for_wow(self, agent):
-        con = lite.connect(agent_params.SQLITE_DB)
-        cursor = con.cursor()
-        cursor.execute(f"SELECT topic FROM Agents WHERE name = '{self.model_name.lstrip()}'")
-        topic_tuple = cursor.fetchall()
-        _topic = topic_tuple[0][0]
+        _topic = self.context
         agent.set_topic(_topic)

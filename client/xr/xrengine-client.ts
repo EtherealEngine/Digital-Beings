@@ -1,5 +1,6 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { speechToText } from "../stt";
 import { generateVoice } from '../tts'
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
@@ -24,7 +25,8 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
-    //generateVoice('hello there', (buf, path) => { console.log('buf: ' + buf) })
+    //generateVoice('hello there', (buf, path) => {}, false)
+    speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
 
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
@@ -185,7 +187,10 @@ class XREngineBot {
         await this.sendMessage('/follow ' + player)
     }
 
-    counter : number = 0
+    removeSystemFromChatMessage(text: string): string {
+        return text.substring(text.indexOf(']', 0) + 1)
+    }
+
     async getInstanceMessages() {
         await this.updateChannelState()
         if(!this.activeChannel) return;
@@ -194,10 +199,12 @@ class XREngineBot {
 
         for(var i = 0; i < messages.length; i++ ){
             const message = messages[i]
+            message.text = this.removeSystemFromChatMessage(message.text)
             const messageId = message.id
             const senderId = message.sender.id
             //var sender = message.sender.name
             //var text = message.text
+            message.createdBy = 'xr-engine'
 
             if (senderId === this.userId || this.chatHistory.includes(messageId)) {
                 const index : number = await this.getMessageIndex(messages, messageId)
@@ -206,18 +213,6 @@ class XREngineBot {
 
             this.chatHistory.push(messageId)
         }
-        /*this.counter++
-        if (this.counter === 20)
-        this.requestSceneMetadata()
-
-        if (this.counter === 25)
-        this.sendMovementCommand(0.01, 0.01, 0.01)
-
-        if (this.counter === 35)
-        this.requestWorldMetadata(5)
-
-        if (this.counter === 40)
-        this.requestAllWorldMetadata()*/
 
         this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && messages;
@@ -405,7 +400,11 @@ class XREngineBot {
                 const data = message.text().substring(cmd.length + 1)
                 console.log('Players: ' + data)
             }
-                
+            else if (message.text().startsWith('messages|')) {
+                const cmd = message.text().split('|')[0]
+                const data = message.text().substring(cmd.length + 1)
+                console.log('Messages: ' + data)
+            }                
             if (this.autoLog)
                 console.log(">> ", message.text())
         })
