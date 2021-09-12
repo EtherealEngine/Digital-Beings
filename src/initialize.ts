@@ -17,7 +17,7 @@ globalThis.requestAnimationFrame = (f) => {
 }
 const pyConnect = require('./pyconnect');
 
-(async function(){  await pyConnect.invoke({'grpc_args': {}, 'grpc_method':'GetAgents', 'grpc_method_params':['']}); })();
+(async function(){  await pyConnect.invoke({'grpc_args': {}, 'grpc_method':'InitializeAgents', 'grpc_method_params':['']}); })();
 
 const messageResponseHandler = async (args, callback) => {
     args.response = await pyConnect.invoke(args)

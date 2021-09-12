@@ -8,17 +8,28 @@ import example_pb2_grpc
 
 # import the original example.py
 import example
+from example import DigitalBeing as DB
 
 # create a class to define the server functions, derived from
 # example_pb2_grpc.AgentServicer
 class AgentServicer(example_pb2_grpc.AgentServicer):
+
+    # the request and response are of the data type
+    # example_pb2.Request
+    # digital_being = None
+    def InitializeAgents(self, request, context):
+        self.digital_being = DB()
+        response_obj = example_pb2.Response()
+        response_obj.response.update({"response":"success"})
+        return response_obj
+
 
     # example.handle_message is exposed here
     # the request and response are of the data type
     # example_pb2.Request
     def HandleMessage(self, request, context):
         response_obj = example_pb2.Response()
-        agent_responses = example.handle_message(**request.kwargs)
+        agent_responses = self.digital_being.handle_message(**request.kwargs)
         response_obj.response.update(agent_responses)
         return response_obj
     

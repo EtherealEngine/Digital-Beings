@@ -44,27 +44,35 @@ def execute_db_transaction(query):
     return agents_list
 
 
-def handle_message(**kwargs):
-    message = kwargs.get('message')
-    responses_dict = {}
-    try:
+class DigitalBeing():
+    def __init__(self, **kwargs):
         for model_name in param.SELECTED_AGENTS:
             select_query = f"SELECT topic FROM Agents WHERE name = '{model_name.lstrip()}'"
             agents_list = execute_db_transaction(select_query)
-            context = agents_list[0].get('topic')
+            self.context = agents_list[0].get('topic')
             if model_name == 'gpt3':
-                gpt3_agent = GPT3Agent(param.GPT3_ENGINE, context, message)
-                responses_dict['gpt3'] = gpt3_agent.invoke_api()
+                self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
             elif model_name == 'rasa':
-                rasa_agent = RasaAgent(param.RASA_MODEL_NAME, message)
-                responses_dict['rasa'] = rasa_agent.invoke()
+                self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
             else:
-                agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
-                agent_env = agent.create_environment_by_name(agent.environment)
-                responses_dict[model_name] = agent_env.start(agent.agent, user_message=message, model_name=model_name, context=context)
-        return responses_dict
-    except:
-        logger.exception("Exception handle_message")
+                self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
+                self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
+
+
+    def handle_message(self, **kwargs):
+        message = kwargs.get('message')
+        responses_dict = {}
+        try:
+            for model_name in param.SELECTED_AGENTS:
+                if model_name == 'gpt3':
+                    responses_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
+                elif model_name == 'rasa':
+                    responses_dict['rasa'] = self.rasa_agent.invoke(message=message)
+                else:
+                    responses_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=self.context)
+            return responses_dict
+        except:
+            logger.exception("Exception handle_message")
 
 
 def get_agents():

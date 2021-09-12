@@ -14,6 +14,11 @@ class AgentStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.InitializeAgents = channel.unary_unary(
+                '/Agent/InitializeAgents',
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
+                )
         self.HandleMessage = channel.unary_unary(
                 '/Agent/HandleMessage',
                 request_serializer=example__pb2.Request.SerializeToString,
@@ -38,6 +43,12 @@ class AgentStub(object):
 
 class AgentServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def InitializeAgents(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def HandleMessage(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -66,6 +77,11 @@ class AgentServicer(object):
 
 def add_AgentServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'InitializeAgents': grpc.unary_unary_rpc_method_handler(
+                    servicer.InitializeAgents,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
+            ),
             'HandleMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.HandleMessage,
                     request_deserializer=example__pb2.Request.FromString,
@@ -95,6 +111,23 @@ def add_AgentServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class Agent(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def InitializeAgents(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/InitializeAgents',
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def HandleMessage(request,

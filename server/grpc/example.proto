@@ -9,6 +9,7 @@ message Response {
 }
 
 service Agent {
+    rpc InitializeAgents(Request) returns (Response) {}
     rpc HandleMessage(Request) returns (Response) {}
     rpc InvokeSoloAgent(Request) returns (Response) {}
     rpc GetAgents(Request) returns (Response) {}
