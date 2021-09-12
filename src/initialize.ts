@@ -17,15 +17,21 @@ globalThis.requestAnimationFrame = (f) => {
 }
 const pyConnect = require('./pyconnect');
 
-(async function(){  await pyConnect.invoke({'grpc_args': {}, 'grpc_method':'InitializeAgents', 'grpc_method_params':['']}); })();
-
-const messageResponseHandler = async (args, callback) => {
-    args.response = await pyConnect.invoke(args)
-    callback(args.response);
-}
-
-// Initialize bots 
-require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-require("../server/agents/echo/echo").createEcho(messageResponseHandler)
-require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
-require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
+(async function(){  
+    await pyConnect.invoke(
+        {
+            'grpc_args': {},
+            'grpc_method':'InitializeAgents',
+            'grpc_method_params':['']
+        },function(){
+            const messageResponseHandler = async (args, callback) => {
+                args.response = await pyConnect.invoke(args)
+                callback(args.response);
+            }
+            require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
+            // require("../server/agents/echo/echo").createEcho(messageResponseHandler)
+            // require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
+            // require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
+        }
+    ); 
+})();

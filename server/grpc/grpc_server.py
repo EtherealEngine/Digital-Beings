@@ -37,20 +37,20 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # example.GetAgents is exposed here
     def GetAgents(self, request, context):
         response_obj = example_pb2.Response()
-        response_obj.response.update(example.get_agents())
+        response_obj.response.update(self.digital_being.get_agents())
         return response_obj
     
 
      # example.SetAgentFields is exposed here
     def SetAgentFields(self, request, context):
         response_obj = example_pb2.Response()
-        response_obj.response.update(example.set_agent_fields(**request.kwargs))
+        response_obj.response.update(self.digital_being.set_agent_fields(**request.kwargs))
         return response_obj
     
     # example.InvokeSoloAgent is exposed here
     def InvokeSoloAgent(self, request, context):
         response_obj = example_pb2.Response()
-        agent_response = example.invoke_solo_agent(**request.kwargs)
+        agent_response = self.digital_being.invoke_solo_agent(**request.kwargs)
         response_obj.response.update(agent_response)
         return response_obj
        
@@ -65,8 +65,8 @@ example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
 # listen on port 50050
-print('Starting server. Listening on port 50050.')
-server.add_insecure_port('[::]:50050')
+print('Starting server. Listening on port 50060.')
+server.add_insecure_port('[::]:50060')
 server.start()
 
 # since server.start() will not block,

@@ -5,11 +5,11 @@ import os
 
 class GPT3Agent():
     def __init__(self, **kwargs):
-        self.engine_name = kwargs.get('engine')
         self.chat_context = kwargs.get('context')
-        self.openai_url = f"https://api.openai.com/v1/engines/{self.engine_name}/completions"
-        self.agent_response =''
-        self.message = ''
+        self.engine_name  = kwargs.get('engine')
+        self.openai_url   = f"https://api.openai.com/v1/engines/{self.engine_name}/completions"
+        self.agent_response = None
+        self.message = None
         self.api_key = os.getenv("OPENAI_API_KEY")
         self.headers = {
             'content-type': "application/json",
@@ -22,6 +22,5 @@ class GPT3Agent():
         payload = "{\n\t \"prompt\": \"" + self.chat_context + "\\nuser:" + self.message + "\\neinstein:\",\n\t  \"max_tokens\": 25,\n\t  \"temperature\": 1,\n\t  \"top_p\": 1,\n\t  \"n\": 1,\n\t  \"stream\": false,\n\t  \"logprobs\": null,\n\t  \"stop\": \"\\n\"\n}"        
         payload = payload.encode("utf-8", "ignore") 
         response_dic = json.loads(requests.request("POST", self.openai_url, data=payload, headers=self.headers).text)
-        # response_dic = json.loads(post_response.text)
         self.agent_response = response_dic['choices'][0]['text']
         return self.agent_response
