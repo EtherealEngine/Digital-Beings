@@ -29,9 +29,9 @@ const pyConnect = require('./pyconnect');
                 callback(args.response);
             }
             require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-            // require("../server/agents/echo/echo").createEcho(messageResponseHandler)
-            // require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
-            // require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
+            // require("../server/agents/echo/echo").createEcho(messageResponseHandler) //Echo Bot crashing the app on <npm start>
+            require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
+            require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
         }
     ); 
 })();
