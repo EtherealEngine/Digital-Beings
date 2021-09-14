@@ -7,7 +7,6 @@ import example_pb2
 import example_pb2_grpc
 
 # import the original example.py
-import example
 from example import DigitalBeing as DB
 
 # create a class to define the server functions, derived from
@@ -16,11 +15,10 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
 
     # the request and response are of the data type
     # example_pb2.Request
-    # digital_being = None
     def InitializeAgents(self, request, context):
         self.digital_being = DB()
         response_obj = example_pb2.Response()
-        response_obj.response.update({"response":"success"})
+        response_obj.response.update({"response":"Initialized all agents"})
         return response_obj
 
 
@@ -65,8 +63,8 @@ example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
 # listen on port 50050
-print('Starting server. Listening on port 50060.')
-server.add_insecure_port('[::]:50060')
+print('Starting server. Listening on port 50050.')
+server.add_insecure_port('[::]:50050')
 server.start()
 
 # since server.start() will not block,

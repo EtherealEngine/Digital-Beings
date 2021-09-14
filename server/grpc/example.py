@@ -24,9 +24,9 @@ class DigitalBeing():
     def __init__(self, **kwargs):
         self.sqlite = sqlite_db()
         for model_name in param.SELECTED_AGENTS:
-            context = self.sqlite.get_topic_by_agent_name(model_name.lstrip())
+            self.context = self.sqlite.get_topic_by_agent_name(model_name.lstrip())
             if model_name == 'gpt3':
-                self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=context)
+                self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
             elif model_name == 'rasa':
                 self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
             else:
@@ -74,14 +74,10 @@ class DigitalBeing():
         try:
             context = self.sqlite.get_topic_by_agent_name(model_name.lstrip())
             if model_name == 'gpt3':
-                self.gpt3_agent = GPT3Agent(param.GPT3_ENGINE, context, message)
-                response_dict['gpt3'] = self.gpt3_agent.invoke_api()
+                response_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
             elif model_name == 'rasa':
-                self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME, message)
-                response_dict['rasa'] = self.rasa_agent.invoke()
+                response_dict['rasa'] = self.rasa_agent.invoke(message=message)
             else:
-                self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
-                self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
                 response_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=context)
             return response_dict
         except:
