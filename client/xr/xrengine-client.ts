@@ -427,6 +427,18 @@ class XREngineBot {
                 const data = message.text().substring(cmd.length + 1)
                 console.log('Messages: ' + data)
             }
+            else if (message.text().startsWith('proximity|')) {
+                const data = message.text().split('|')
+                if (data.length === 4) {
+                    const mode = data[1]
+                    const player = data[2]
+                    const value = data[3]
+
+                    if (value === 'left') {
+                    } else {
+                    }
+                }
+            }
                 
             if (this.autoLog)
                 console.log(">> ", message.text())
