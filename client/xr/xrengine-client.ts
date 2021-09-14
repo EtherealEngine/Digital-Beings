@@ -418,12 +418,14 @@ class XREngineBot {
             }
             else if (message.text().startsWith('proximity|')) {
                 const data = message.text().split('|')
-                const mode = data[1]
-                const player = data[2]
-                const value = data[3]
+                if (data.length === 4) {
+                    const mode = data[1]
+                    const player = data[2]
+                    const value = data[3]
 
-                if (value === 'left') {
-                } else {
+                    if (value === 'left') {
+                    } else {
+                    }
                 }
             }
                 
