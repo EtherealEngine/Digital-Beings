@@ -1,5 +1,6 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { redisDb } from "../redisDb";
 import { speechToText } from "../stt";
 import { generateVoice } from '../tts'
 
@@ -7,6 +8,8 @@ const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/loca
 
 const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
+
+const _redisDb = new redisDb()
 
 function getOS() {
     const platform = process.platform;
@@ -25,8 +28,10 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
+    await _redisDb.create()
+
     //generateVoice('hello there', (buf, path) => {}, false)
-    speechToText('test.wav', (res) => { console.log('Res: ' + res); })
+    //speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
     const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
 
@@ -276,19 +281,24 @@ class XREngineBot {
         if (messages === undefined || messages === null) return;
 
         for(var i = 0; i < messages.length; i++ ){
-            const message = messages[i]
-            message.text = this.removeSystemFromChatMessage(message.text)
-            const messageId = message.id
-            const senderId = message.sender.id
+            messages[i].text = this.removeSystemFromChatMessage(messages[i].text)
+            const messageId = messages[i].id
+            const senderId = messages[i].sender.id
             //var sender = message.sender.name
             //var text = message.text
-            message.createdBy = 'xr-engine'
+
+            delete messages[i].senderId
+            delete messages[i].sender
+            messages[i].updatedAt = new Date(messages[i].updatedAt).getTime() / 1000
+            messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
+            messages[i].author = ['xr-engine', senderId]
 
             if (senderId === this.userId || this.chatHistory.includes(messageId)) {
                 const index : number = await this.getMessageIndex(messages, messageId)
                 if (index > -1) messages.splice(index, 1)
             }
 
+            await _redisDb.setValue(messageId, messages[i])
             this.chatHistory.push(messageId)
         }
         /*this.counter++
@@ -544,10 +554,10 @@ class XREngineBot {
         console.log('Going to ' + parsedUrl);
         await this.page.goto(parsedUrl, { waitUntil: 'domcontentloaded' });
 
-        const granted = await this.page.evaluate(async () => {
+       /* const granted = await this.page.evaluate(async () => {
             return (await navigator.permissions.query({ name: 'camera' })).state;
         });
-        console.log('Granted:', granted);
+        console.log('Granted:', granted);*/
     }
 
     /** Enters the room specified, enabling the first microphone and speaker found
