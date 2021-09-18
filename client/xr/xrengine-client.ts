@@ -9,6 +9,8 @@ const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/loca
 const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
 
+const doTests: boolean = false
+
 const _redisDb = new redisDb()
 
 function getOS() {
@@ -228,16 +230,18 @@ class XREngineBot {
         }
 
 //#region  Tests
-        this.counter++
-        if (this.counter === 20) this.requestSceneMetadata()
-        if (this.counter === 25) this.sendMovementCommand(0.01, 0.01, 0.01)
-        if (this.counter === 35) this.requestWorldMetadata(5)
-        if (this.counter === 40) this.requestAllWorldMetadata()
-        if (this.counter === 50) this.follow('alex')
-        if (this.counter === 60) this.follow('stop')
-        if (this.counter === 70) this.goTo('Window')
-        if (this.counter === 75) this.getChatHistory()
-        if (this.counter === 80) this.requestPlayers()
+        if (doTests) {
+            this.counter++
+            if (this.counter === 20) this.requestSceneMetadata()
+            if (this.counter === 25) this.sendMovementCommand(0.01, 0.01, 0.01)
+            if (this.counter === 35) this.requestWorldMetadata(5)
+            if (this.counter === 40) this.requestAllWorldMetadata()
+            if (this.counter === 50) this.follow('alex')
+            if (this.counter === 60) this.follow('stop')
+            if (this.counter === 70) this.goTo('Window')
+            if (this.counter === 75) this.getChatHistory()
+            if (this.counter === 80) this.requestPlayers()
+        }
 //#endregion
 
         this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
