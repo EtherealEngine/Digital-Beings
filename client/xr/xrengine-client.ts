@@ -9,7 +9,7 @@ const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/loca
 const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
 
-const doTests: boolean = false
+const doTests: boolean = true
 
 const _redisDb = new redisDb()
 
@@ -73,7 +73,6 @@ class XREngineBot {
     page: any;
     browser: any;
     pu: PageUtils;
-    userId : string = '';
     chatHistory: string[] = [];
     constructor({
         name = "Bot",
@@ -89,7 +88,6 @@ class XREngineBot {
         this.fakeMediaPath = fakeMediaPath;
 
         setInterval(() => this.getInstanceMessages(), 1000)
-        setInterval(() => this.getLocalUserId(), 15000)
     }
 
     async sendMessage(message) {
@@ -220,7 +218,7 @@ class XREngineBot {
             messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
             messages[i].author = ['xr-engine', senderId]
 
-            if (senderId === this.userId || this.chatHistory.includes(messageId)) {
+            if (this.chatHistory.includes(messageId)) {
                 const index : number = await this.getMessageIndex(messages, messageId)
                 if (index > -1) messages.splice(index, 1)
             }
@@ -233,7 +231,7 @@ class XREngineBot {
         if (doTests) {
             this.counter++
             if (this.counter === 20) this.requestSceneMetadata()
-            if (this.counter === 25) this.sendMovementCommand(0.01, 0.01, 0.01)
+            if (this.counter === 25) this.sendMovementCommand(1, 1, 1)
             if (this.counter === 35) this.requestWorldMetadata(5)
             if (this.counter === 40) this.requestAllWorldMetadata()
             if (this.counter === 50) this.follow('alex')
@@ -244,7 +242,7 @@ class XREngineBot {
         }
 //#endregion
 
-        this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
+        //this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && messages;
     }
 
@@ -433,7 +431,19 @@ class XREngineBot {
             else if (message.text().startsWith('messages|')) {
                 const cmd = message.text().split('|')[0]
                 const data = message.text().substring(cmd.length + 1)
-                console.log('Messages: ' + data)
+                const messages = JSON.parse(data)
+
+                for (let i = 0; i < messages.length; i++) {
+                    messages[i].text = this.removeSystemFromChatMessage(messages[i].text)
+                    const _userId = messages[i].senderId
+                    delete messages[i].senderId
+                    delete messages[i].sender
+                    messages[i].updatedAt = new Date(messages[i].updatedAt).getTime() / 1000
+                    messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
+                    messages[i].author = ['xr-engine', _userId]
+                }
+                
+                console.log('Messages: ' + JSON.stringify(messages))
             }
             else if (message.text().startsWith('proximity|')) {
                 const data = message.text().split('|')
@@ -529,21 +539,8 @@ class XREngineBot {
 
         await this.delay(10000)
 
-        await this.getLocalUserId()
         await this.updateChannelState()
         await this.requestPlayers()
-    }
-
-    async getLocalUserId() {
-        this.userId = await this.evaluate(() => {
-            if (globalThis.store === undefined) {
-                return console.warn("Store was not found, ignoring user id fetch");
-            }
-            
-            const selfUser = globalThis.store.getState().get('auth').get('user')
-            const userId = selfUser.id
-            return userId
-        })
     }
 
     async updateChannelState() {
