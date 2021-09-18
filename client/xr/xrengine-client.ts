@@ -194,6 +194,9 @@ class XREngineBot {
 
         await this.sendMessage('/follow ' + player)
     }
+    async getChatHistory() {
+        await this.sendMessage('/getChatHistory')
+    }
 
     counter : number = 0
     async getInstanceMessages() {
@@ -223,18 +226,19 @@ class XREngineBot {
             await _redisDb.setValue(messageId, messages[i])
             this.chatHistory.push(messageId)
         }
-        /*this.counter++
-        if (this.counter === 20)
-        this.requestSceneMetadata()
 
-        if (this.counter === 25)
-        this.sendMovementCommand(0.01, 0.01, 0.01)
-
-        if (this.counter === 35)
-        this.requestWorldMetadata(5)
-
-        if (this.counter === 40)
-        this.requestAllWorldMetadata()*/
+//#region  Tests
+        this.counter++
+        if (this.counter === 20) this.requestSceneMetadata()
+        if (this.counter === 25) this.sendMovementCommand(0.01, 0.01, 0.01)
+        if (this.counter === 35) this.requestWorldMetadata(5)
+        if (this.counter === 40) this.requestAllWorldMetadata()
+        if (this.counter === 50) this.follow('alex')
+        if (this.counter === 60) this.follow('stop')
+        if (this.counter === 70) this.goTo('Window')
+        if (this.counter === 75) this.getChatHistory()
+        if (this.counter === 80) this.requestPlayers()
+//#endregion
 
         this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && messages;
