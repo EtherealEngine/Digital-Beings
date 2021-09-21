@@ -247,7 +247,7 @@ class XREngineBot {
         }
 //#endregion
 
-        this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
+        //this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && messages;
     }
 
