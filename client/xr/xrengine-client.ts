@@ -9,7 +9,7 @@ const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/loca
 const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
 
-const doTests: boolean = true
+const doTests: boolean = false
 
 const _redisDb = new redisDb()
 
@@ -73,7 +73,9 @@ class XREngineBot {
     page: any;
     browser: any;
     pu: PageUtils;
+    userId: string
     chatHistory: string[] = [];
+    avatars: string[] = [ 'Alissa', 'Cornelius', 'James_ReadyPlayerMe', 'Jamie', 'Mogrid', 'Warrior' ]
     constructor({
         name = "Bot",
         fakeMediaPath = "",
@@ -93,7 +95,7 @@ class XREngineBot {
     async sendMessage(message) {
         if(message === null || message === undefined) return;
         console.log('send message: ' + message)
-        await this.typeMessage(message);
+        await this.typeMessage('newMessage', message, false);
         await this.pressKey('Enter')
     }
 
@@ -197,6 +199,9 @@ class XREngineBot {
     async getChatHistory() {
         await this.sendMessage('/getChatHistory')
     }
+    async getLocalUserId() {
+        await this.sendMessage('/getLocalUserId')
+    }
 
     counter : number = 0
     async getInstanceMessages() {
@@ -218,7 +223,7 @@ class XREngineBot {
             messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
             messages[i].author = ['xr-engine', senderId]
 
-            if (this.chatHistory.includes(messageId)) {
+            if (this.chatHistory.includes(messageId) || this.userId === senderId) {
                 const index : number = await this.getMessageIndex(messages, messageId)
                 if (index > -1) messages.splice(index, 1)
             }
@@ -231,7 +236,7 @@ class XREngineBot {
         if (doTests) {
             this.counter++
             if (this.counter === 20) this.requestSceneMetadata()
-            if (this.counter === 25) this.sendMovementCommand(1, 1, 1)
+            if (this.counter === 25) this.sendMovementCommand(0.01, 0.01, 0.01)
             if (this.counter === 35) this.requestWorldMetadata(5)
             if (this.counter === 40) this.requestAllWorldMetadata()
             if (this.counter === 50) this.follow('alex')
@@ -431,19 +436,7 @@ class XREngineBot {
             else if (message.text().startsWith('messages|')) {
                 const cmd = message.text().split('|')[0]
                 const data = message.text().substring(cmd.length + 1)
-                const messages = JSON.parse(data)
-
-                for (let i = 0; i < messages.length; i++) {
-                    messages[i].text = this.removeSystemFromChatMessage(messages[i].text)
-                    const _userId = messages[i].senderId
-                    delete messages[i].senderId
-                    delete messages[i].sender
-                    messages[i].updatedAt = new Date(messages[i].updatedAt).getTime() / 1000
-                    messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
-                    messages[i].author = ['xr-engine', _userId]
-                }
-                
-                console.log('Messages: ' + JSON.stringify(messages))
+                console.log('Messages: ' + data)
             }
             else if (message.text().startsWith('proximity|')) {
                 const data = message.text().split('|')
@@ -456,6 +449,16 @@ class XREngineBot {
                     } else {
                     }
                 }
+            }
+            else if (message.text().startsWith('localId|')) {
+                const cmd = message.text().split('|')[0]
+                const data = message.text().substring(cmd.length + 1)
+                console.log('local user id: ' + data)
+                if (data !== undefined && data !== '') {
+                    this.userId = data
+                }
+            } 
+            else if (message.text().startsWith('emotions|')) {
             }
                 
             if (this.autoLog)
@@ -539,8 +542,20 @@ class XREngineBot {
 
         await this.delay(10000)
 
+        await this.getLocalUserId()
         await this.updateChannelState()
+        await this.updateUsername(name)
+        await this.delay(10000)
+        const index = this.getRandomNumber(0, this.avatars.length - 1)
+        console.log('avatar index: ' + index)
+        await this.updateAvatar(this.avatars[index])
         await this.requestPlayers()
+        await this.getLocalUserId()
+        //await setInterval(() => this.getLocalUserId(), 1000)
+    }
+
+    getRandomNumber(min, max): number {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     async updateChannelState() {
@@ -562,6 +577,31 @@ class XREngineBot {
     })
     }
 
+    async updateUsername(name: string) {
+        if (name === undefined || name === '') return
+        
+        await this.clickElementById('SPAN', 'Profile_0')
+        await this.typeMessage('username', name, true)
+        await this.pressKey('Enter')
+        await this.clickElementById('SPAN', 'Profile_0')
+    }
+
+    async updateAvatar(avatar) {
+        console.log('\x1b[32m updating avatar to: ' + avatar)
+       
+        await this.clickElementById('SPAN', 'Profile_0')
+        await this.clickElementById('button', 'select-avatar')
+        await this.clickSelectorByAlt('img', avatar)
+        await this.clickElementById('button', 'confirm-avatar')
+    }
+
+    async getUser() {
+        return await this.evaluate(() => {
+            return globalThis.store.getState().get('user')
+            //console.log('\x1b[33m user: ' + JSON.stringify(user))
+        })
+    }
+
     async waitForTimeout(timeout) {
         return await new Promise<void>(resolve => setTimeout(() => resolve(), timeout));
     }
@@ -577,9 +617,13 @@ class XREngineBot {
     async clickElementById(elemType, id) {
         await this.pu.clickSelectorId(elemType, id);
     }
+    async clickSelectorByAlt(elemType, title) {
+        await this.pu.clickSelectorByAlt(elemType, title)
+    }
 
-    async typeMessage(message: string) {
-        await this.page.type('input[name="newMessage"]', message);
+    async typeMessage(input: string, message: string, clean: boolean) {
+        if (clean) await this.page.click('input[name="' + input + '"]', { clickCount: 3 });
+        await this.page.type('input[name="' + input + '"]', message);
         //await this.page.keyboard.type(message);
     }
 
@@ -655,6 +699,30 @@ class PageUtils {
           id
         )
       }
+    async clickSelectorByAlt(selector, title) {
+        if (this.autoLog) console.log(`Clicking for a ${selector} matching ${title}`)
+
+        await this.page.evaluate((selector, title) => {
+            let matches = Array.from(document.querySelectorAll(selector))
+            let singleMatch = matches.find((btn) => btn.alt === title)
+            let result
+            if (singleMatch && singleMatch.click) {
+              console.log('normal click')
+              result = singleMatch.click()
+            }
+            if (singleMatch && !singleMatch.click) {
+              console.log('on click')
+              result = singleMatch.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+            }
+            if (!singleMatch) {
+              console.log('event click', matches.length)
+             if (matches.length > 0) {
+                  const m = matches[0]
+                  result = m.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+              }
+            }
+        }, selector, title)
+    }
     async clickSelectorFirstMatch(selector) {
         if (this.autoLog)
             console.log(`Clicking for first ${selector}`);
