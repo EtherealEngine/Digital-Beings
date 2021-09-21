@@ -26,7 +26,7 @@
     "discord.js": "12.5.3",
     "dotenv-flow": "3.2.0",
     "grpc": "1.24.11",
-    "puppeteer": "10.2.0",
+    "puppeteer": "10.4.0",
     "redis": "4.0.0-rc.1",
     "tedis": "0.1.12",
     "ts-node": "10.2.1",
