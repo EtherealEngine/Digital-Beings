@@ -1,7 +1,9 @@
 exports.run = async (client, message, args) => {
     client.helpFields[0].commands.forEach(function (item, index) {
+        if (item[3].length <= 2000 && item[3].length > 0) {
         client.embed
         .addFields({name: '!'+item[0] , value: item[3]})
+        }
     });       
     if (client.embed.fields.length === 0) client.embed.description = 'empty response'
     message.channel.send(client.embed);

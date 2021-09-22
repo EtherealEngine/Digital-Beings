@@ -49,8 +49,10 @@ exports.run = async (client, message, args) => {
     }
     await client.messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
+            if (response.response[key].length <= 2000 && response.response[key].length > 0) {
                 client.embed
                 .addFields({name: key, value: response.response[key]})
+            }
         }); 
         if (client.embed.fields.length === 0) client.embed.description = 'empty response'
         message.channel.send(client.embed);
