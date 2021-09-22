@@ -1,5 +1,8 @@
 exports.run = async (client, message, args) => {
     if ( args.grpc_args.message === undefined ||  args.grpc_args.message === '') {
+        client.embed.description = 'Wrong format, !ping message'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
         message.channel.stopTyping();
         return
     }
