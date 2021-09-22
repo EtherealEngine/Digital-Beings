@@ -10,8 +10,10 @@ exports.run = async (client, message, args) => {
         Object.keys(response.response).map(function(key, index) {
             client.embed
             .addFields({name: key, value: response.response[key]})
-        });          
+        });        
+        if (client.embed.fields.length === 0) client.embed.description = 'empty response'
         message.channel.send(client.embed);
+        client.embed.description = ''
         client.embed.fields = [];  // clear previous responses
         message.channel.stopTyping();
     });
