@@ -5,7 +5,6 @@ exports.run = async (client, message, args) => {
             const label = res.response[key];
             const agent_name = key;
             str += 'name: ' + label + ', value: ' + agent_name + '\n'
-            
         });
         client.embed.description = str === '' ? 'not agents found' : str
         message.channel.send(client.embed)
