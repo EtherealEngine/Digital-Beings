@@ -1,4 +1,52 @@
 exports.run = async (client, message, args) => {
+    if (args.grpc_args.message === undefined || args.grpc_args.message === '') {
+        client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
+        message.channel.stopTyping();
+        return
+    }
+    const msg = args.grpc_args.message
+    if (!msg.includes(',')) {
+        client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
+        message.channel.stopTyping();
+        return
+    }
+    const data = msg.split(',')
+    if (data.length !== 2) {
+        client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
+        message.channel.stopTyping();
+        return
+    }
+    const nameData = data[0].split('=')
+    if (nameData.length !== 2) {
+        client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
+        message.channel.stopTyping();
+        return
+    }
+    const name = nameData[1].trim()
+    const contextData = data[1].split('=')
+    if (contextData.length !== 2) {
+        client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
+        message.channel.stopTyping();
+        return
+    }
+    const context = contextData[1].trim()
+    if (name === undefined || name === '' || context === undefined || context === '') {
+        client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
+        message.channel.send(client.embed)
+        client.embed.desscription = ''
+        message.channel.stopTyping();
+        return
+    }
     await client.messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
                 client.embed
