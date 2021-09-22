@@ -1,3 +1,4 @@
+export {}
 const Discord = require('discord.js');
 const {Util, Intents} = require('discord.js')
 const config = require("./config.json");
@@ -8,7 +9,6 @@ const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 const createDiscordClient = (messageResponseHandler) => {
 
     if (!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
-	//The discord client was crashing with intents, so i've added some Core Intents
     const client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     client.config = config;
@@ -42,6 +42,7 @@ const createDiscordClient = (messageResponseHandler) => {
         let commandName = file.split(".")[0];
         console.log(`Attempting to load command ${commandName}`);
         client.commands.set(commandName, props);
+        console.log(`Loaded command ${commandName}`)
       });
     });
 

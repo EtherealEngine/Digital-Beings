@@ -1,4 +1,8 @@
 exports.run = async (client, message, args) => {
+    if ( args.grpc_args.message === undefined ||  args.grpc_args.message === '') {
+        message.channel.stopTyping();
+        return
+    }
     await client.messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
             client.embed
