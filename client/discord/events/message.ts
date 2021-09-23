@@ -11,8 +11,8 @@ module.exports = (client, message) => {
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const isDirectMethion = content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    console.log('isDirectMention: ' + isDirectMethion + ' message: ' + content + ' bot name: ' + client.bot_name)
-    if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
+    if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
+    else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
 
     // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM

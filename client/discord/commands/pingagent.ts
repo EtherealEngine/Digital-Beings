@@ -15,12 +15,23 @@ exports.run = async (client, message, args) => {
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 message.channel.send(replacePlaceholders(response.response[key]))
             }
+            else if (response.response[key].length > 2000) {
+                const lines: string[] = []
+                let line: string = ''
+                for(let i = 0; i < response.response[key].length; i++) {
+                    line+= response.response[key]
+                    if (i >= 1980 && (line[i] === ' ' || line[i] === '')) {
+                        lines.push(line)
+                        line = ''
+                    }
+                }
+            }
             else {
                 const emptyResponse = getRandomEmptyResponse()
                 console.log('sending empty response: ' + emptyResponse)
                 message.channel.send(emptyResponse)
             }
-        });          
+        });            
         message.channel.stopTyping();
     });
 }
