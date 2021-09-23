@@ -1,4 +1,5 @@
 {
   "prefix": "!",
-  "prefixOptionalWhenMentionOrDM": true
+  "prefixOptionalWhenMentionOrDM": true,
+  "bot_name": "Cat"
 }

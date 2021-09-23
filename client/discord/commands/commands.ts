@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, author, addPing) => {
     client.helpFields[0].commands.forEach(function (item, index) {
         if (item[3].length <= 2000 && item[3].length > 0) {
         client.embed
