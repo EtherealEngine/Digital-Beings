@@ -1,6 +1,6 @@
 import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, author, addPing) => {
     if (args.grpc_args.message === undefined || args.grpc_args.message === '' || args.grpc_args.message.replace(/\s/g, '').length === 0 
     || args.grpc_args.message.includes('agent=') || args.grpc_args.agent === undefined || args.grpc_args.agent === '' || args.grpc_Args.agent.replace(/\s/g, '').length === 0) {
         client.embed.description = 'Wrong format, !pingagent agent=agent message=value'
@@ -25,11 +25,19 @@ exports.run = async (client, message, args) => {
                         line = ''
                     }
                 }
+
+                for (let i = 0; i< lines.length; i++) {
+                    if (lines[i] !== undefined && lines[i] !== '') {
+                        message.channel.send(lines[i])
+                    }
+                }
             }
             else {
                 const emptyResponse = getRandomEmptyResponse()
                 console.log('sending empty response: ' + emptyResponse)
-                message.channel.send(emptyResponse)
+                if (emptyResponse !== undefined && emptyResponse !== '') {
+                    message.channel.send(emptyResponse)
+                }
             }
         });            
         message.channel.stopTyping();

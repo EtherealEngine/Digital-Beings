@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, author, addPing) => {
     if (args.parsed_words === undefined || args.parsed_words.length !== 1) {
         client.embed.description = 'Invalid format, !setname name'
         message.channel.send(client.embed)
