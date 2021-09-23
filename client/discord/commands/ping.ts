@@ -1,3 +1,5 @@
+import { getRandomEmptyResponse, replacePlaceholders } from "../util";
+
 exports.run = async (client, message, args) => {
     if ( args.grpc_args.message === undefined ||  args.grpc_args.message === '') {
         client.embed.description = 'Wrong format, !ping message'
@@ -8,15 +10,16 @@ exports.run = async (client, message, args) => {
     }
     await client.messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
-            if (response.response[key].length <= 2000 && response.response[key].length > 0) {
-            client.embed
-            .addFields({name: key, value: response.response[key]})
+            console.log('response: ' + response.response[key])
+            if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
+                message.channel.send(key + ': ' + replacePlaceholders(response.response[key]))
+            }
+            else {
+                const emptyResponse = getRandomEmptyResponse()
+                console.log('sending empty response: ' + emptyResponse)
+                message.channel.send(key + ': ' + emptyResponse)
             }
         });          
-        if (client.embed.fields.length === 0) client.embed.description = 'empty response'
-        message.channel.send(client.embed);
-        client.embed.description = ''
-        client.embed.fields = [];  // clear previous responses
         message.channel.stopTyping();
     });
 }
