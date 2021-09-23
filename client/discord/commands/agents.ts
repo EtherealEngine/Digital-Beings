@@ -6,10 +6,7 @@ exports.run = async (client, message, args) => {
             const agent_name = key;
             str += 'name: ' + label + ', value: ' + agent_name + '\n'
         });
-        client.embed.description = str === '' ? 'not agents found' : str
-        message.channel.send(client.embed)
-        client.embed.fields = [];  // clear previous responses
-        client.embed.description = ''
+        message.channel.send('available agents: ' + str)
 
         message.channel.stopTyping();
     });

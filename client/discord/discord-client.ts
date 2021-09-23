@@ -5,17 +5,19 @@ const config = require("./config.json");
 const util = require('./util.ts')
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 
+export let client = undefined
 
 const createDiscordClient = (messageResponseHandler) => {
 
     if (!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
-    const client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
+    client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     client.config = config;
     client.helpFields = util.helpFields;
     client._findCommand = util._findCommand;
     client._parseWords = util._parseWords;
     client.messageResponseHandler = messageResponseHandler
+    client.bot_name = config.bot_name
 
     const embed = new Discord.MessageEmbed()
     .setColor(0x00AE86)

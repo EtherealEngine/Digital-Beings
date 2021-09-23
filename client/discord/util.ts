@@ -1,3 +1,5 @@
+import { client } from "./discord-client";
+
 export const embedColor = '#000000';
 export const _commandToValue = ([name, args, description]) =>
   ['.' + name, args.join(' '), '-', description].join(' ');
@@ -95,7 +97,10 @@ export function replacePlaceholders(text: string): string {
     text = text.replace('{month_now}', new Date().getMonth().toString())
   }
   if (text.includes('{day_now}')) {
-    text = text.replace('day_now', new Date().getDay().toString())
+    text = text.replace('{day_now}', new Date().getDay().toString())
+  }
+  if (text.includes('{name}')) {
+    text = text.replace('{name}', client.name)
   }
 
   return text

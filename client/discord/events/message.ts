@@ -1,15 +1,23 @@
+let botNameRegExp: RegExp = undefined
+
 module.exports = (client, message) => {
     const args = {}
     args['grpc_args'] = {};
 
-    const {author, channel, content, mentions} = message;
+    let {author, channel, content, mentions} = message;
 
     // Ignore all bots
     if (author.bot) return;
 
     const botMention = '<@!' + client.user + '>';
     const isDM = channel.type === 'dm';
-    const isMention = (channel.type === 'text' || isDM) && mentions.has(client.user);
+    const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
+    const isDirectMethion = content.toLowerCase().includes(client.bot_name.toLowerCase()) 
+    if (isDirectMethion) {
+        if (botNameRegExp === undefined) botNameRegExp = new RegExp(client.bot_name, 'ig')
+        content = '!ping ' + content.replace(botNameRegExp, '').trim()
+    }
+    
 
     // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
@@ -34,7 +42,7 @@ module.exports = (client, message) => {
     const command = args['parsed_words'].shift().toLowerCase();
 
     // Grab the command data from the client.commands Enmap
-    const cmd = client.commands.get(command);
+    let cmd = client.commands.get(command);
 
     args['command_info'] = client._findCommand(command);
     args['grpc_args']['sender'] = author.username;
