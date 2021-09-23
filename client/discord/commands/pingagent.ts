@@ -13,12 +13,12 @@ exports.run = async (client, message, args) => {
         Object.keys(response.response).map(function(key, index) {
             console.log('response: ' + response.response[key])
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
-                message.channel.send(key + ': ' + replacePlaceholders(response.response[key]))
+                message.channel.send(replacePlaceholders(response.response[key]))
             }
             else {
                 const emptyResponse = getRandomEmptyResponse()
                 console.log('sending empty response: ' + emptyResponse)
-                message.channel.send(key + ': ' + emptyResponse)
+                message.channel.send(emptyResponse)
             }
         });          
         message.channel.stopTyping();

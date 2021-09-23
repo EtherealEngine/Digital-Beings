@@ -18,6 +18,7 @@ const createDiscordClient = (messageResponseHandler) => {
     client._parseWords = util._parseWords;
     client.messageResponseHandler = messageResponseHandler
     client.bot_name = config.bot_name
+    client.name_regex = new RegExp(config.bot_name, 'ig')
 
     const embed = new Discord.MessageEmbed()
     .setColor(0x00AE86)

@@ -1,5 +1,3 @@
-let botNameRegExp: RegExp = undefined
-
 module.exports = (client, message) => {
     const args = {}
     args['grpc_args'] = {};
@@ -13,11 +11,8 @@ module.exports = (client, message) => {
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const isDirectMethion = content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    if (isDirectMethion) {
-        if (botNameRegExp === undefined) botNameRegExp = new RegExp(client.bot_name, 'ig')
-        content = '!ping ' + content.replace(botNameRegExp, '').trim()
-    }
-    
+    console.log('isDirectMention: ' + isDirectMethion + ' message: ' + content + ' bot name: ' + client.bot_name)
+    if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
 
     // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM

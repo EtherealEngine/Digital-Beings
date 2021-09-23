@@ -100,7 +100,7 @@ export function replacePlaceholders(text: string): string {
     text = text.replace('{day_now}', new Date().getDay().toString())
   }
   if (text.includes('{name}')) {
-    text = text.replace('{name}', client.name)
+    text = text.replace('{name}', client.bot_name)
   }
 
   return text
