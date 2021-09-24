@@ -1,4 +1,4 @@
-import { channelHistory, chatHistory, onMessageDeleted, perUserHistory, prevMessage, prevMessageTimers, pushMessageToChannelHistory } from "../chatHistory";
+import { channelHistory, chatHistory, getMessage, onMessageDeleted, perUserHistory, prevMessage, prevMessageTimers, pushMessageToChannelHistory } from "../chatHistory";
 
 module.exports = (client, message) => {
     const {author, channel, content, mentions, id} = message; 
