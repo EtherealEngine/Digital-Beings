@@ -1,10 +1,25 @@
-import { channelHistory, chatHistory, perUserHistory, prevMessage, prevMessageTimers, pushMessageToChannelHistory } from "../chatHistory";
+import { channelHistory, chatHistory, exitConversation, isInConversation, perUserHistory, prevMessage, prevMessageTimers, pushMessageToChannelHistory, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
     args['grpc_args'] = {};
 
-    let {author, channel, content, mentions} = message;
+    let {author, channel, content, mentions, id} = message;
+
+    if (content === '') content = 'sent media'
+    chatHistory.push(content)
+    if (perUserHistory[author] === undefined) perUserHistory[author] = {}
+    if (perUserHistory[author][channel.id] === undefined) perUserHistory[author][channel.id] = []
+    perUserHistory[author][channel.id].push({ messageId: id, message: content })
+    let _prev = undefined
+    if (!author.bot) {
+        _prev = prevMessage[channel.id]
+        prevMessage[channel.id] = author
+        if (prevMessageTimers[channel.id] !== undefined) clearTimeout(prevMessageTimers[channel.id])
+        prevMessageTimers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
+    }
+    const addPing = _prev !== undefined && _prev !== '' && _prev !== author
+    pushMessageToChannelHistory(channel.id, id, content, author.id)
 
     // Ignore all bots
     if (author.bot) return;
@@ -12,12 +27,22 @@ module.exports = (client, message) => {
     const botMention = '<@!' + client.user + '>';
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
-    const isDirectMethion = content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isInDiscussion = channelHistory[channel.id] !== undefined && channelHistory[channel.id].length > 0 && 
-                           channelHistory[channel.id][channelHistory[channel.id].length - 1].author === client.user.id && (new Date().getTime() - channelHistory[channel.id][channelHistory[channel.id].length - 1].date.getTime() <= 120000)
-    if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
-    else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
-    else if (isInDiscussion) content = '!ping ' + content
+    const otherMention = !isMention && mentions.members.size > 0
+    if (otherMention) exitConversation(author.id)
+    const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
+    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(new RegExp('((?:digital|being)(?: |$))', 'ig'))
+    const isInDiscussion = isInConversation(author.id)
+    if (!content.startsWith('!ping') && !otherMention) {
+        if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
+        else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
+        else if (isUserNameMention) {
+            if (client.username_regex === undefined) client.username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
+            content = '!ping ' + content.replace(client.username_regex, '').trim()
+        }
+        else if (isInDiscussion) content = '!ping ' + content
+    }
+
+    if (content.startsWith('!ping')) sentMessage(author.id)
 
     // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
@@ -32,18 +57,6 @@ module.exports = (client, message) => {
     // so if msg does not contain prefix and either of
     //   1. optional flag is not true or 2. bot has not been DMed or mentioned,
     // then skip the message.
-
-    if (content === '') content = 'sent media'
-    chatHistory.push(content)
-    if (perUserHistory[author] === undefined) perUserHistory[author] = {}
-    if (perUserHistory[author][channel.id] === undefined) perUserHistory[author][channel.id] = []
-    perUserHistory[author][channel.id].push(content)
-    const _prev = prevMessage[channel.id]
-    prevMessage[channel.id] = author
-    if (prevMessageTimers[channel.id] !== undefined) clearTimeout(prevMessageTimers[channel.id])
-    prevMessageTimers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
-    const addPing = _prev !== undefined && _prev !== '' && _prev !== author
-    pushMessageToChannelHistory(channel.id, content, author.id)
 
     if (!containsPrefix && (!prefixOptionalWhenMentionOrDM || (!isMention && !isDM))) return;
 

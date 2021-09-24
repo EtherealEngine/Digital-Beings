@@ -1,4 +1,4 @@
-import { pushMessageToChannelHistory } from "../chatHistory";
+import { messageResponses, pushMessageToChannelHistory } from "../chatHistory";
 import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
 exports.run = async (client, message, args, author, addPing, channel) => {
@@ -16,12 +16,14 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                 if (addPing) {
                     const text = '<@!' + author + '> ' + replacePlaceholders(response.response[key])
                     message.channel.send(text)
-                    pushMessageToChannelHistory(channel, text, client.user.id)
+                    messageResponses[message.id] = { initialMessage: message.content, response: message }
+                    pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                 }  else {
                     let text = replacePlaceholders(response.response[key])
-                    if (text === undefined) text = getRandomEmptyResponse()
+                    if (text === undefined || text === '') text = getRandomEmptyResponse()
                     message.channel.send(text)
-                    pushMessageToChannelHistory(channel, text, client.user.id)
+                    messageResponses[message.id] = { initialMessage: message.content, response: message }
+                    pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                 }
             }
             else if (response.response[key].length > 2000) {
@@ -41,17 +43,20 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                             if (addPing) {
                                 const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
                                 message.channel.send(text)
-                                pushMessageToChannelHistory(channel, text, client.user.id)
+                                messageResponses[message.id] = { initialMessage: message.content, response: message }
+                                pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                             } else {
                                 let text = replacePlaceholders(lines[i])
                                 if (text === undefined) text = getRandomEmptyResponse()
                                 message.channel.send(text)
-                                pushMessageToChannelHistory(channel, text, client.user.id)
+                                messageResponses[message.id] = { initialMessage: message.content, response: message }
+                                pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                             }
                         } else {
                             const text = replacePlaceholders(lines[i])
                             message.channel.send(text)
-                            pushMessageToChannelHistory(channel, text, client.user.id)
+                            messageResponses[message.id] = { initialMessage: message.content, response: message }
+                            pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                         }
                     }
                 }
@@ -63,12 +68,14 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                     if (addPing) {
                         const text = '<@!' + author + '> ' + emptyResponse
                         message.channel.send(text)
-                        pushMessageToChannelHistory(channel, text, client.user.id)
+                        messageResponses[message.id] = { initialMessage: message.content, response: message }
+                        pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                     } else {
                         let text = emptyResponse
                         if (text === undefined) text = getRandomEmptyResponse()
                         message.channel.send(text)
-                        pushMessageToChannelHistory(channel, text, client.user.id)
+                        messageResponses[message.id] = { initialMessage: message.content, response: message }
+                        pushMessageToChannelHistory(channel, message.id, text, client.user.id)
                     }
                 }
             }

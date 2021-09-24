@@ -1,3 +1,5 @@
+import { pushMessageToChannelHistory } from "../chatHistory";
+
 exports.run = async (client, message, args, author, addPing, channel) => {
     if (args.grpc_args.message === undefined || args.grpc_args.message === '') {
         client.embed.description = 'Wrong format, !pingagent agent=agent context=value'
@@ -58,6 +60,7 @@ exports.run = async (client, message, args, author, addPing, channel) => {
         message.channel.send(client.embed);
         client.embed.description = ''
         client.embed.fields = [];  // clear previous responses
+        pushMessageToChannelHistory(channel, message.id, '{set agent}', client.user.id)
         message.channel.stopTyping();
     });
 }
