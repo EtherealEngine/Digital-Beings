@@ -7,34 +7,9 @@ export const messageResponses: { [messageId: string]: { initialMessage: string, 
 export const conversation: { [user: string]: any } = {}
 
 export function pushMessageToChannelHistory(channel, messageId: string, message: string, author: string) {
-    if (channelHistory[channel] === undefined) channelHistory[channel] = []
-    channelHistory[channel].push({
-        messageId: messageId,
-        message: message,
-        author: author,
-        date: new Date()
-    })
 }
 
 export function onMessageDeleted(channel, messageId) {
-    for(let m in perUserHistory) {
-        if (perUserHistory[m][channel] !== undefined) {
-            for (let i = 0; i < perUserHistory[m][channel].length; i++) {
-                if (perUserHistory[m][channel][i].messageId === messageId) {
-                    delete perUserHistory[m][channel][i]
-                    break
-                }
-            }
-        }
-    }
-    if (channelHistory[channel] !== undefined) {
-        for(let i = 0; i < channelHistory[channel].length; i++) {
-            if (channelHistory[channel][i].messageId === messageId) {
-                delete channelHistory[channel][i]
-                break
-            }
-        }
-    }
     if (messageResponses[messageId] !== undefined) {
         delete messageResponses[messageId]
     }
@@ -62,4 +37,9 @@ export function exitConversation(user) {
         clearTimeout(conversation[user])
         conversation[user] = undefined
     }
+}
+
+export function getResponse(message) {
+    if (messageResponses[message] !== undefined)
+    return messageResponses[message].response
 }

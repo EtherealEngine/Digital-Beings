@@ -1,4 +1,4 @@
-import { channelHistory, chatHistory, exitConversation, isInConversation, perUserHistory, prevMessage, prevMessageTimers, pushMessageToChannelHistory, sentMessage } from "../chatHistory";
+import { exitConversation, isInConversation, prevMessage, prevMessageTimers, pushMessageToChannelHistory, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
@@ -7,10 +7,6 @@ module.exports = (client, message) => {
     let {author, channel, content, mentions, id} = message;
 
     if (content === '') content = 'sent media'
-    chatHistory.push(content)
-    if (perUserHistory[author] === undefined) perUserHistory[author] = {}
-    if (perUserHistory[author][channel.id] === undefined) perUserHistory[author][channel.id] = []
-    perUserHistory[author][channel.id].push({ messageId: id, message: content })
     let _prev = undefined
     if (!author.bot) {
         _prev = prevMessage[channel.id]
