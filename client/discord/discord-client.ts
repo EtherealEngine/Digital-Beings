@@ -1,8 +1,8 @@
-export {}
+import {helpFields, _findCommand, _parseWords} from './util';
+
 const Discord = require('discord.js');
 const {Util, Intents} = require('discord.js')
 const config = require("./config.json");
-const util = require('./util.ts')
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 
 export let client = undefined
@@ -13,9 +13,9 @@ const createDiscordClient = (messageResponseHandler) => {
     client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     client.config = config;
-    client.helpFields = util.helpFields;
-    client._findCommand = util._findCommand;
-    client._parseWords = util._parseWords;
+    client.helpFields = helpFields;
+    client._findCommand = _findCommand;
+    client._parseWords = _parseWords;
     client.messageResponseHandler = messageResponseHandler
     client.bot_name = config.bot_name
     client.name_regex = new RegExp(config.bot_name, 'ig')
