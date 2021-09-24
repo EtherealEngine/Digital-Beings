@@ -1,4 +1,4 @@
-import { Tedis, TedisPool } from 'tedis'
+import { Tedis } from 'tedis'
 
 export class redisDb {
     tedis: Tedis = undefined
