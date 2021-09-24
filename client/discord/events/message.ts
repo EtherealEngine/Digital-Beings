@@ -30,7 +30,7 @@ module.exports = (client, message) => {
     const otherMention = !isMention && mentions.members.size > 0
     if (otherMention) exitConversation(author.id)
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(new RegExp('((?:digital|being)(?: |$))', 'ig'))
+    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
     if (!content.startsWith('!ping') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()

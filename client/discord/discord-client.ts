@@ -19,6 +19,7 @@ const createDiscordClient = (messageResponseHandler) => {
     client.messageResponseHandler = messageResponseHandler
     client.bot_name = config.bot_name
     client.name_regex = new RegExp(config.bot_name, 'ig')
+    client.username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
 
     const embed = new Discord.MessageEmbed()
     .setColor(0x00AE86)
