@@ -1,7 +1,4 @@
-const chatHistory: string[] = []
-const perUserHistory: { [author: string]:  { [channel: string]: string[] } } = {}
-const prevMessage: { [channel: string]: string } = {}
-const timers: { [channel: string]: any } = {}
+import { channelHistory, chatHistory, perUserHistory, prevMessage, prevMessageTimers, pushMessageToChannelHistory } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
@@ -16,8 +13,11 @@ module.exports = (client, message) => {
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const isDirectMethion = content.toLowerCase().includes(client.bot_name.toLowerCase()) 
+    const isInDiscussion = channelHistory[channel.id] !== undefined && channelHistory[channel.id].length > 0 && 
+                           channelHistory[channel.id][channelHistory[channel.id].length - 1].author === client.user.id && (new Date().getTime() - channelHistory[channel.id][channelHistory[channel.id].length - 1].date.getTime() <= 120000)
     if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
     else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
+    else if (isInDiscussion) content = '!ping ' + content
 
     // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
@@ -40,9 +40,10 @@ module.exports = (client, message) => {
     perUserHistory[author][channel.id].push(content)
     const _prev = prevMessage[channel.id]
     prevMessage[channel.id] = author
-    if (timers[channel.id] !== undefined) clearTimeout(timers[channel.id])
-    timers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
+    if (prevMessageTimers[channel.id] !== undefined) clearTimeout(prevMessageTimers[channel.id])
+    prevMessageTimers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
     const addPing = _prev !== undefined && _prev !== '' && _prev !== author
+    pushMessageToChannelHistory(channel.id, content, author.id)
 
     if (!containsPrefix && (!prefixOptionalWhenMentionOrDM || (!isMention && !isDM))) return;
 
@@ -76,5 +77,5 @@ module.exports = (client, message) => {
 
     channel.startTyping();
     // Run the command
-    cmd.run(client, message, args, author, addPing);
+    cmd.run(client, message, args, author, addPing, channel.id);
 };

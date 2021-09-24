@@ -1,6 +1,7 @@
+import { pushMessageToChannelHistory } from "../chatHistory";
 import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
-exports.run = async (client, message, args, author, addPing) => {
+exports.run = async (client, message, args, author, addPing, channel) => {
     if ( args.grpc_args.message === undefined ||  args.grpc_args.message === '' || args.grpc_args.message.replace(/\s/g, '').length === 0) {
         client.embed.description = 'Wrong format, !ping message'
         message.channel.send(client.embed)
@@ -13,9 +14,14 @@ exports.run = async (client, message, args, author, addPing) => {
             console.log('response: ' + response.response[key])
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 if (addPing) {
-                    message.channel.send('<@!' + author + '> ' + replacePlaceholders(response.response[key]))
+                    const text = '<@!' + author + '> ' + replacePlaceholders(response.response[key])
+                    message.channel.send(text)
+                    pushMessageToChannelHistory(channel, text, client.user.id)
                 }  else {
-                    message.channel.send(replacePlaceholders(response.response[key]))
+                    let text = replacePlaceholders(response.response[key])
+                    if (text === undefined) text = getRandomEmptyResponse()
+                    message.channel.send(text)
+                    pushMessageToChannelHistory(channel, text, client.user.id)
                 }
             }
             else if (response.response[key].length > 2000) {
@@ -33,12 +39,19 @@ exports.run = async (client, message, args, author, addPing) => {
                     if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
                         if (i === 0) {
                             if (addPing) {
-                                message.channel.send('<@!' + author + '> ' + lines[i])
+                                const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
+                                message.channel.send(text)
+                                pushMessageToChannelHistory(channel, text, client.user.id)
                             } else {
-                                message.channel.send(lines[i])
+                                let text = replacePlaceholders(lines[i])
+                                if (text === undefined) text = getRandomEmptyResponse()
+                                message.channel.send(text)
+                                pushMessageToChannelHistory(channel, text, client.user.id)
                             }
                         } else {
-                        message.channel.send(lines[i])
+                            const text = replacePlaceholders(lines[i])
+                            message.channel.send(text)
+                            pushMessageToChannelHistory(channel, text, client.user.id)
                         }
                     }
                 }
@@ -48,9 +61,14 @@ exports.run = async (client, message, args, author, addPing) => {
                 console.log('sending empty response: ' + emptyResponse)
                 if (emptyResponse !== undefined && emptyResponse !== '' && emptyResponse.replace(/\s/g, '').length !== 0) {
                     if (addPing) {
-                        message.channel.send('<@!' + author + '> ' + emptyResponse)
+                        const text = '<@!' + author + '> ' + emptyResponse
+                        message.channel.send(text)
+                        pushMessageToChannelHistory(channel, text, client.user.id)
                     } else {
-                        message.channel.send(emptyResponse)
+                        let text = emptyResponse
+                        if (text === undefined) text = getRandomEmptyResponse()
+                        message.channel.send(text)
+                        pushMessageToChannelHistory(channel, text, client.user.id)
                     }
                 }
             }
