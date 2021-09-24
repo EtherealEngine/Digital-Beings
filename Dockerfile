@@ -36,6 +36,13 @@ RUN source $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
+RUN npm install --global yarn
+
+RUN yarn add global "@types/node"
+RUN yarn add global "typescript"
+RUN yarn add global ts-node
+
+
 # Create app directory
 WORKDIR /DigitalBeing
 
@@ -46,8 +53,9 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
 RUN python3 -m spacy download en_core_web_md
 RUN python3 -m spacy link en_core_web_md en
-RUN npm install
+#RUN npm install
 
-COPY . .
+#COPY . .
 
-CMD ["supervisord","-c","/DigitalBeing/supervisor/service_script.conf"]
+CMD ["sh", "./bootstrap.sh"]
+#CMD ["supervisord","-c","/DigitalBeing/supervisor/service_script.conf"]

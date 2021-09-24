@@ -1,3 +1,13 @@
+server/__pycache__/*
+server/agents/openchat/agents/__pycache__/*
+server/agents/openchat/__pycache__/*
+server/agents/openchat/base/__pycache__/*
+server/agents/openchat/base/agents/__pycache__/*
+server/agents/openchat/base/envs/__pycache__/*
+server/agents/openchat/envs/__pycache__/*
+server/agents/openchat/utils/__pycache__/*
+
+server/grpc/__pycache__/*
 # Logs
 logs
 *.log
