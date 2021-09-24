@@ -62,9 +62,9 @@ server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
-# listen on port 50050
-print('Starting server. Listening on port 50050.')
-server.add_insecure_port('[::]:50050')
+# listen on port 7777
+print('Starting server. Listening on port 7777.')
+server.add_insecure_port('[::]:7777')
 server.start()
 
 # since server.start() will not block,
