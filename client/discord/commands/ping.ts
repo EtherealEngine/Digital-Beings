@@ -1,7 +1,7 @@
 import { messageResponses, onMessageResponseUpdated } from "../chatHistory";
 import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
-exports.run = async (client, message, args, author, addPing, channel) => {
+export async function run (client, message, args, author, addPing, channel) {
     if ( args.grpc_args.message === undefined ||  args.grpc_args.message === '' || args.grpc_args.message.replace(/\s/g, '').length === 0) {
         client.embed.description = 'Wrong format, !ping message'
         message.channel.send(client.embed)
