@@ -1,4 +1,4 @@
-import { exitConversation, isInConversation, prevMessage, prevMessageTimers, pushMessageToChannelHistory, sentMessage } from "../chatHistory";
+import { exitConversation, isInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
@@ -6,7 +6,7 @@ module.exports = (client, message) => {
 
     let {author, channel, content, mentions, id} = message;
 
-    if (content === '') content = 'sent media'
+    if (content === '') content = '{sent media}'
     let _prev = undefined
     if (!author.bot) {
         _prev = prevMessage[channel.id]
@@ -15,7 +15,6 @@ module.exports = (client, message) => {
         prevMessageTimers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
     }
     const addPing = _prev !== undefined && _prev !== '' && _prev !== author
-    pushMessageToChannelHistory(channel.id, id, content, author.id)
 
     // Ignore all bots
     if (author.bot) return;
