@@ -27,3 +27,4 @@ transformers==4.10.2
 twilio==6.63.2
 typeguard==2.12.1
 typer==0.4.0
+mysql-connector-python 

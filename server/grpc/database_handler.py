@@ -35,7 +35,7 @@ class SqliteDatabase():
     
 
     def get_agents_name(self):
-        self.cursor.execute(self.SELECT_TOPIC)
+        self.cursor.execute(self.SELECT_AGENTS)
         agents_list = self.cursor.fetchall()
         agents_dict = {}
         for dic in agents_list:
@@ -44,5 +44,5 @@ class SqliteDatabase():
     
 
     def set_agent_topic(self, context, name):
-        self.cursor.execute(self.UPDATE_AGENT_TOPIC, (context, name,))
+        self.cursor.execute("UPDATE Agents SET topic='" + context + "' WHERE name='" + name + "'")
         self.con.commit()

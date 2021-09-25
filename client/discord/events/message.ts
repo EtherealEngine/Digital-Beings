@@ -1,4 +1,4 @@
-import { exitConversation, isInConversation, prevMessage, prevMessageTimers, pushMessageToChannelHistory, sentMessage } from "../chatHistory";
+import { exitConversation, isInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
@@ -6,7 +6,7 @@ module.exports = (client, message) => {
 
     let {author, channel, content, mentions, id} = message;
 
-    if (content === '') content = 'sent media'
+    if (content === '') content = '{sent media}'
     let _prev = undefined
     if (!author.bot) {
         _prev = prevMessage[channel.id]
@@ -15,7 +15,6 @@ module.exports = (client, message) => {
         prevMessageTimers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
     }
     const addPing = _prev !== undefined && _prev !== '' && _prev !== author
-    pushMessageToChannelHistory(channel.id, id, content, author.id)
 
     // Ignore all bots
     if (author.bot) return;
@@ -24,11 +23,14 @@ module.exports = (client, message) => {
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const otherMention = !isMention && mentions.members.size > 0
-    if (otherMention) exitConversation(author.id)
+    if (otherMention) {
+        exitConversation(author.id)
+        mentions.members.forEach(pinged => exitConversation(pinged.id))
+    }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
     const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
-    if (!content.startsWith('!ping') && !otherMention) {
+    if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
         else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
         else if (isUserNameMention) {
@@ -80,7 +82,7 @@ module.exports = (client, message) => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
         });
     }
-
+    
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 

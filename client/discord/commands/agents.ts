@@ -1,6 +1,4 @@
-import { pushMessageToChannelHistory } from "../chatHistory";
-
-export async function run (client, message, args, author, addPing, channel) {
+exports.run = async (client, message, args, author, addPing, channel) => {
     await client.messageResponseHandler(args, (res) => {
         let str: string = ''
         Object.keys(res.response).map(function(key, index) {
@@ -10,7 +8,6 @@ export async function run (client, message, args, author, addPing, channel) {
         });
         const text = 'available agents: ' + str
         message.channel.send(text)
-        pushMessageToChannelHistory(channel, message.id, text, client.user.id)
 
         message.channel.stopTyping();
     });

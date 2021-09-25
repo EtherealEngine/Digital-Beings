@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import { pushMessageToChannelHistory } from '../chatHistory';
 
 export async function run (client, message, args, author, addPing, channel) {
     if (args.parsed_words === undefined || args.parsed_words.length !== 1) {
@@ -21,7 +20,6 @@ export async function run (client, message, args, author, addPing, channel) {
     console.log(client.bot_name + ' - ' + client.name_regex)
     client.embed.description = 'Updated bot name to: ' + name
     message.channel.send(client.embed)
-    pushMessageToChannelHistory(channel, message.id, '{set name}', client.user.id)
     client.embed.description = ''
     message.channel.stopTyping()
 }
