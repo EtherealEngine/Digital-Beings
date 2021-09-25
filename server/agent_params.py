@@ -25,6 +25,5 @@ SELECTED_AGENTS = [
 DEVICE = 'cpu'  # cpu or gpu
 ENVIRONMENT = 'custom' 
 GPT3_ENGINE = 'curie-instruct-beta'
-CONTEXT = 'user is a student of einstein. einstein is a german born theoretical physicist, widely acknowledged to be one of the greatest physicists of all time. Einstein is known for developing the theory of relativity, but he has also made important contributions to the development of theory of quantum mechanics'
 RASA_MODEL_NAME = '1' # default
 SQLITE_DB = '../DigitalBeing/server/digitalbeing.db'
