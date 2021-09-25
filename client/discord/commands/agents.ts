@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, author, addPing, channel) => {
+export async function run (client, message, args, author, addPing, channel) {
     await client.messageResponseHandler(args, (res) => {
         let str: string = ''
         Object.keys(res.response).map(function(key, index) {
