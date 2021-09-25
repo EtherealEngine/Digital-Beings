@@ -6,7 +6,7 @@ export async function run (client, message, args, author, addPing, channel) {
             const agent_name = key;
             str += 'name: ' + label + ', value: ' + agent_name + '\n'
         });
-        const text = 'available agents: ' + str
+        const text = 'available agents: \n' + str
         message.channel.send(text)
 
         message.channel.stopTyping();
