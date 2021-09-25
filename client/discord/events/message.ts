@@ -24,7 +24,10 @@ module.exports = (client, message) => {
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const otherMention = !isMention && mentions.members.size > 0
-    if (otherMention) exitConversation(author.id)
+    if (otherMention) {
+        exitConversation(author.id)
+        mentions.members.forEach(pinged => exitConversation(pinged.id))
+    }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
     const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
