@@ -1,7 +1,7 @@
-const {Autohook} = require('twitter-autohook');
-const http = require('http');
-const url = require('url');
-const Twit = require('twit');
+import {Autohook} from 'twitter-autohook';
+import * as http from 'http';
+import * as url from 'url';
+import * as Twit from 'twit';
 
 const {
     createHmac,
@@ -18,7 +18,7 @@ const SERVER_PORT = process.env.SERVER_PORT;
 
 let TwitClient;
 
-const createTwitterClient = async (messageResponseHandler) => {
+export const createTwitterClient = async (messageResponseHandler) => {
     if (!TWITTER_CONSUMER_SECRET || !TWITTER_CONSUMER_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_TOKEN_SECRET)
         return console.warn("No credentials for Twitter, skipping");
 
@@ -51,7 +51,6 @@ const createTwitterClient = async (messageResponseHandler) => {
             });
         }
     };
-
 
     const validateWebhook = (token, auth) => {
         console.log("token");
@@ -118,5 +117,3 @@ const createTwitterClient = async (messageResponseHandler) => {
         }
     }).listen(SERVER_PORT);
 };
-
-module.exports = {createTwitterClient}
