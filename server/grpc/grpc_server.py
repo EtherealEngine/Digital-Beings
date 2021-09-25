@@ -13,11 +13,12 @@ from example import DigitalBeing as DB
 # example_pb2_grpc.AgentServicer
 class AgentServicer(example_pb2_grpc.AgentServicer):
 
+    def __init__(self):
+        self.digital_being = DB()
+
     # the request and response are of the data type
     # example_pb2.Request
     def InitializeAgents(self, request, context):
-        print('initialize agents')
-        self.digital_being = DB()
         response_obj = example_pb2.Response()
         response_obj.response.update({"response":"Initialized all agents"})
         return response_obj
@@ -66,6 +67,7 @@ server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
 # use the generated function `add_AgentServicer_to_server`
 # to add the defined class to the server
+
 example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
 
