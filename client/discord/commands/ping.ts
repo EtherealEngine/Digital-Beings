@@ -19,7 +19,8 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                     message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                 }  else {
                     let text = replacePlaceholders(response.response[key])
-                    if (text === undefined || text === '') text = getRandomEmptyResponse()
+                    while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                    console.log('response1: ' + text)
                     message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                 }
             }
@@ -42,11 +43,14 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                                 message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                             } else {
                                 let text = replacePlaceholders(lines[i])
-                                if (text === undefined) text = getRandomEmptyResponse()
+                                while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                                console.log('response2: ' + text)
                                 message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                             }
                         } else {
-                            const text = replacePlaceholders(lines[i])
+                            let text = replacePlaceholders(lines[i])
+                            while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                            console.log('response3: ' + text)
                             message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                         }
                     }
@@ -61,7 +65,8 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                         message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                     } else {
                         let text = emptyResponse
-                        if (text === undefined) text = getRandomEmptyResponse()
+                        while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                        console.log('response4: ' + text)
                         message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                     }
                 }
