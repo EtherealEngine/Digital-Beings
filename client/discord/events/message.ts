@@ -30,7 +30,7 @@ module.exports = (client, message) => {
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
     const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
-    if (!content.startsWith('!ping') && !otherMention) {
+    if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
         else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
         else if (isUserNameMention) {
@@ -82,7 +82,7 @@ module.exports = (client, message) => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
         });
     }
-
+    
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 
