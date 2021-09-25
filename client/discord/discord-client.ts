@@ -20,6 +20,7 @@ const createDiscordClient = (messageResponseHandler) => {
     client.bot_name = config.bot_name
     client.name_regex = new RegExp(config.bot_name, 'ig')
     client.username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
+    client.edit_messages_max_count = process.env.EDIT_MESSAGES_MAX_COUNT
 
     const embed = new Discord.MessageEmbed()
     .setColor(0x00AE86)
