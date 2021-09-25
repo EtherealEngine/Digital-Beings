@@ -2,11 +2,10 @@ import { getResponse, messageResponses } from "../chatHistory";
 import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
 module.exports = (client, message) => {
-    const {author, channel, content, id} = message;
+    const {author, channel, id} = message;
     if (author.id === client.user.id) return
 
-     const oldResponse = getResponse(id)
-     console.log('edited message: ' + content + ' old response: ' + oldResponse)
+     const oldResponse = getResponse(channel.id, id)
      if (oldResponse === undefined) return
  
      channel.messages.fetch(oldResponse).then(async msg => { 

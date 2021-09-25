@@ -1,4 +1,4 @@
-import { messageResponses } from "../chatHistory";
+import { messageResponses, onMessageResponseUpdated } from "../chatHistory";
 import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
 exports.run = async (client, message, args, author, addPing, channel) => {
@@ -16,11 +16,11 @@ exports.run = async (client, message, args, author, addPing, channel) => {
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 if (addPing) {
                     const text = '<@!' + author + '> ' + replacePlaceholders(response.response[key])
-                    message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                    message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                 }  else {
                     let text = replacePlaceholders(response.response[key])
                     if (text === undefined || text === '') text = getRandomEmptyResponse()
-                    message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                    message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                 }
             }
             else if (response.response[key].length > 2000) {
@@ -39,15 +39,15 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                         if (i === 0) {
                             if (addPing) {
                                 const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
-                                message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                                message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                             } else {
                                 let text = replacePlaceholders(lines[i])
                                 if (text === undefined) text = getRandomEmptyResponse()
-                                message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                                message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                             }
                         } else {
                             const text = replacePlaceholders(lines[i])
-                            message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                            message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                         }
                     }
                 }
@@ -58,11 +58,11 @@ exports.run = async (client, message, args, author, addPing, channel) => {
                 if (emptyResponse !== undefined && emptyResponse !== '' && emptyResponse.replace(/\s/g, '').length !== 0) {
                     if (addPing) {
                         const text = '<@!' + author + '> ' + emptyResponse
-                        message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                        message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                     } else {
                         let text = emptyResponse
                         if (text === undefined) text = getRandomEmptyResponse()
-                        message.channel.send(text).then(msg => messageResponses[message.id] = { initialMessage: message.content, response: msg.id })
+                        message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                     }
                 }
             }

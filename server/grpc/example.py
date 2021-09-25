@@ -25,6 +25,7 @@ class DigitalBeing():
         self.sqlite = sqlite_db()
         for model_name in param.SELECTED_AGENTS:
             self.context = self.sqlite.get_topic_by_agent_name(model_name.lstrip())
+            print('got self context: ' + self.context)
             if model_name == 'gpt3':
                 self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
             elif model_name == 'rasa':

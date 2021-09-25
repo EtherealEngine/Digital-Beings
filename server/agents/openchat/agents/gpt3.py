@@ -5,6 +5,7 @@ import os
 
 class GPT3Agent():
     def __init__(self, **kwargs):
+        print('initializing gpt3 agent')
         self.chat_context = kwargs.get('context')
         self.engine_name  = kwargs.get('engine')
         self.openai_url   = f"https://api.openai.com/v1/engines/{self.engine_name}/completions"

@@ -1,12 +1,16 @@
 export const prevMessage: { [channel: string]: string } = {}
 export const prevMessageTimers: { [channel: string]: any } = {}
-export const messageResponses: { [messageId: string]: { initialMessage: string, response: string } } = {}
+export const messageResponses: { [channel: string]: { [messageId: string]: string } } = {}
 export const conversation: { [user: string]: any } = {}
 
 export function onMessageDeleted(channel, messageId) {
-    if (messageResponses[messageId] !== undefined) {
-        delete messageResponses[messageId]
+    if (messageResponses[channel] !== undefined && messageResponses[channel][messageId] !== undefined) {
+        delete messageResponses[channel][messageId]
     }
+}
+export function onMessageResponseUpdated(channel, messageId, newResponse) {
+    if (messageResponses[channel] === undefined) messageResponses[channel] = {}
+    messageResponses[channel][messageId] = newResponse
 }
 
 export function getMessage(channel, messageId) {
@@ -33,7 +37,7 @@ export function exitConversation(user) {
     }
 }
 
-export function getResponse(message) {
-    if (messageResponses[message] !== undefined)
-    return messageResponses[message].response
+export function getResponse(channel, message) {
+    if (messageResponses[channel] === undefined) return undefined
+    return messageResponses[channel][message]
 }

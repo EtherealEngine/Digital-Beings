@@ -16,6 +16,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # the request and response are of the data type
     # example_pb2.Request
     def InitializeAgents(self, request, context):
+        print('initialize agents')
         self.digital_being = DB()
         response_obj = example_pb2.Response()
         response_obj.response.update({"response":"Initialized all agents"})
@@ -26,6 +27,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # the request and response are of the data type
     # example_pb2.Request
     def HandleMessage(self, request, context):
+        print('handle message')
         response_obj = example_pb2.Response()
         agent_responses = self.digital_being.handle_message(**request.kwargs)
         response_obj.response.update(agent_responses)
@@ -34,6 +36,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
 
     # example.GetAgents is exposed here
     def GetAgents(self, request, context):
+        print('get agents')
         response_obj = example_pb2.Response()
         response_obj.response.update(self.digital_being.get_agents())
         return response_obj
@@ -41,12 +44,16 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
 
      # example.SetAgentFields is exposed here
     def SetAgentFields(self, request, context):
+        print('set agents fields')
         response_obj = example_pb2.Response()
         response_obj.response.update(self.digital_being.set_agent_fields(**request.kwargs))
+        if (response_obj == None):
+            response_obj = {'name': 'none', 'context': 'none'}
         return response_obj
     
     # example.InvokeSoloAgent is exposed here
     def InvokeSoloAgent(self, request, context):
+        print('invoke solo agent')
         response_obj = example_pb2.Response()
         agent_response = self.digital_being.invoke_solo_agent(**request.kwargs)
         response_obj.response.update(agent_response)
@@ -64,8 +71,11 @@ example_pb2_grpc.add_AgentServicer_to_server(
 
 # listen on port 7777
 print('Starting server. Listening on port 7777.')
+print('started server1')
 server.add_insecure_port('[::]:7777')
+print('started server2')
 server.start()
+print('started server3')
 
 # since server.start() will not block,
 # a sleep-loop is added to keep alive

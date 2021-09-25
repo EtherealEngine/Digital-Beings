@@ -48,6 +48,7 @@ exports.run = async (client, message, args, author, addPing, channel) => {
         return
     }
     await client.messageResponseHandler(args, (response) => {
+        console.log('setagents response: ' + JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
             if (response.response[key].length <= 2000 && response.response[key].length > 0) {
                 client.embed
