@@ -7,7 +7,6 @@ numpy==1.18.5
 oauthlib==3.1.0
 openai==0.10.4
 parlai==1.5.0
-pysqlite3==0.4.6
 rasa==2.8.7
 rasa-sdk==2.8.2
 requests-oauthlib==1.3.0
@@ -27,4 +26,3 @@ transformers==4.10.2
 twilio==6.63.2
 typeguard==2.12.1
 typer==0.4.0
-mysql-connector-python 

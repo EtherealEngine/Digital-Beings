@@ -13,7 +13,7 @@ from agents.openchat.agents.gpt3 import GPT3Agent
 from agents.openchat.agents.rasa import RasaAgent
 from agents.openchat.openchat import OpenChat
 
-from database_handler import SqliteDatabase as sqlite_db
+from jsondb import jsondb as jsondb
 
 import logging
 
@@ -22,9 +22,10 @@ logger = logging.getLogger("app.main")
 class DigitalBeing():
 
     def __init__(self, **kwargs):
-        self.sqlite = sqlite_db()
+        self.jsondb = jsondb()
+        self.jsondb.getAgents()
         for model_name in param.SELECTED_AGENTS:
-            self.context = self.sqlite.get_topic_by_agent_name(model_name.lstrip())
+            self.context = self.jsondb.getTopicForAgent(model_name.lstrip())
             print('got self context: ' + self.context)
             if model_name == 'gpt3':
                 self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
@@ -53,7 +54,7 @@ class DigitalBeing():
 
     def get_agents(self):
         try:
-            return self.sqlite.get_agents_name()
+            return self.jsondb.getAgents()
         except Exception as err:
             print("Exception get_agents: " + err)
 
@@ -62,7 +63,7 @@ class DigitalBeing():
         name = kwargs.get('name')
         context = kwargs.get('context')
         try:
-            self.sqlite.set_agent_topic(context.lstrip(), name.lstrip())
+            self.jsondb.setAgentName(context.lstrip(), name.lstrip())
             return {'name': name, 'context': context}
         except Exception as err:
             print("Exception set_agent_fields: " + err)
@@ -73,7 +74,7 @@ class DigitalBeing():
         model_name = kwargs.get('agent')
         response_dict = {}
         try:
-            context = self.sqlite.get_topic_by_agent_name(model_name.lstrip())
+            context = self.jsondb.getTopicForAgent(model_name.lstrip())
             if model_name == 'gpt3':
                 response_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
             elif model_name == 'rasa':
