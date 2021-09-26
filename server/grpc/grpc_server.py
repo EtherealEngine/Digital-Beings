@@ -1,6 +1,8 @@
+import sys
 import grpc
 from concurrent import futures
 import time
+import traceback
 
 # import the generated classes
 import example_pb2
@@ -19,9 +21,13 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # the request and response are of the data type
     # example_pb2.Request
     def InitializeAgents(self, request, context):
-        response_obj = example_pb2.Response()
-        response_obj.response.update({"response":"Initialized all agents"})
-        return response_obj
+        try:
+            response_obj = example_pb2.Response()
+            response_obj.response.update({"response":"Initialized all agents"})
+            return response_obj
+        except Exception as err:
+            print('InitializeAgents exception:' + err)
+            return {"response":"Initialized all agents"}
 
 
     # example.handle_message is exposed here
@@ -29,40 +35,57 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # example_pb2.Request
     def HandleMessage(self, request, context):
         print('handle message')
-        response_obj = example_pb2.Response()
-        agent_responses = self.digital_being.handle_message(**request.kwargs)
-        response_obj.response.update(agent_responses)
-        return response_obj
-    
+        try:
+            response_obj = example_pb2.Response()
+            agent_responses = self.digital_being.handle_message(**request.kwargs)
+            response_obj.response.update(agent_responses)
+            if (response_obj == None):
+                response_obj = { 'none': 'none' }
+            return response_obj
+        except Exception as err:
+            print('HandleMessage exception: ' + err)
+            return { 'none': 'none' }        
 
     # example.GetAgents is exposed here
     def GetAgents(self, request, context):
         print('get agents')
-        response_obj = example_pb2.Response()
-        response_obj.response.update(self.digital_being.get_agents())
-        if (response_obj == None):
-            response_obj = { 'key': 'none', 'value': 'name' }
-        return response_obj
+        try:
+            response_obj = example_pb2.Response()
+            response_obj.response.update(self.digital_being.get_agents())
+            if (response_obj == None):
+                response_obj = { 'key': 'none', 'value': 'name' }
+            return response_obj
+        except Exception as err:
+            print('GetAgents exception: ' + err)
+            return { 'key': 'none', 'value': 'name' }
     
 
      # example.SetAgentFields is exposed here
     def SetAgentFields(self, request, context):
         print('set agents fields')
-        response_obj = example_pb2.Response()
-        response_obj.response.update(self.digital_being.set_agent_fields(**request.kwargs))
-        if (response_obj == None):
-            response_obj = {'name': 'none', 'context': 'none'}
-        return response_obj
+        try:
+            response_obj = example_pb2.Response()
+            response_obj.response.update(self.digital_being.set_agent_fields(**request.kwargs))
+            if (response_obj == None):
+                response_obj = {'name': 'none', 'context': 'none'}
+            return response_obj
+        except Exception as err:
+            print('SetAgentFields exception: ' + err)
+            return {'name': 'none', 'context': 'none'}
     
     # example.InvokeSoloAgent is exposed here
     def InvokeSoloAgent(self, request, context):
         print('invoke solo agent')
-        response_obj = example_pb2.Response()
-        agent_response = self.digital_being.invoke_solo_agent(**request.kwargs)
-        response_obj.response.update(agent_response)
-        if (response_obj == None):
-            response_obj = { 'key': 'none', 'value': 'none' }
-        return response_obj
+        try:
+            response_obj = example_pb2.Response()
+            agent_response = self.digital_being.invoke_solo_agent(**request.kwargs)
+            response_obj.response.update(agent_response)
+            if (response_obj == None):
+                response_obj = { 'key': 'none', 'value': 'none' }
+            return response_obj
+        except Exception as err:
+            print('InvokeSoloAgent exception: ' + err)
+            return { 'key': 'none', 'value': 'none' }
        
 
 
