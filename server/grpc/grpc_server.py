@@ -95,9 +95,12 @@ server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 # use the generated function `add_AgentServicer_to_server`
 # to add the defined class to the server
 
-example_pb2_grpc.add_AgentServicer_to_server(
+try:
+    example_pb2_grpc.add_AgentServicer_to_server(
         AgentServicer(), server)
-
+except:
+    print('error loading agents')
+    
 # listen on port 7777
 print('Starting server. Listening on port 7777.')
 print('started server1')
