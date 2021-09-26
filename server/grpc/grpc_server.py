@@ -40,6 +40,8 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
         print('get agents')
         response_obj = example_pb2.Response()
         response_obj.response.update(self.digital_being.get_agents())
+        if (response_obj == None):
+            response_obj = { 'key': 'none', 'value': 'name' }
         return response_obj
     
 
@@ -58,6 +60,8 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
         response_obj = example_pb2.Response()
         agent_response = self.digital_being.invoke_solo_agent(**request.kwargs)
         response_obj.response.update(agent_response)
+        if (response_obj == None):
+            response_obj = { 'key': 'none', 'value': 'none' }
         return response_obj
        
 

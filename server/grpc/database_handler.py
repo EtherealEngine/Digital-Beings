@@ -17,7 +17,7 @@ class SqliteDatabase():
     """
 
     def __init__(self, **kwargs):
-        self.con = lite.connect(param.SQLITE_DB)
+        self.con = lite.connect(param.SQLITE_DB, check_same_thread=False)
         self.con.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate(c.description)])
         self.cursor = self.con.cursor()
 
