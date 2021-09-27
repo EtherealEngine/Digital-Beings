@@ -69,6 +69,7 @@ module.exports = (client, message) => {
     let cmd = client.commands.get(command);
 
     args['command_info'] = client._findCommand(command);
+    console.log(args['command_info'])
     args['grpc_args']['sender'] = author.username;
     if (args['command_info']) {
         args['command'] = args['command_info'][0];

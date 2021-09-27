@@ -1,5 +1,6 @@
+import { getRandomEmptyResponse } from "../../utils";
 import { onMessageResponseUpdated } from "../chatHistory";
-import { getRandomEmptyResponse, replacePlaceholders } from "../util";
+import { replacePlaceholders } from "../util";
 
 export async function run (client, message, args, author, addPing, channel) {
     if (args.grpc_args.message === undefined || args.grpc_args.message === '' || args.grpc_args.message.replace(/\s/g, '').length === 0 

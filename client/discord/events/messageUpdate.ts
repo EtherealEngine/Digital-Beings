@@ -1,5 +1,4 @@
 import { getResponse, messageResponses } from "../chatHistory";
-import { getRandomEmptyResponse, replacePlaceholders } from "../util";
 
 module.exports = (client, message) => {
     const {author, channel, id} = message;
