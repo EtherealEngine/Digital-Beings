@@ -43,6 +43,10 @@ class DigitalBeing():
 
     def handle_message(self, **kwargs):
         message = kwargs.get('message')
+        if (message == None):
+            self._server.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")
+            print("Exception invoke_solo_agent: invalid kwarg: message")
+            return { 'none': 'none' }
         responses_dict = {}
         try:
             for model_name in param.SELECTED_AGENTS:
@@ -56,6 +60,7 @@ class DigitalBeing():
         except Exception as err:
             self._server.sendMessage("Exception handle_message: " + err)
             print("Exception handle_message: " + err)
+            return { 'none': 'none' }
 
 
     def get_agents(self):
@@ -64,22 +69,40 @@ class DigitalBeing():
         except Exception as err:
             self._server.sendMessage("Exception get_agents: " + err)
             print("Exception get_agents: " + err)
+            return { 'key': 'none', 'value': 'name' }
 
 
     def set_agent_fields(self, **kwargs):
         name = kwargs.get('name')
+        if (name == None):
+            self._server.sendMessage("Exception set_agent_fields: invalid kwarg: name")
+            print("Exception set_agent_fields: invalid kwarg: name")
+            return {'name': 'none', 'context': 'none'}
         context = kwargs.get('context')
+        if (context == None):
+            self._server.sendMessage("Exception set_agent_fields: invalid kwarg: context")
+            print("Exception set_agent_fields: invalid kwarg: context")
+            return {'name': 'none', 'context': 'none'}
         try:
             self.jsondb.setAgentName(context.lstrip(), name.lstrip())
             return {'name': name, 'context': context}
         except Exception as err:
             self._server.sendMessage("Exception set_agent_fields: " + err)
             print("Exception set_agent_fields: " + err)
+            return {'name': 'none', 'context': 'none'}
 
 
     def invoke_solo_agent(self, **kwargs):
         message = kwargs.get('message')
+        if (message == None):
+            self._server.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")
+            print("Exception invoke_solo_agent: invalid kwarg: message")
+            return { 'key': 'none', 'value': 'none' }
         model_name = kwargs.get('agent')
+        if (model_name == None):
+            self._server.sendMessage("Exception invoke_solo_agent: invalid kwarg: agent")
+            print("Exception invoke_solo_agent: invalid kwarg: agent")
+            return { 'key': 'none', 'value': 'none' }
         response_dict = {}
         try:
             context = self.jsondb.getTopicForAgent(model_name.lstrip())
@@ -93,3 +116,4 @@ class DigitalBeing():
         except Exception as err:
             self._server.sendMessage("Exception invoke_solo_agent: " + err)
             print("Exception invoke_solo_agent: " + err)
+            return { 'key': 'none', 'value': 'none' }

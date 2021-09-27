@@ -10,7 +10,7 @@ export function initClient(ip, port) {
     })
     tcpClient.on('data', function(data) {
         if (client !== undefined && client.log_user !== undefined) {
-            client.log_user.send('logs: ' + data)
+            client.log_user.send('log: ' + data)
         }
     })
 }
