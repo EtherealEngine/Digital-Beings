@@ -26,6 +26,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             response_obj.response.update({"response":"Initialized all agents"})
             return response_obj
         except Exception as err:
+            DB.sendDiscordMessage('InitializeAgents exception:' + err)
             print('InitializeAgents exception:' + err)
             return {"response":"Initialized all agents"}
 
@@ -43,6 +44,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = { 'none': 'none' }
             return response_obj
         except Exception as err:
+            DB.sendDiscordMessage('HandleMessage exception: ' + err)
             print('HandleMessage exception: ' + err)
             return { 'none': 'none' }        
 
@@ -56,6 +58,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = { 'key': 'none', 'value': 'name' }
             return response_obj
         except Exception as err:
+            DB.sendDiscordMessage('GetAgents exception: ' + err)
             print('GetAgents exception: ' + err)
             return { 'key': 'none', 'value': 'name' }
     
@@ -70,6 +73,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = {'name': 'none', 'context': 'none'}
             return response_obj
         except Exception as err:
+            DB.sendDiscordMessage('SetAgentFields exception: ' + err)
             print('SetAgentFields exception: ' + err)
             return {'name': 'none', 'context': 'none'}
     
@@ -84,6 +88,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = { 'key': 'none', 'value': 'none' }
             return response_obj
         except Exception as err:
+            DB.sendDiscordMessage('InvokeSoloAgent exception: ' + err)
             print('InvokeSoloAgent exception: ' + err)
             return { 'key': 'none', 'value': 'none' }
        

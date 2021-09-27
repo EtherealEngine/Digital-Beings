@@ -14,6 +14,7 @@ from agents.openchat.agents.rasa import RasaAgent
 from agents.openchat.openchat import OpenChat
 
 from jsondb import jsondb as jsondb
+from tcpServer import tcpServer as _server
 
 import logging
 
@@ -24,6 +25,8 @@ class DigitalBeing():
     def __init__(self, **kwargs):
         self.jsondb = jsondb()
         self.jsondb.getAgents()
+        self._server = _server('127.0.0.1', 7778)
+        print('started the tcp server')
         for model_name in param.SELECTED_AGENTS:
             self.context = self.jsondb.getTopicForAgent(model_name.lstrip())
             print('got self context: ' + self.context)
@@ -35,6 +38,8 @@ class DigitalBeing():
                 self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
                 self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
 
+    def sendDiscordMessage(self, text: str):
+            self._server.sendMessage(text)
 
     def handle_message(self, **kwargs):
         message = kwargs.get('message')
@@ -49,6 +54,7 @@ class DigitalBeing():
                     responses_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=self.context)
             return responses_dict
         except Exception as err:
+            self._server.sendMessage("Exception handle_message: " + err)
             print("Exception handle_message: " + err)
 
 
@@ -56,6 +62,7 @@ class DigitalBeing():
         try:
             return self.jsondb.getAgents()
         except Exception as err:
+            self._server.sendMessage("Exception get_agents: " + err)
             print("Exception get_agents: " + err)
 
 
@@ -66,6 +73,7 @@ class DigitalBeing():
             self.jsondb.setAgentName(context.lstrip(), name.lstrip())
             return {'name': name, 'context': context}
         except Exception as err:
+            self._server.sendMessage("Exception set_agent_fields: " + err)
             print("Exception set_agent_fields: " + err)
 
 
@@ -83,5 +91,5 @@ class DigitalBeing():
                 response_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=context)
             return response_dict
         except Exception as err:
+            self._server.sendMessage("Exception invoke_solo_agent: " + err)
             print("Exception invoke_solo_agent: " + err)
-

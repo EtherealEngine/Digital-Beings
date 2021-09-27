@@ -1,3 +1,4 @@
+import { initClient } from './tcpClient';
 import {helpFields, _findCommand, _parseWords} from './util';
 
 const Discord = require('discord.js');
@@ -52,6 +53,7 @@ const createDiscordClient = (messageResponseHandler) => {
     });
 
     client.login(DISCORD_API_TOKEN);
+    initClient('127.0.0.1', 7778)
 };
 
 module.exports = {createDiscordClient}
