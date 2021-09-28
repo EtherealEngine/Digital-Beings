@@ -4,6 +4,7 @@ import { getRandomEmptyResponse } from "../utils"
 const token = process.env.TELEGRAM_BOT_TOKEN
 
 export const createTelegramClient = (messageResponseHandler) => {
+    if (!token) return console.warn("No API token for Telegram bot, skipping");
     const bot = new TelegramBot(token, {polling: true})
 
     bot.on('message', (msg) => {

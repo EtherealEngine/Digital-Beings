@@ -10,6 +10,7 @@ let app = undefined
 let client: Twilio = undefined
 
 export const createTwillioClient = (messageResponseHandler) => {
+    if (!accountSid || !authToken || !twilioNumber)  return console.warn("No API token for Twilio bot, skipping");
     app = express();
     init(messageResponseHandler)
     app.use("/messages", router);

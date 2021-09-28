@@ -29,10 +29,7 @@ const pyConnect = require('./pyconnect');
                 callback(args.response);
             }
             require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-
-            if (process.env.TELEGRAM_BOT_TOKEN!==undefined && process.env.TELEGRAM_BOT_TOKEN!=="")
-                require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
-
+            require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
             //require("../client/twillio/twillio-client").createTwillioClient(messageResponseHandler);
             // require("../server/agents/echo/echo").createEcho(messageResponseHandler) //Echo Bot crashing the app on <npm start>
             //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
