@@ -1,3 +1,4 @@
+import { startsWithCapital } from "../../utils";
 import { exitConversation, isInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
@@ -23,9 +24,33 @@ module.exports = (client, message) => {
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const otherMention = !isMention && mentions.members.size > 0
+    let startConv = false
+    let startConvName = ''
+    if (!isMention && !otherMention) {
+        const trimmed = content.trimStart()
+        if (trimmed.toLowerCase().startsWith('hi')) {
+            const parts = trimmed.split(' ')
+            if (parts.length > 1) {
+                if (!startsWithCapital(parts[1])) {
+                    startConv = true
+                }
+                else {
+                    startConv = false
+                    startConvName = parts[1]
+                }
+            }
+            else {
+                startConv = true
+            }
+        }
+    }
     if (otherMention) {
         exitConversation(author.id)
         mentions.members.forEach(pinged => exitConversation(pinged.id))
+    }
+    if (!startConv) {
+        exitConversation(author.id)
+        if (startConvName.length > 0) exitConversation(startConvName)
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
     const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
@@ -37,7 +62,7 @@ module.exports = (client, message) => {
             if (client.username_regex === undefined) client.username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
             content = '!ping ' + content.replace(client.username_regex, '').trim()
         }
-        else if (isInDiscussion) content = '!ping ' + content
+        else if (isInDiscussion || startConv) content = '!ping ' + content
     }
 
     if (content.startsWith('!ping')) sentMessage(author.id)

@@ -14,3 +14,7 @@ export const emptyResponse: string[] = [
 export function getRandomEmptyResponse(): string {
   return emptyResponse[getRandomNumber(0, emptyResponse.length - 1)]
 }
+
+export function startsWithCapital(word){
+  return word.charAt(0) === word.charAt(0).toUpperCase()
+}

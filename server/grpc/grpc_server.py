@@ -1,8 +1,6 @@
-import sys
 import grpc
 from concurrent import futures
 import time
-import traceback
 
 # import the generated classes
 import example_pb2
@@ -92,8 +90,6 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             print('InvokeSoloAgent exception: ' + err)
             return { 'key': 'none', 'value': 'none' }
        
-
-
 # create a gRPC server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 

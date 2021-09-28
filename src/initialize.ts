@@ -28,15 +28,13 @@ const pyConnect = require('./pyconnect');
                 args.response = await pyConnect.invoke(args)
                 callback(args.response);
             }
-            require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-
-            if (process.env.TELEGRAM_BOT_TOKEN!==undefined && process.env.TELEGRAM_BOT_TOKEN!=="")
-                require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
-
-            //require("../client/twillio/twillio-client").createTwillioClient(messageResponseHandler);
-            // require("../server/agents/echo/echo").createEcho(messageResponseHandler) //Echo Bot crashing the app on <npm start>
+            //require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
+            //require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
+            //require("../client/twilio/twilio-client").createTwilioClient(messageResponseHandler);
+            require("../server/agents/echo/echo").createEcho(messageResponseHandler);
+            require("../server/agents/echo/echo").createTelegramEcho(messageResponseHandler);
             //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
-            // require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler); //XR Engine Client crashing the app on <npm start>
+            //require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
         }
     ); 
 })();
