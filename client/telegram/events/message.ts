@@ -1,8 +1,9 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
 import { exitConversation, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
-import { username_regex } from "../telegram-client"
+import { botName, username_regex } from "../telegram-client"
 
 export function onMessage(bot, msg, messageResponseHandler) {
+    console.log(JSON.stringify(msg))
     const date = Date.now() / 1000
     const msgDate = msg.date
     const diff = date - msgDate
@@ -14,6 +15,16 @@ export function onMessage(bot, msg, messageResponseHandler) {
     let addPing = false
     if (msg.chat.type == 'supergroup') {
         if (content === '') content = '{sent media}'
+        let isReply = false
+        if (msg.reply_to_message !== undefined) {
+            if (msg.reply_to_message.from.username === botName) isReply = true
+            else {
+                exitConversation(_sender)
+                const _replyTo = msg.reply_to_message.from.username === undefined ? msg.reply_to_message.from.first_name : msg.reply_to_message.from.username
+                exitConversation(_replyTo)
+                return
+            }
+        }
         let _prev = undefined
         if (!msg.from.is_bot) {
             _prev = prevMessage[msg.chat.id]
@@ -64,7 +75,7 @@ export function onMessage(bot, msg, messageResponseHandler) {
         if (!content.startsWith('!') && !otherMention) {
             if (isMention) content = '!ping ' + content.replace('!', '').trim()
             else if (isUserNameMention) content = '!ping ' + content.replace(username_regex, '').trim()   
-            else if (isInDiscussion || startConv) content = '!ping ' + content
+            else if (isInDiscussion || startConv || isReply) content = '!ping ' + content
         }
 
         if (!otherMention && content.startsWith('!ping')) sentMessage(_sender)
