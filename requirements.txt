@@ -1,7 +1,7 @@
 click==7.1.2
 flask==2.0.1
 flask-cors==3.0.10
-grpcio==1.40.0
+grpcio==1.41.0
 grpcio-tools==1.41.0
 numpy==1.18.5
 oauthlib==3.1.0
