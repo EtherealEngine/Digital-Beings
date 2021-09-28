@@ -46,6 +46,8 @@ class DigitalBeing():
 
     def handle_message(self, **kwargs):
         message = kwargs.get('message')
+        if ('\n' in message):
+            message = message.replace('\n', ' ')
         if (message == None):
             if (hasattr(self, '_server')):
                 self._server.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")

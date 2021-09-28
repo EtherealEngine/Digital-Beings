@@ -11,6 +11,7 @@ export async function run (client, message, args, author, addPing, channel) {
         return
     }
     console.log('content: ' + args.grpc_args.message)
+    console.log(args)
     await client.messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
             console.log('response: ' + response.response[key])
