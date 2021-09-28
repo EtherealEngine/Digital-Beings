@@ -1,3 +1,5 @@
+import TelegramBot = require("node-telegram-bot-api");
+
 const Discord = require('discord.js');
 const {Util, Intents} = require('discord.js')
 const config = require("./config.json");
@@ -12,6 +14,7 @@ const {
     createHmac,
 } = require('crypto');
 
+const token = process.env.TELEGRAM_BOT_TOKEN
 const TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY;
 const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET;
 const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
@@ -45,6 +48,16 @@ const createEcho = (messageResponseHandler) => {
         });
     });
     client.login(DISCORD_API_TOKEN);
+};
+
+const createTelegramEcho = (messageResponseHandler) => {
+    if (!token) return console.warn("No API token for Telegram bot, skipping");
+    const bot = new TelegramBot(token, {polling: true})
+
+    bot.on('message', (msg) => {
+        if (msg.from.is_bot) return
+        else bot.sendMessage(msg.chat.id, msg.text)
+    })
 };
 
 
@@ -150,4 +163,4 @@ const createTwitterEcho = async (messageResponseHandler) => {
         }
     }).listen(SERVER_PORT);
 };
-module.exports = {createEcho,createTwitterEcho}
+module.exports = {createEcho, createTelegramEcho, createTwitterEcho}
