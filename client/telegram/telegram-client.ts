@@ -7,7 +7,6 @@ import { onMessageEdit } from "./events/message_edit"
 const token = process.env.TELEGRAM_BOT_TOKEN
 export const username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
 
-
 export const createTelegramClient = (messageResponseHandler) => {
     console.log('loading telegram, token: ' + token)
     if (!token) return console.warn("No API token for Telegram bot, skipping");

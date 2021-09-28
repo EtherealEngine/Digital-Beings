@@ -26,10 +26,10 @@ export function onMessageEdit(bot, msg, messageResponseHandler) {
 
         const isMention = msg.entities !== undefined && msg.entities.length === 1 && msg.entities[0].type === 'mention' && content.includes('@' + process.env.TELEGRAM_BOT_NAME)
         const otherMention = msg.entities !== undefined && msg.entities.length > 0 && msg.entities[0].type === 'mention'  && !content.includes('@' + process.env.TELEGRAM_BOT_NAME)
-
         if (otherMention) {
             exitConversation(msg.from.id)
             for(let i = 0; i < msg.entities.length; i++) {
+                exitConversation(_sender)
                 if (msg.entities[i].type === 'mention') {
                     const _user = msg.text.slice(msg.entities[i].offset + 1, msg.entities[i].length)
                     exitConversation(_user)

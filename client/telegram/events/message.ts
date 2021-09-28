@@ -1,4 +1,4 @@
-import { getRandomEmptyResponse } from "../../utils"
+import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
 import { exitConversation, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
 import { username_regex } from "../telegram-client"
 
@@ -12,7 +12,6 @@ export function onMessage(bot, msg, messageResponseHandler) {
     let content = msg.text
     const _sender = msg.from.username === undefined ? msg.from.first_name : msg.from.username
     let addPing = false
-    console.log(msg)
     if (msg.chat.type == 'supergroup') {
         if (content === '') content = '{sent media}'
         let _prev = undefined
@@ -26,9 +25,28 @@ export function onMessage(bot, msg, messageResponseHandler) {
 
         const isMention = msg.entities !== undefined && msg.entities.length === 1 && msg.entities[0].type === 'mention' && content.includes('@' + process.env.TELEGRAM_BOT_NAME)
         const otherMention = msg.entities !== undefined && msg.entities.length > 0 && msg.entities[0].type === 'mention'  && !content.includes('@' + process.env.TELEGRAM_BOT_NAME)
-
+        let startConv = false
+        let startConvName = ''
+        if (!isMention && !otherMention) {
+            const trimmed = content.trimStart()
+            if (trimmed.toLowerCase().startsWith('hi')) {
+                const parts = trimmed.split(' ')
+                if (parts.length > 1) {
+                    if (!startsWithCapital(parts[1])) {
+                        startConv = true
+                    }
+                    else {
+                        startConv = false
+                        startConvName = parts[1]
+                    }
+                }
+                else {
+                    startConv = true
+                }
+            }
+        }
         if (otherMention) {
-            exitConversation(msg.from.id)
+            exitConversation(_sender)
             for(let i = 0; i < msg.entities.length; i++) {
                 if (msg.entities[i].type === 'mention') {
                     const _user = msg.text.slice(msg.entities[i].offset + 1, msg.entities[i].length)
@@ -36,25 +54,25 @@ export function onMessage(bot, msg, messageResponseHandler) {
                 }
             }
         }
+        if (!startConv) {
+            exitConversation(_sender)
+            if (startConvName.length > 0) exitConversation(startConvName)
+        }
 
         const isUserNameMention = content.toLowerCase().match(username_regex)
         const isInDiscussion = isInConversation(msg.from.username)
         if (!content.startsWith('!') && !otherMention) {
             if (isMention) content = '!ping ' + content.replace('!', '').trim()
-            else if (isUserNameMention) content = '!ping ' + content.replace(username_regex, '').trim()
-                
-        else if (isInDiscussion) content = '!ping ' + content
+            else if (isUserNameMention) content = '!ping ' + content.replace(username_regex, '').trim()   
+            else if (isInDiscussion || startConv) content = '!ping ' + content
         }
 
-        if (content.startsWith('!ping')) sentMessage(msg.from.username)
+        if (!otherMention && content.startsWith('!ping')) sentMessage(_sender)
     }
     else {
         content = '!ping ' + content
     }
 
-    console.log(msg.chat.type + ' - ' + content)
-
-    const chatId = msg.chat.id
     if (content === '!ping ' || !content.startsWith('!ping')) return
 
     const args = {}
@@ -76,7 +94,6 @@ export function onMessage(bot, msg, messageResponseHandler) {
         args['grpc_method_params'] = args['command_info'][2];
     }
 
-    console.log(JSON.stringify(args))
     messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
