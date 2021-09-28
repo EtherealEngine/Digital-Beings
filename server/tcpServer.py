@@ -5,15 +5,13 @@ class tcpServer:
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._socket.bind((host, port))
         print('listening')
-        self.conn = None
-        #self._socket.listen(1)
+        self._socket.listen(1)
 
-        #self.conn = self._socket.accept()[0]
+        self.conn = self._socket.accept()[0]
         print('client connected')
     
     def sendMessage(self, text: str):
-        print(text)
-        if (self.conn != None):
+        if (hasattr(self, 'conn')):
             try:
                 self.conn.send(str(text).encode())
             except Exception as err:
