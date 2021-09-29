@@ -3,4 +3,4 @@ class Repeat:
             pass
 
         def handle_message(self,message):
-            return message
+            return { 'repeat': message }
