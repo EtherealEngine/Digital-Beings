@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
-import { exitConversation, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
+import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage, updateEditedMessage } from "../chatHistory"
 import { botName, username_regex } from "../telegram-client"
 
 export function onMessage(bot, msg, messageResponseHandler) {
@@ -10,8 +10,10 @@ export function onMessage(bot, msg, messageResponseHandler) {
     const hours_diff = Math.ceil(diff/3600)
     const mins_diff = Math.ceil((diff-hours_diff)/60)
     if (mins_diff > 12 || (mins_diff <= 12 && hours_diff > 1)) return
+    
     let content = msg.text
     const _sender = msg.from.username === undefined ? msg.from.first_name : msg.from.username
+    addMessageToHistory(msg.chat.id, msg.message_id, _sender, content)
     let addPing = false
     if (msg.chat.type == 'supergroup') {
         if (content === '') content = '{sent media}'
@@ -105,6 +107,8 @@ export function onMessage(bot, msg, messageResponseHandler) {
         args['grpc_method_params'] = args['command_info'][2];
     }
 
+    args['chat_history'] = getChatHistory(msg.chat.id, 10)
+    console.log(JSON.stringify(args['chat_history']))
     messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
@@ -112,8 +116,14 @@ export function onMessage(bot, msg, messageResponseHandler) {
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 let text = response.response[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(_resp => onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id))          
-                else bot.sendMessage(msg.chat.id,text).then(_resp => onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id))          
+                if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                    onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                    })        
+                else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
+                    onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                })              
            }
             else if (response.response[key].length > 2000) {
                 const lines: string[] = []
@@ -131,8 +141,14 @@ export function onMessage(bot, msg, messageResponseHandler) {
                         if (i === 0) {
                             let text = lines[1]
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                            if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(_resp => onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id))          
-                            else bot.sendMessage(msg.chat.id,text).then(_resp => onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id))          
+                            if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                                onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
+                                addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                                })              
+                            else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
+                                onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
+                                addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                                })              
                         }
                 }
             }
@@ -140,8 +156,14 @@ export function onMessage(bot, msg, messageResponseHandler) {
             else {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(_resp => onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id))          
-                else bot.sendMessage(msg.chat.id,emptyResponse).then(_resp => onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id))          
+                if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                    onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, emptyResponse)
+                    })             
+                else bot.sendMessage(msg.chat.id,emptyResponse).then(function (_resp) {
+                    onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, emptyResponse)
+                    })    
             }
         });          
     });
