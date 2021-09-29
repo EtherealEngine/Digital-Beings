@@ -1,5 +1,6 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { handleMessages } from "./messageHandler";
 import { redisDb } from "./redisDb";
 import { speechToText } from "./stt";
 import { generateVoice } from './tts'
@@ -247,7 +248,7 @@ class XREngineBot {
         }
 //#endregion
 
-        //this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
+        handleMessages(this.messageResponseHandler, messages, this)
         return this.activeChannel && messages;
     }
 

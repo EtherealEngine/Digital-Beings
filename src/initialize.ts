@@ -31,10 +31,10 @@ const pyConnect = require('./pyconnect');
             //require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
             //require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
             //require("../client/twilio/twilio-client").createTwilioClient(messageResponseHandler);
-            require("../server/agents/echo/echo").createEcho(messageResponseHandler);
-            require("../server/agents/echo/echo").createTelegramEcho(messageResponseHandler);
+            //require("../server/agents/echo/echo").createEcho(messageResponseHandler);
+            //require("../server/agents/echo/echo").createTelegramEcho(messageResponseHandler);
             //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
-            //require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
+            require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
         }
     ); 
 })();
