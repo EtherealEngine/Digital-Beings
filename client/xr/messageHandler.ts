@@ -63,5 +63,4 @@ export function handleMessages(messageResponseHandler, messages, bot) {
             });          
         });
     }
-    messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
 }

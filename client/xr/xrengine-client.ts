@@ -4,6 +4,7 @@ import { handleMessages } from "./messageHandler";
 import { redisDb } from "./redisDb";
 import { speechToText } from "./stt";
 import { generateVoice } from './tts'
+import { UsersInHarassmentRange, UsersInIntimateRange, UsersInRange, UsersLookingAt } from "./UsersInRange";
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
@@ -441,13 +442,32 @@ class XREngineBot {
             }
             else if (message.text().startsWith('proximity|')) {
                 const data = message.text().split('|')
+                console.log('Proximity Data: ' + data)
                 if (data.length === 4) {
                     const mode = data[1]
                     const player = data[2]
                     const value = data[3]
 
                     if (value === 'left') {
+                        if (mode == 'inRange') {
+                            UsersInRange[player] = undefined
+                        } else if (mode == 'intimate') {
+                            UsersInIntimateRange[player] = undefined
+                        } else if (mode == 'harassment') {
+                            UsersInHarassmentRange[player] = undefined
+                        } else if (mode == 'lookAt') {
+                            UsersLookingAt[player] = undefined
+                        }
                     } else {
+                        if (mode == 'inRange') {
+                            UsersInRange[player] = value
+                        } else if (mode == 'intimate') {
+                            UsersInIntimateRange[player] = value
+                        } else if (mode == 'harassment') {
+                            UsersInHarassmentRange[player] = value
+                        } else if (mode == 'lookAt') {
+                            UsersLookingAt[player] = value
+                        }
                     }
                 }
             }
@@ -462,8 +482,8 @@ class XREngineBot {
             else if (message.text().startsWith('emotions|')) {
             }
                 
-            if (this.autoLog)
-                console.log(">> ", message.text())
+            //if (this.autoLog)
+            //    console.log(">> ", message.text())
         })
 
         this.page.setViewport({ width: 0, height: 0 });
