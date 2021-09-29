@@ -44,7 +44,7 @@
     "wav-file-encoder": "1.0.2"
   },
   "devDependencies": {
-    "@types/node": "14.17.19",
+    "@types/node": "14.17.20",
     "@types/react": "17.0.24",
     "@types/react-dom": "17.0.9",
     "@types/three": "0.132.1",
