@@ -20,7 +20,7 @@ ALL_AGENTS_LIST = [
                   ]
 SELECTED_AGENTS = [
                     'gpt3',
-                    'repeat'
+                    #'repeat'
                     #'dodecathlon.wizard_of_wikipedia',
                   ]
 DEVICE = 'cpu'  # cpu or gpu
