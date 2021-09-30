@@ -103,7 +103,7 @@ DigitalBeing requires the following to run:
 1. In order to run Twilio you will need to install NGROK or an alternative.
 2. Run ngrok and with the same HTTP port set for the TWILIO_PORT in the .env -> ngrok http 65535
 3. Update Twilio WebHooks for Messaging (SMS) with the new ngrok link x.x.x.x.ngrok.io/sms for the active number
-### How To Install NGROK on Ubuntu - [https://ngrok.com/download](Official Website)
+### How To Install NGROK on Ubuntu - [Official Website](https://ngrok.com/download)
 1. wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
 2. sudo apt install unzip
 3. ./ngrok -> this command should return the info of the ngrok command
