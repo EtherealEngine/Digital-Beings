@@ -30,8 +30,6 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
-    await _redisDb.create()
-
     //generateVoice('hello there', (buf, path) => {}, false)
     //speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
@@ -228,7 +226,7 @@ class XREngineBot {
                 if (index > -1) messages.splice(index, 1)
             }
 
-            await _redisDb.setValue(messageId, messages[i])
+            //await _redisDb.setValue(messageId, messages[i])
             this.chatHistory.push(messageId)
         }
 
@@ -247,6 +245,7 @@ class XREngineBot {
         }
 //#endregion
 
+         console.log('messages: ' + JSON.stringify(messages))
         //this.messageResponseHandler("replaceme", messages, (response) => this.sendMessage(response));
         return this.activeChannel && messages;
     }
