@@ -40,7 +40,9 @@ module.exports = (client, message) => {
                 }
             }
             else {
-                startConv = true
+                if (trimmed.toLowerCase() === 'hi') {
+                    startConv = true
+                } 
             }
         }
     }
@@ -49,8 +51,10 @@ module.exports = (client, message) => {
         mentions.members.forEach(pinged => exitConversation(pinged.id))
     }
     if (!startConv) {
-        exitConversation(author.id)
-        if (startConvName.length > 0) exitConversation(startConvName)
+        if (startConvName.length > 0) {
+            exitConversation(author.id)
+            exitConversation(startConvName)
+        }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
     const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
@@ -94,7 +98,6 @@ module.exports = (client, message) => {
     let cmd = client.commands.get(command);
 
     args['command_info'] = client._findCommand(command);
-    console.log(args['command_info'])
     args['grpc_args']['sender'] = author.username;
     if (args['command_info']) {
         args['command'] = args['command_info'][0];

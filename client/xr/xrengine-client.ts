@@ -1,7 +1,7 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
+import { redisDb } from "../redisDb";
 import { handleMessages } from "./messageHandler";
-import { redisDb } from "./redisDb";
 import { speechToText } from "./stt";
 import { generateVoice } from './tts'
 import { UsersInHarassmentRange, UsersInIntimateRange, UsersInRange, UsersLookingAt } from "./UsersInRange";
@@ -32,8 +32,6 @@ function getOS() {
 
 
 async function createXREngineClient(messageResponseHandler) {
-    await _redisDb.create()
-
     //generateVoice('hello there', (buf, path) => {}, false)
     //speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
@@ -230,7 +228,7 @@ class XREngineBot {
                 if (index > -1) messages.splice(index, 1)
             }
 
-            await _redisDb.setValue(messageId, messages[i])
+            //await _redisDb.setValue(messageId, messages[i])
             this.chatHistory.push(messageId)
         }
 

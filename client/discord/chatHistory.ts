@@ -1,3 +1,5 @@
+import { redisDb } from "../redisDb"
+
 export const prevMessage: { [channel: string]: string } = {}
 export const prevMessageTimers: { [channel: string]: any } = {}
 export const messageResponses: { [channel: string]: { [messageId: string]: string } } = {}
@@ -40,4 +42,18 @@ export function exitConversation(user) {
 export function getResponse(channel, message) {
     if (messageResponses[channel] === undefined) return undefined
     return messageResponses[channel][message]
+}
+
+export function getDbKey(chatId, messageId) {
+    return 'discord.' + chatId + '.' + messageId
+}
+export async function addMessageToHistory(chatId, messageId, senderName, content) {
+    await redisDb.getInstance.setValue(getDbKey(chatId, messageId), JSON.stringify({ 
+        messageId: messageId, 
+        senderName: senderName, 
+        content: content 
+    }))    
+}
+export async function deleteMessageFromHistory(chatId, messageId) {
+    await redisDb.getInstance.deleteKey(getDbKey(chatId, messageId))
 }

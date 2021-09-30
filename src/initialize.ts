@@ -1,5 +1,8 @@
+import { redisDb } from "../client/redisDb";
+
 require('dotenv-flow').config();
 
+new redisDb()
 const expectedServerDelta = 1000 / 60;
 let lastTime = 0;
 // @ts-ignore

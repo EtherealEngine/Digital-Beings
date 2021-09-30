@@ -19,7 +19,8 @@ ALL_AGENTS_LIST = [
                     'wizard_of_wikipedia.end2end_generator'
                   ]
 SELECTED_AGENTS = [
-                    'gpt3'
+                    'gpt3',
+                    #'repeat'
                     #'dodecathlon.wizard_of_wikipedia',
                   ]
 DEVICE = 'cpu'  # cpu or gpu

@@ -12,6 +12,7 @@ import agent_params as param
 from agents.openchat.agents.gpt3 import GPT3Agent
 from agents.openchat.agents.rasa import RasaAgent
 from agents.openchat.openchat import OpenChat
+from agents.repeat.repeat import Repeat
 
 from jsondb import jsondb as jsondb
 from tcpServer import tcpServer as _server
@@ -36,6 +37,8 @@ class DigitalBeing():
                 self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
             elif model_name == 'rasa':
                 self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
+            elif model_name =="repeat":
+                self.repeat_agent = Repeat()
             else:
                 self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
                 self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
@@ -60,6 +63,8 @@ class DigitalBeing():
                     responses_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
                 elif model_name == 'rasa':
                     responses_dict['rasa'] = self.rasa_agent.invoke(message=message)
+                elif model_name == "repeat":
+                    responses_dict = self.repeat_agent.handle_message(message)
                 else:
                     responses_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=self.context)
             return responses_dict
