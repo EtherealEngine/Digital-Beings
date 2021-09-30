@@ -22,7 +22,7 @@ tokenizers==0.10.2
 torch==1.9.1
 torchtext==0.10.1
 tqdm==4.62.3
-transformers==4.11.0
+transformers==4.11.2
 twilio==7.0.0
 typeguard==2.12.1
 typer==0.4.0
