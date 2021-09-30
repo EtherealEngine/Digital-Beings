@@ -40,7 +40,9 @@ module.exports = (client, message) => {
                 }
             }
             else {
-                startConv = true
+                if (trimmed.toLowerCase() === 'hi') {
+                    startConv = true
+                } 
             }
         }
     }
@@ -49,8 +51,10 @@ module.exports = (client, message) => {
         mentions.members.forEach(pinged => exitConversation(pinged.id))
     }
     if (!startConv) {
-        exitConversation(author.id)
-        if (startConvName.length > 0) exitConversation(startConvName)
+        if (startConvName.length > 0) {
+            exitConversation(author.id)
+            exitConversation(startConvName)
+        }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
     const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)

@@ -1,8 +1,8 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
-import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage, updateEditedMessage } from "../chatHistory"
+import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
 import { botName, username_regex } from "../telegram-client"
 
-export function onMessage(bot, msg, messageResponseHandler) {
+export async function onMessage(bot, msg, messageResponseHandler) {
     console.log(JSON.stringify(msg))
     const date = Date.now() / 1000
     const msgDate = msg.date
@@ -30,11 +30,11 @@ export function onMessage(bot, msg, messageResponseHandler) {
         let _prev = undefined
         if (!msg.from.is_bot) {
             _prev = prevMessage[msg.chat.id]
-            prevMessage[msg.chat.id] = msg.from.username
+            prevMessage[msg.chat.id] = _sender
             if (prevMessageTimers[msg.chat.id] !== undefined) clearTimeout(prevMessageTimers[msg.chat.id])
             prevMessageTimers[msg.chat.id] = setTimeout(() => prevMessage[msg.chat.id] = '', 120000)
         }
-        addPing = _prev !== undefined && _prev !== '' && _prev !== msg.from.username
+        addPing = _prev !== undefined && _prev !== '' && _prev !== _sender
 
         const isMention = msg.entities !== undefined && msg.entities.length === 1 && msg.entities[0].type === 'mention' && content.includes('@' + process.env.TELEGRAM_BOT_NAME)
         const otherMention = msg.entities !== undefined && msg.entities.length > 0 && msg.entities[0].type === 'mention'  && !content.includes('@' + process.env.TELEGRAM_BOT_NAME)
@@ -54,7 +54,9 @@ export function onMessage(bot, msg, messageResponseHandler) {
                     }
                 }
                 else {
-                    startConv = true
+                    if (trimmed.toLowerCase() === 'hi') {
+                        startConv = true
+                    } 
                 }
             }
         }
@@ -68,12 +70,14 @@ export function onMessage(bot, msg, messageResponseHandler) {
             }
         }
         if (!startConv) {
-            exitConversation(_sender)
-            if (startConvName.length > 0) exitConversation(startConvName)
+            if (startConvName.length > 0) {
+                exitConversation(_sender)
+                exitConversation(startConvName)
+            }
         }
 
         const isUserNameMention = content.toLowerCase().match(username_regex)
-        const isInDiscussion = isInConversation(msg.from.username)
+        const isInDiscussion = isInConversation(_sender)
         if (!content.startsWith('!') && !otherMention) {
             if (isMention) content = '!ping ' + content.replace('!', '').trim()
             else if (isUserNameMention) content = '!ping ' + content.replace(username_regex, '').trim()   
@@ -107,8 +111,7 @@ export function onMessage(bot, msg, messageResponseHandler) {
         args['grpc_method_params'] = args['command_info'][2];
     }
 
-    args['chat_history'] = getChatHistory(msg.chat.id, 10)
-    console.log(JSON.stringify(args['chat_history']))
+    args['chat_history'] = await getChatHistory(msg.chat.id, 10)
     messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {

@@ -13,11 +13,11 @@ export const createTelegramClient = (messageResponseHandler) => {
     const bot = new TelegramBot(token, {polling: true})
     bot.getMe().then(info => botName = info.username)
 
-    bot.on('message', (msg) => {
-        onMessage(bot, msg, messageResponseHandler)
+    bot.on('message', async (msg) => {
+        await onMessage(bot, msg, messageResponseHandler)
     })
-    bot.on('edited_message', (msg) => {
-        onMessageEdit(bot, msg, messageResponseHandler)
+    bot.on('edited_message', async (msg) => {
+        await onMessageEdit(bot, msg, messageResponseHandler)
     });
     console.log('telegram client loaded')
 }

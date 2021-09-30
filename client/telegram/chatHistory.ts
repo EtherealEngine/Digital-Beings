@@ -1,3 +1,5 @@
+import { redisDb } from "../redisDb"
+
 export const prevMessage: { [chatId: string]: string } = {}
 export const prevMessageTimers: { [chatId: string]: any } = {}
 export const messageResponses: { [chatId: string]: { [messageId: string]: string } } = {}
@@ -25,10 +27,9 @@ export function isInConversation(user): boolean {
 export function sentMessage(user) {
     if (conversation[user] !== undefined) {
         clearTimeout(conversation[user])
-        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
-    } else {
-        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
     }
+    
+    conversation[user] = setTimeout(function() { conversation[user] = undefined }, 120000)
 }
 
 export function exitConversation(user) {
@@ -43,35 +44,28 @@ export function getResponse(chatId, message) {
     return messageResponses[chatId][message]
 }
 
-export function addMessageToHistory(chatId, messageId, senderName, content) {
-    if (chatHistory[chatId] === undefined) chatHistory[chatId] = []
-    chatHistory[chatId].push({
-        messageId: messageId,
-        senderName: senderName,
-        content: content
-    })
-    console.log('new chat history: ' + JSON.stringify(chatHistory[chatId]))
+export function getDbKey(chatId, messageId) {
+    return 'telegram.' + chatId + '.' + messageId
 }
-export function getChatHistory(chatId, length): { senderName, content }[] {
-    const res: { senderName, content }[] = []
-    if (chatHistory[chatId] === undefined) return res
-
-    for(let i = 0; i < chatHistory[chatId].length; i++) {
-        res.push({ 
-            senderName: chatHistory[chatId][i].senderName,
-            content: chatHistory[chatId][i].content
-        })
-
-        if (i + 1 >= length) break
-    }
-
-    return res
+export async function addMessageToHistory(chatId, messageId, senderName, content) {
+    await redisDb.getInstance.setValue(getDbKey(chatId, messageId), JSON.stringify({ 
+        messageId: messageId, 
+        senderName: senderName, 
+        content: content 
+    }))    
 }
-export function updateEditedMessage(chatId, messageId, newContent) {
-    if (chatHistory[chatId] === undefined) return
-    for(let i = 0; i < chatHistory[chatId].length; i++) {
-        if (chatHistory[chatId][i].messageId == messageId) {
-            chatHistory[chatId][i].content = newContent
+export async function getChatHistory(chatId, length) {
+    return await redisDb.getInstance.getKeys('telegram.' + chatId + '.').then(async function (keys) {
+        const res: {senderName, content}[] = []
+
+        for(let i = 0; i < keys.length; i++) {
+            const obj = JSON.parse(await redisDb.getInstance.getValue(keys[i]))
+            if (obj === undefined) continue
+            res.push({ senderName: obj.senderName, content: obj.content })
+
+            if (i + 1 >= length) break
         }
-    }
+
+        return res
+    });
 }

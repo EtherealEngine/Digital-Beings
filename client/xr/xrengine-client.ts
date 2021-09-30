@@ -1,6 +1,6 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
-import { redisDb } from "./redisDb";
+import { redisDb } from "../redisDb";
 import { speechToText } from "./stt";
 import { generateVoice } from './tts'
 
