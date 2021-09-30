@@ -17,7 +17,7 @@ export async function run (client, message, args, author, addPing, channel) {
             console.log('response: ' + response.response[key])
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 if (addPing) {
-                    const text = '<@!' + author + '> ' + replacePlaceholders(response.response[key])
+                    const text = `<@!${author}> ` + replacePlaceholders(response.response[key])
                     message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                 }  else {
                     let text = replacePlaceholders(response.response[key])
@@ -41,7 +41,7 @@ export async function run (client, message, args, author, addPing, channel) {
                     if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
                         if (i === 0) {
                             if (addPing) {
-                                const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
+                                const text = `<@!${author}> ` + replacePlaceholders(lines[i])
                                 message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                             } else {
                                 let text = replacePlaceholders(lines[i])
@@ -63,7 +63,7 @@ export async function run (client, message, args, author, addPing, channel) {
                 console.log('sending empty response: ' + emptyResponse)
                 if (emptyResponse !== undefined && emptyResponse !== '' && emptyResponse.replace(/\s/g, '').length !== 0) {
                     if (addPing) {
-                        const text = '<@!' + author + '> ' + emptyResponse
+                        const text = `<@!${author}> ` + emptyResponse
                         message.channel.send(text).then(msg => onMessageResponseUpdated(channel, message.id, msg.id))
                     } else {
                         let text = emptyResponse

@@ -94,14 +94,14 @@ class XREngineBot {
 
     async sendMessage(message) {
         if(message === null || message === undefined) return;
-        console.log('send message: ' + message)
+        console.log(`send message: ${message}`)
         await this.typeMessage('newMessage', message, false);
         await this.pressKey('Enter')
     }
 
     async sendMovementCommand(x : any, y: any, z : any) {
         if (x === undefined || y === undefined || z == undefined) {
-            console.log("Invalid parameters! (" + x + ", " + y + ", " + z + ")")
+            console.log(`Invalid parameters! (${x},${y},${z})`)
             return
         }
 
@@ -112,7 +112,7 @@ class XREngineBot {
     }
     async _sendMovementCommand(x : number, y : number, z : number) {
         if (x === undefined || y === undefined || z === undefined) {
-            console.log("Invalid parameters! (" + x + ", " + y + ", " + z + ")")
+            console.log(`Invalid parameters! (${x},${y},${z})`)
             return
         }
 
@@ -125,7 +125,7 @@ class XREngineBot {
     async requestWorldMetadata(maxDistance: number) {
         if (maxDistance === undefined || maxDistance <= 0) return
 
-        await this.sendMessage('/metadata world,' + maxDistance)
+        await this.sendMessage(`/metadata world,${maxDistance}`)
     }
     async requestAllWorldMetadata() {
         await this.requestWorldMetadata(Number.MAX_SAFE_INTEGER)
@@ -140,12 +140,12 @@ class XREngineBot {
     async goTo(landmark: string) { 
         if (landmark === undefined || landmark === '') return
 
-        await this.sendMessage('/goTo ' + landmark)
+        await this.sendMessage(`/goTo ${landmark}`)
     }
     async playEmote(emote: string) {
         if (emote === undefined || emote === '') return
 
-        await this.sendMessage('/emote ' + emote)
+        await this.sendMessage(`/emote ${emote}`)
     }
     async playFaceExpression(types: string[], perc: string[], time: string) {
         if (types === undefined || types.length <= 0) return
@@ -161,32 +161,32 @@ class XREngineBot {
     async getPosition(player: string) {
         if (player === undefined || player === '') return
 
-        await this.sendMessage('/getPosition ' + player)
+        await this.sendMessage(`/getPosition ${player}`)
     }
     async getRotation(player: string) {
         if (player === undefined || player === '') return
 
-        await this.sendMessage('/getRotation ' + player)
+        await this.sendMessage(`/getRotation ${player}`)
     }
     async getScale(player: string) {
         if (player === undefined || player === '') return
 
-        await this.sendAudio('/getScale ' + player)
+        await this.sendAudio(`/getScale ${player}`)
     }
     async getTransform(player: string) {
         if (player === undefined || player === '') return
 
-        await this.sendMessage('getTransform ' + player)
+        await this.sendMessage(`getTransform ${player}`)
     }
     async subscribeToChatSystem(system: string) {
         if (system === undefined || system === '') return
 
-        await this.sendMessage('/subscribe ' + system)
+        await this.sendMessage(`/subscribe ${system}`)
     }
     async unsubscribeFromChatSystem(system: string) {
         if (system === undefined || system === '') return
 
-        await this.sendMessage('/unsubscribe ' + system)
+        await this.sendMessage(`/unsubscribe ${system}`)
     }
     async getSubscribedChatSystems() {
         await this.sendMessage('/getSubscribed')
@@ -194,7 +194,7 @@ class XREngineBot {
     async follow(player: string) {
         if (player === undefined || player === '') return
 
-        await this.sendMessage('/follow ' + player)
+        await this.sendMessage(`/follow ${player}`)
     }
     async getChatHistory() {
         await this.sendMessage('/getChatHistory')
@@ -413,30 +413,30 @@ class XREngineBot {
                 const data = message.text().split('|', 2)
                 if (data.length === 2) {
                     const _data = data[1]
-                    console.log('Scene Metadata: Data:' + _data)
+                    console.log(`Scene Metadata: Data:${_data}`)
                 }
                 else
-                    console.log('invalid scene metadata length ('+data.length+'): ' + data)
+                    console.log(`invalid scene metadata length (${data.length}): ${data}`)
             }
             else if (message.text().startsWith('metadata')) {
                 const data = message.text().split('|', 3)
                 if (data.length === 3) {
                     const xyz = data[1]
                     const _data = data[2]
-                    console.log('Metadata: Position: ' + xyz + ', Data: ' + _data)
+                    console.log(`Metadata: Position: ${xyz}, Data: ${_data}`)
                 }
                 else
-                    console.log('invalid metadata length ('+data.length+'): ' + data)
+                    console.log(`invalid metadata length ${data.length}: ${data}`)
             }
             else if (message.text().startsWith('players|')) {
                 const cmd = message.text().split('|')[0]
                 const data = message.text().substring(cmd.length + 1)
-                console.log('Players: ' + data)
+                console.log(`Players: ${data}`)
             }
             else if (message.text().startsWith('messages|')) {
                 const cmd = message.text().split('|')[0]
                 const data = message.text().substring(cmd.length + 1)
-                console.log('Messages: ' + data)
+                console.log(`Messages: ${data}`)
             }
             else if (message.text().startsWith('proximity|')) {
                 const data = message.text().split('|')
@@ -499,14 +499,14 @@ class XREngineBot {
             await this.launchBrowser();
         }
 
-        let parsedUrl = new URL(url.includes('https') ? url : 'https://' + url);
+        let parsedUrl = new URL(url.includes('https') ? url : `https://${url}`);
         parsedUrl.searchParams.set('bot', 'true')
         console.log("parsed url is", parsedUrl);
         const context = this.browser.defaultBrowserContext();
         console.log("permission allow for ", parsedUrl.origin);
         context.overridePermissions(parsedUrl.origin, ['microphone', 'camera']);
 
-        console.log('Going to ' + parsedUrl);
+        console.log(`Going to ${parsedUrl}`);
         await this.page.goto(parsedUrl, { waitUntil: 'domcontentloaded' });
 
        /* const granted = await this.page.evaluate(async () => {
@@ -547,7 +547,7 @@ class XREngineBot {
         await this.updateUsername(name)
         await this.delay(10000)
         const index = this.getRandomNumber(0, this.avatars.length - 1)
-        console.log('avatar index: ' + index)
+        console.log(`avatar index: ${index}`)
         await this.updateAvatar(this.avatars[index])
         await this.requestPlayers()
         await this.getLocalUserId()
@@ -587,7 +587,7 @@ class XREngineBot {
     }
 
     async updateAvatar(avatar) {
-        console.log('\x1b[32m updating avatar to: ' + avatar)
+        console.log(`\x1b[32m updating avatar to: ${avatar}`)
        
         await this.clickElementById('SPAN', 'Profile_0')
         await this.clickElementById('button', 'select-avatar')
@@ -622,8 +622,8 @@ class XREngineBot {
     }
 
     async typeMessage(input: string, message: string, clean: boolean) {
-        if (clean) await this.page.click('input[name="' + input + '"]', { clickCount: 3 });
-        await this.page.type('input[name="' + input + '"]', message);
+        if (clean) await this.page.click(`input[name="${input}"]`, { clickCount: 3 });
+        await this.page.type(`input[name=${input}`, message);
         //await this.page.keyboard.type(message);
     }
 

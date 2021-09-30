@@ -6,7 +6,7 @@ export async function generateVoice(text: string, callback: (buf, path: string) 
     if (text === undefined || text === '') return
 
     const selfPath = process.cwd()
-    const cmd = "tts --text \"" + text + "\" --model_name \"tts_models/en/ljspeech/tacotron2-DCA\" --vocoder_name \"vocoder_models/universal/libri-tts/fullband-melgan\" --out_path " + selfPath
+    const cmd = `tts --text \"${text}\" --model_name \"tts_models/en/ljspeech/tacotron2-DCA\" --vocoder_name \"vocoder_models/universal/libri-tts/fullband-melgan\" --out_path ${selfPath}`
 
     exec(cmd, (error, stdout, stderr) => {
         if (error) {
