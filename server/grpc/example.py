@@ -16,7 +16,6 @@ from agents.repeat.repeat import Repeat
 
 from jsondb import jsondb as jsondb
 from tcpServer import tcpServer as _server
-from envLoader import envLoader as envLoader
 
 import logging
 
@@ -25,10 +24,9 @@ logger = logging.getLogger("app.main")
 class DigitalBeing():
 
     def __init__(self, **kwargs):
-        self.envLoader = envLoader()
         self.jsondb = jsondb()
         self.jsondb.getAgents()
-        if (self.envLoader.getValue('LOAD_DISCORD_LOGGER') == 'True'):
+        if (os.getenv('LOAD_DISCORD_LOGGER') == 'True'):
             self._server = _server('127.0.0.1', 7778)
         for model_name in param.SELECTED_AGENTS:
             self.context = self.jsondb.getTopicForAgent(model_name.lstrip())

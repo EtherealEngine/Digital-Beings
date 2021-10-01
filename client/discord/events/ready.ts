@@ -15,10 +15,10 @@ module.exports = async (client) => {
                         }
                     })
                 })
-                console.log('added unread messages to chat history')
             }
         })
+        console.log('added unread messages to chat history')
     })
     
-    console.log('client ready')
+    console.log('client is ready')
 }
