@@ -20,7 +20,7 @@ module.exports = (client, message) => {
     // Ignore all bots
     if (author.bot) return;
 
-    const botMention = '<@!' + client.user + '>';
+    const botMention = `<@!${client.user}>`;
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
     const otherMention = !isMention && mentions.members.size > 0
