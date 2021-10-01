@@ -111,7 +111,7 @@ module.exports = (client, message) => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
         });
     }
-    
+    console.log(JSON.stringify(args))
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 

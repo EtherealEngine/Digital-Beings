@@ -76,6 +76,7 @@ class XREngineBot {
     userId: string
     chatHistory: string[] = [];
     avatars: string[] = [ 'Alissa', 'Cornelius', 'James_ReadyPlayerMe', 'Jamie', 'Mogrid', 'Warrior' ]
+    username_regex: RegExp
     constructor({
         name = "Bot",
         fakeMediaPath = "",
@@ -94,7 +95,6 @@ class XREngineBot {
 
     async sendMessage(message) {
         if(message === null || message === undefined) return;
-        console.log('send message: ' + message)
         await this.typeMessage('newMessage', message, false);
         await this.pressKey('Enter')
     }
@@ -211,14 +211,15 @@ class XREngineBot {
         if (messages === undefined || messages === null) return;
 
         for(var i = 0; i < messages.length; i++ ){
-            messages[i].text = this.removeSystemFromChatMessage(messages[i].text)
+            //messages[i].text = this.removeSystemFromChatMessage(messages[i].text)
             const messageId = messages[i].id
             const senderId = messages[i].sender.id
-            //var sender = message.sender.name
+            var sender = messages[i].sender.name
             //var text = message.text
 
             delete messages[i].senderId
             delete messages[i].sender
+            messages[i].senderName = sender
             messages[i].updatedAt = new Date(messages[i].updatedAt).getTime() / 1000
             messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
             messages[i].author = ['xr-engine', senderId]
@@ -227,7 +228,7 @@ class XREngineBot {
                 const index : number = await this.getMessageIndex(messages, messageId)
                 if (index > -1) messages.splice(index, 1)
             }
-
+            
             //await _redisDb.setValue(messageId, messages[i])
             this.chatHistory.push(messageId)
         }
@@ -247,7 +248,7 @@ class XREngineBot {
         }
 //#endregion
 
-        handleMessages(this.messageResponseHandler, messages, this)
+        await handleMessages(this.messageResponseHandler, messages, this)
         return this.activeChannel && messages;
     }
 
@@ -440,7 +441,7 @@ class XREngineBot {
             }
             else if (message.text().startsWith('proximity|')) {
                 const data = message.text().split('|')
-                console.log('Proximity Data: ' + data)
+                //console.log('Proximity Data: ' + data)
                 if (data.length === 4) {
                     const mode = data[1]
                     const player = data[2]
@@ -550,6 +551,8 @@ class XREngineBot {
             name = this.name
         }
 
+        this.username_regex = new RegExp(this.name, 'ig')
+
         if (this.headless) {
             // Disable rendering for headless, otherwise chromium uses a LOT of CPU
         }
@@ -606,7 +609,7 @@ class XREngineBot {
     }
 
     async updateAvatar(avatar) {
-        console.log('\x1b[32m updating avatar to: ' + avatar)
+        console.log('updating avatar to: ' + avatar)
        
         await this.clickElementById('SPAN', 'Profile_0')
         await this.clickElementById('button', 'select-avatar')
