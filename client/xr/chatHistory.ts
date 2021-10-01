@@ -44,6 +44,9 @@ export function getResponse(chatId, message) {
     return messageResponses[chatId][message]
 }
 
+export async function getChatHistory(chatId, length) {
+    return await postgres.getInstance.getHistory(length, 'xr-engine', chatId)
+}
 export async function addMessageToHistory(chatId, messageId, senderName, content) {
     await postgres.getInstance.addMessageInHistory('xr-engine', chatId, messageId, senderName, content)
 }
@@ -53,7 +56,6 @@ export async function deleteMessageFromHistory(chatId, messageId) {
 export async function updateMessage(chatId, messageId, newContent) {
     await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent)
 }
-
 export async function wasHandled(chatId, messageId) {
     return await postgres.getInstance.messageExists('xr-engine', chatId, messageId)
 }

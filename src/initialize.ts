@@ -33,8 +33,8 @@ const pyConnect = require('./pyconnect');
                 args.response = await pyConnect.invoke(args)
                 callback(args.response);
             }
-            //require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-            require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
+            require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
+            //require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
             //require("../client/twilio/twilio-client").createTwilioClient(messageResponseHandler);
             //require("../server/agents/echo/echo").createEcho(messageResponseHandler);
             //require("../server/agents/echo/echo").createTelegramEcho(messageResponseHandler);

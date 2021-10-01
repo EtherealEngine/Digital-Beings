@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../utils";
-import { addMessageToHistory, exitConversation, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage, wasHandled } from "./chatHistory";
+import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage, wasHandled } from "./chatHistory";
 
 export async function handleMessages(messageResponseHandler, messages, bot) {
     for (let i = 0; i < messages.length; i++) {
@@ -22,7 +22,13 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         const diff = date - msgDate
         const hours_diff = Math.ceil(diff/3600)
         const mins_diff = Math.ceil((diff-hours_diff)/60)
-        if (mins_diff > 12 || (mins_diff <= 5 && hours_diff > 1)) continue
+        if (mins_diff > 12 || (mins_diff <= 5 && hours_diff > 1)) {
+            if (!wasHandled(messages[i].channelId, messages[i].id)) {
+                addMessageToHistory(messages[i].channelId, messages[i].id, messages[i].senderName !== undefined ? messages[i].senderName : messages[i].sender.name, messages[i].text)
+            }
+
+            continue
+        }
 
         const _sender = messages[i].senderName !== undefined ? messages[i].senderName : messages[i].sender.name
         let content = messages[i].text
@@ -92,6 +98,8 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
             args['grpc_method'] = args['command_info'][1][0];
             args['grpc_method_params'] = args['command_info'][2];
         }
+
+        args['chat_history'] = await getChatHistory(messages[i].channelId, 10)
 
         //console.log(JSON.stringify(args))
 
