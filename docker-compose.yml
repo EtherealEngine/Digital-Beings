@@ -2,5 +2,10 @@ version: "3.9"
 services:
   bot:
     build: .
+    environment:
+      PGHOST: db
     volumes:
         - "./:/DigitalBeing"
+
+  db:
+    image: postgres
