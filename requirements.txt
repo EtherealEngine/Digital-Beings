@@ -17,7 +17,7 @@ tensorflow_addons==0.14.0
 tensorflow_hub==0.10.0
 tensorboard-plugin-wit==1.7.0
 tensorflow-probability==0.14.0
-threadpoolctl==2.1.0
+threadpoolctl==3.0.0
 tokenizers==0.10.2
 torch==1.9.1
 torchtext==0.10.1
