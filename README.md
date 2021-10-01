@@ -91,13 +91,17 @@ DigitalBeing requires the following to run:
 6. Run the host bot framework
     ```npm run start-gui```
 
-7. Install redis:
-   * sudo apt update
-   * sudo apt install redis-server
-   * sudo nano /etc/redis/redis.conf -> update the supervised param to systemd
-   * sudo systemctl restart redis.service
-   * sudo systemctl status redis -> should return info about the status of redis
-   * redis-cli -> to test the redis connection, it should change the input path to 127.0.0.1:redisIp> ...
+7. Install postgres - [Detailed Tutorial](https://harshityadav95.medium.com/postgresql-in-windows-subsystem-for-linux-wsl-6dc751ac1ff3)
+   * sudo apt-get install postgresql
+   * sudo passwd postgres -> to update the password for the postgres user
+   * sudo service postgresql start
+   * sudo -u postgres psql
+   * Database Instalation:
+     * Login to postgres with an admin user
+     * CREATE DATABASE digitalbeing;
+     * \c digitalbeing
+     * CREATE TABLE chat_history(client_name text, chat_id text, message_id text, global_message_id text, sender text, content text);
+     * Update the variables in the .env for the PG with your credentials
 
 ## Twilio Setup
 1. In order to run Twilio you will need to install NGROK or an alternative.
