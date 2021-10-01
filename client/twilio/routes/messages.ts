@@ -11,7 +11,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
     console.log('received message: ' + req.body.Body)
     const message = '!ping ' + req.body.Body
       
-    const response = new MessagingResponse();
+    const _resp = new MessagingResponse();
     const args = {}
     args['grpc_args'] = {};
 
@@ -40,9 +40,9 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 let text = response.response[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                response.message(text)
+                _resp.message(text)
                 res.set("Content-Type", "application/xml");
-                res.send(response.toString())     
+                res.send(_resp.toString())     
                 addMessageToHistory(req.body.From, req.body.From, text)                 
             }
             else if (response.response[key].length > 2000) {
@@ -61,9 +61,9 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
                         if (i === 0) {
                             let text = lines[1]
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                            response.message(text)
+                            _resp.message(text)
                             res.set("Content-Type", "application/xml");
-                            res.send(response.toString()) 
+                            res.send(_resp.toString()) 
                             addMessageToHistory(req.body.From, req.body.From, text)
                     }
                 }
@@ -72,9 +72,9 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
             else {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                response.message(emptyResponse)
+                _resp.message(emptyResponse)
                 res.set("Content-Type", "application/xml");
-                res.send(response.toString()) 
+                res.send(_resp.toString()) 
                 addMessageToHistory(req.body.From, req.body.From, emptyResponse)
             }
         });          

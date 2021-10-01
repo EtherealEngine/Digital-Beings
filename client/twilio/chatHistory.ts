@@ -1,34 +1,15 @@
-import { redisDb } from "../redisDb"
+import { postgres } from "../postgres";
 
 export function getDbKey(chatId, messageId) {
     return 'twilio.' + chatId + '.' + messageId
 }
-export async function getLastMessageId(chatId) {
-    return redisDb.getInstance.getKeys('twilio.' + chatId + '.').then(async function(keys) {
-        return keys.length + 1
-    });
+export async function getLastMessageId(chatId): Promise<number> {
+    return await postgres.getInstance.getNewMessageId('twilio', chatId)
 }
 export async function getChatHistory(chatId, length) {
-    return await redisDb.getInstance.getKeys('telegram.' + chatId + '.').then(async function (keys) {
-        const res: {senderName, content}[] = []
-
-        for(let i = 0; i < keys.length; i++) {
-            const obj = JSON.parse(await redisDb.getInstance.getValue(keys[i]))
-            if (obj === undefined) continue
-            res.push({ senderName: obj.senderName, content: obj.content })
-
-            if (i + 1 >= length) break
-        }
-
-        return res
-    });
+    return await postgres.getInstance.getHistory(length, 'twilio', chatId)
 }
 
 export async function addMessageToHistory(chatId, senderName, content) {
-    const messageId = await getLastMessageId(chatId)
-    await redisDb.getInstance.setValue(getDbKey(chatId, messageId), JSON.stringify({ 
-        messageId: messageId, 
-        senderName: senderName, 
-        content: content 
-    }))    
+    getLastMessageId(chatId).then(messageId => postgres.getInstance.addMessageInHistory('twilio', chatId, messageId + '', senderName, content))
 }

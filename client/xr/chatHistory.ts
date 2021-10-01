@@ -4,7 +4,6 @@ export const prevMessage: { [chatId: string]: string } = {}
 export const prevMessageTimers: { [chatId: string]: any } = {}
 export const messageResponses: { [chatId: string]: { [messageId: string]: string } } = {}
 export const conversation: { [user: string]: any } = {}
-export const chatHistory: { [chatId: string]: { messageId: string, senderName: string, content: string }[] } = {}
 
 export function onMessageDeleted(chatId, messageId) {
     if (messageResponses[chatId] !== undefined && messageResponses[chatId][messageId] !== undefined) {
@@ -27,9 +26,10 @@ export function isInConversation(user): boolean {
 export function sentMessage(user) {
     if (conversation[user] !== undefined) {
         clearTimeout(conversation[user])
+        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
+    } else {
+        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
     }
-    
-    conversation[user] = setTimeout(function() { conversation[user] = undefined }, 120000)
 }
 
 export function exitConversation(user) {
@@ -45,11 +45,15 @@ export function getResponse(chatId, message) {
 }
 
 export async function addMessageToHistory(chatId, messageId, senderName, content) {
-    await postgres.getInstance.addMessageInHistory('telegram', chatId, messageId, senderName, content)
+    await postgres.getInstance.addMessageInHistory('xr-engine', chatId, messageId, senderName, content)
 }
-export async function getChatHistory(chatId, length) {
-    return await postgres.getInstance.getHistory(length, 'telegram', chatId)
+export async function deleteMessageFromHistory(chatId, messageId) {
+    await postgres.getInstance.deleteMessage('xr-engine', chatId, messageId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
-    await postgres.getInstance.updateMessage('telegram', chatId, messageId, newContent)
+    await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent)
+}
+
+export async function wasHandled(chatId, messageId) {
+    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId)
 }
