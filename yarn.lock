@@ -4651,7 +4651,7 @@ pg-types@^2.1.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-pg@^8.7.1:
+pg@8.7.1:
   version "8.7.1"
   resolved "https://registry.npmjs.org/pg/-/pg-8.7.1.tgz"
   integrity sha512-7bdYcv7V6U3KAtWjpQJJBww0UEsWuh4yQ/EjNf2HeO/NnvKjpvhEIe/A/TleP6wtmSKnUnghs5A9jUoK6iDdkA==
