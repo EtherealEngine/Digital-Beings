@@ -1,4 +1,4 @@
-import { redisDb } from "../redisDb"
+import { postgres } from "../postgres"
 
 export const prevMessage: { [channel: string]: string } = {}
 export const prevMessageTimers: { [channel: string]: any } = {}
@@ -44,16 +44,12 @@ export function getResponse(channel, message) {
     return messageResponses[channel][message]
 }
 
-export function getDbKey(chatId, messageId) {
-    return 'discord.' + chatId + '.' + messageId
-}
 export async function addMessageToHistory(chatId, messageId, senderName, content) {
-    await redisDb.getInstance.setValue(getDbKey(chatId, messageId), JSON.stringify({ 
-        messageId: messageId, 
-        senderName: senderName, 
-        content: content 
-    }))    
+    await postgres.getInstance.addMessageInHistory('discord', chatId, messageId, senderName, content)
 }
 export async function deleteMessageFromHistory(chatId, messageId) {
-    await redisDb.getInstance.deleteKey(getDbKey(chatId, messageId))
+    await postgres.getInstance.deleteMessage('discord', chatId, messageId)
+}
+export async function updateMessage(chatId, messageId, newContent) {
+    await postgres.getInstance.updateMessage('discord', chatId, messageId, newContent)
 }

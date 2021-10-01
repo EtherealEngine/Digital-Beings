@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse } from "../../utils"
-import { addMessageToHistory, getChatHistory, getResponse, onMessageResponseUpdated } from "../chatHistory"
+import { addMessageToHistory, getChatHistory, getResponse, onMessageResponseUpdated, updateMessage } from "../chatHistory"
 import { botName } from "../telegram-client"
 
 export async function onMessageEdit(bot, msg, messageResponseHandler) {
@@ -12,7 +12,7 @@ export async function onMessageEdit(bot, msg, messageResponseHandler) {
     if (mins_diff > 12 || (mins_diff <= 12 && hours_diff > 1)) return
     const _sender = msg.from.username === undefined ? msg.from.first_name : msg.from.username
 
-    addMessageToHistory(msg.chat.id, msg.message_id, _sender, msg.text)
+    updateMessage(msg.chat.id, msg.message_id, msg.text)
     if (msg.from.is_bot) return
 
     const oldResponse = getResponse(msg.chat.id, msg.message_id)
@@ -39,8 +39,6 @@ export async function onMessageEdit(bot, msg, messageResponseHandler) {
         args['grpc_method_params'] = args['command_info'][2];
     }
     args['chat_history'] = await getChatHistory(msg.chat.id, 10)
-
-    console.log(JSON.stringify(args))
     messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
