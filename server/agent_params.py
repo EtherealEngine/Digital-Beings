@@ -27,5 +27,4 @@ DEVICE = 'cpu'  # cpu or gpu
 ENVIRONMENT = 'custom' 
 GPT3_ENGINE = 'curie-instruct-beta'
 RASA_MODEL_NAME = '1' # default
-SQLITE_DB = '../DigitalBeing/server/digitalbeing.db'
 JSON_FILE = 'server/digitalbeing.json'
