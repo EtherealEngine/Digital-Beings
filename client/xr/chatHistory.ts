@@ -1,4 +1,4 @@
-import { redisDb } from "../redisDb"
+import { postgres } from "../postgres"
 
 export const prevMessage: { [chatId: string]: string } = {}
 export const prevMessageTimers: { [chatId: string]: any } = {}
@@ -44,32 +44,16 @@ export function getResponse(chatId, message) {
     return messageResponses[chatId][message]
 }
 
-export function getDbKey(chatId, messageId) {
-    return 'xr-engine.' + chatId + '.' + messageId
-}
 export async function addMessageToHistory(chatId, messageId, senderName, content) {
-    await redisDb.getInstance.setValue(getDbKey(chatId, messageId), JSON.stringify({ 
-        messageId: messageId, 
-        senderName: senderName, 
-        content: content 
-    }))    
+    await postgres.getInstance.addMessageInHistory('xr-engine', chatId, messageId, senderName, content)
 }
-export async function getChatHistory(chatId, length) {
-    return await redisDb.getInstance.getKeys('telegram.' + chatId + '.').then(async function (keys) {
-        const res: {senderName, content}[] = []
-
-        for(let i = 0; i < keys.length; i++) {
-            const obj = JSON.parse(await redisDb.getInstance.getValue(keys[i]))
-            if (obj === undefined) continue
-            res.push({ senderName: obj.senderName, content: obj.content })
-
-            if (i + 1 >= length) break
-        }
-
-        return res
-    });
+export async function deleteMessageFromHistory(chatId, messageId) {
+    await postgres.getInstance.deleteMessage('xr-engine', chatId, messageId)
+}
+export async function updateMessage(chatId, messageId, newContent) {
+    await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent)
 }
 
 export async function wasHandled(chatId, messageId) {
-    return await redisDb.getInstance.hasKey(getDbKey(chatId, messageId))
+    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId)
 }
