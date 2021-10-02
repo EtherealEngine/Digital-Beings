@@ -3,9 +3,21 @@ services:
   bot:
     build: .
     environment:
-      PGHOST: db
+      PGHOST: digitalbeing_db
+      PGUSER: digitalbeing
+      PGPASSWORD: digitalbeing_default_pw
+      PGDATABASE: digitalbeing
+
     volumes:
         - "./:/DigitalBeing"
 
   db:
+    restart: always
     image: postgres
+    hostname: digitalbeing_db
+    environment:
+      POSTGRES_DB: digitalbeing
+      POSTGRES_USER: digitalbeing
+      POSTGRES_PASSWORD: digitalbeing_default_pw
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
