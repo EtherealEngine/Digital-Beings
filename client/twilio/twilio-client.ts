@@ -1,7 +1,8 @@
 import { Twilio, twiml } from 'twilio'
 import express = require('express');
-import { urlencoded, Response } from 'express';
+import { app, router } from '../webserver';
 import { MessagingRequest } from './types/request';
+import { Response } from 'express';
 import { message } from './routes/messages';
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -16,6 +17,9 @@ export const createTwilioClient = (messageResponseHandler) => {
     if (!accountSid || !authToken || !twilioNumber)  return console.warn("No API token for Twilio bot, skipping");
     console.log('twilio client created')
 
+    app.use('/sms', router.post("/", async (req: MessagingRequest, res: Response<string>) => {
+        await message(messageResponseHandler, req, res)
+      }))
 }
 
 export function sendMessage(toNumber, body) {

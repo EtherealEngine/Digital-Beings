@@ -45,11 +45,11 @@ export function getResponse(chatId, message) {
 }
 
 export async function addMessageToHistory(chatId, messageId, senderName, content) {
-    await postgres.getInstance.addMessageInHistory('telegram', chatId, messageId, senderName, content)
+    await postgres.getInstance.addMessageInHistory('whatsapp', chatId, messageId, senderName, content)
 }
 export async function getChatHistory(chatId, length) {
-    return await postgres.getInstance.getHistory(length, 'telegram', chatId)
+    return await postgres.getInstance.getHistory(length, 'whatsapp', chatId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
-    await postgres.getInstance.updateMessage('telegram', chatId, messageId, newContent)
+    await postgres.getInstance.updateMessage('whatsapp', chatId, messageId, newContent)
 }

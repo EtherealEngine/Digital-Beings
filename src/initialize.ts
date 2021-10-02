@@ -1,8 +1,10 @@
 import { postgres } from "../client/postgres";
 import { redisDb } from "../client/redisDb";
+import { createWebServer } from "../client/webserver";
 
 require('dotenv-flow').config();
 
+createWebServer()
 new postgres().connect()
 
 const expectedServerDelta = 1000 / 60;
@@ -33,8 +35,8 @@ const pyConnect = require('./pyconnect');
                 args.response = await pyConnect.invoke(args)
                 callback(args.response);
             }
-            //require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-            require("../client/messenger/messenger-client").createMessengerClient(messageResponseHandler);
+            require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
+            //require("../client/messenger/messenger-client").createMessengerClient(messageResponseHandler);
             //require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
             //require("../client/twilio/twilio-client").createTwilioClient(messageResponseHandler);
             //require("../client/whatsapp/whatsapp-client").createWhatsappClient(messageResponseHandler);
