@@ -7,7 +7,7 @@ module.exports = async (client) => {
 
     await client.guilds.fetch(process.env.DISCORD_SERVER_ID).then((server) => {
         server.channels.cache.forEach((channel) => {
-            if (channel.type === 'text' && channel.deleted === false) {
+            if (channel.type === 'text' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
                 channel.messages.fetch({limit: 100}).then(async messages => {
                     messages.forEach(function (msg) {
                         if (!wasHandled(channel.id, msg.id)) {
@@ -15,10 +15,10 @@ module.exports = async (client) => {
                         }
                     })
                 })
-                console.log('added unread messages to chat history')
-            }
+            } 
         })
-    })
+        console.log('added unread messages to chat history')
+    }).catch(err => console.log(err))
     
-    console.log('client ready')
+    console.log('client is ready')
 }

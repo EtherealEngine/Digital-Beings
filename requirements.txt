@@ -5,7 +5,7 @@ grpcio==1.41.0
 grpcio-tools==1.41.0
 numpy==1.18.5
 oauthlib==3.1.0
-openai==0.10.4
+openai==0.10.5
 parlai==1.5.0
 rasa==2.8.7
 rasa-sdk==2.8.2
@@ -22,7 +22,7 @@ tokenizers==0.10.2
 torch==1.9.1
 torchtext==0.10.1
 tqdm==4.62.3
-transformers==4.11.0
+transformers==4.11.2
 twilio==7.0.0
 typeguard==2.12.1
 typer==0.4.0

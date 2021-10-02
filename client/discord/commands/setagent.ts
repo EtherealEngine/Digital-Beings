@@ -26,5 +26,5 @@ export async function run (client, message, args, author, addPing, channel) {
         client.embed.description = ''
         client.embed.fields = [];  // clear previous responses
         message.channel.stopTyping();
-    });
+    }).catch(err => console.log(err))
 }

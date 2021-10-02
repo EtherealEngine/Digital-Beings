@@ -1,6 +1,7 @@
 import grpc
 from concurrent import futures
 import time
+import os
 
 # import the generated classes
 import example_pb2
@@ -100,9 +101,9 @@ example_pb2_grpc.add_AgentServicer_to_server(
     AgentServicer(), server)
 
 # listen on port 7777
-print('Starting server. Listening on port 7777.')
+print('Starting server. Listening on port ' + os.getenv('GRPC_SERVER_PORT') + '.')
 print('started server1')
-server.add_insecure_port('[::]:7777')
+server.add_insecure_port('[::]:' + os.getenv('GRPC_SERVER_PORT'))
 print('started server2')
 server.start()
 print('started server3')

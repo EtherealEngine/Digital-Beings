@@ -15,7 +15,7 @@ module.exports = (client, message) => {
                 resp.delete()
             }
         })
-    })
+    }).catch(err => console.log(err))
 
     onMessageDeleted(channel.id, id)
 };

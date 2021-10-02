@@ -39,7 +39,7 @@ export async function onMessageEdit(bot, msg, messageResponseHandler) {
         args['grpc_method_params'] = args['command_info'][2];
     }
     args['chat_history'] = await getChatHistory(msg.chat.id, 10)
-    messageResponseHandler(args, (response) => {
+    await messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
             console.log('response: ' + response.response[key])
@@ -81,8 +81,8 @@ export async function onMessageEdit(bot, msg, messageResponseHandler) {
                 bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, botName, emptyResponse)
-                    })      
+                })      
             }
-        });          
-    });
+        })
+    }).catch(err => console.log(err))
 }
