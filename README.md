@@ -14,6 +14,7 @@ Interactive Endpoint Connector tools for Browsers, JS, TypeScript
 - Discord
 - XREngine - [Bot Package](https://github.com/XRFoundation/XREngine/tree/dev/packages/bot)
 - XR Engine API
+- Twilio
 
 # Digital Being Agent API 
 
