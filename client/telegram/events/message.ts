@@ -112,7 +112,7 @@ export async function onMessage(bot, msg, messageResponseHandler) {
     }
 
     args['chat_history'] = await getChatHistory(msg.chat.id, 10)
-    messageResponseHandler(args, (response) => {
+    await messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
             console.log('response: ' + response.response[key])
@@ -169,5 +169,5 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                     })    
             }
         });          
-    });
+    }).catch(err => console.log(err))
 }

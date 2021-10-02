@@ -117,5 +117,5 @@ module.exports = (client, message) => {
 
     channel.startTyping();
     // Run the command
-    cmd.run(client, message, args, author, addPing, channel.id);
+    cmd.run(client, message, args, author, addPing, channel.id).catch(err => console.log(err))
 };

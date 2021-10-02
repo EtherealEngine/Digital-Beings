@@ -24,9 +24,7 @@ export class postgres {
 
         this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err.stack)
-            } else {
-              console.log(res.rows[0])
+              console.log(err + ' ' + err.stack)
             }
           })
     }
@@ -35,6 +33,9 @@ export class postgres {
         const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2"
         const values = [ client_name, chat_id ]
         return await this.client.query(query, values, (err, res) => {
+            if (err) {
+                return console.log(err + ' ' + err.stack)
+            }
             const _res = []
             if (res !== undefined && res !== null && res.rows !== undefined) {
                 console.log('length: ' + res.length)
@@ -53,14 +54,22 @@ export class postgres {
         const query = "DELETE FROM chat_history WHERE client_name=$1 AND chat_id=$2 AND message_id=$3"
         const values = [ client_name, chat_id, message_id ]
 
-        await this.client.query(query, values, (err, res) => {})
+        await this.client.query(query, values, (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            }
+        })
     }
 
     async updateMessage(client_name: string, chat_id: string, message_id: string, newContent: string) {
         const query = "UPDATE chat_history SET content=$1 WHERE client_name=$2 AND chat_id=$3 AND message_id=$4"
         const values = [ newContent, client_name, chat_id, message_id ]
 
-        await this.client.query(query, values, (err, res) => {})
+        await this.client.query(query, values, (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            }
+        })
     }
 
     async messageExists(client_name: string, chat_id: string, message_id: string) {
@@ -68,6 +77,10 @@ export class postgres {
         const values = [ client_name, chat_id, message_id ]
 
         return await this.client.query(query, values, (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            }
+
             return res !== undefined && res !== null && res.rows !== undefined && res.rows.length > 0
         })
     }
@@ -77,6 +90,10 @@ export class postgres {
         const values = [ client_name, chat_id ]
 
         return await this.client.query(query, values, (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            }
+
             if (res !== undefined && res !== null && res.rows !== undefined) {
                 return res.length + 1
             } else {

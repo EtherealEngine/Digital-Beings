@@ -31,10 +31,10 @@ module.exports = (client, message) => {
                             args['grpc_method_params'] = args['command_info'][2];
                         }
                         const cmd = client.commands.get(command)
-                        cmd.run(client, message, args, author, false, channel.id);
+                        cmd.run(client, message, args, author, false, channel.id).catch(err => console.log(err))
                         msg.delete()
                     }
                 })
-             })
-     })
+             }).catch(err => console.log(err))
+     }).catch(err => console.log(err))
 };

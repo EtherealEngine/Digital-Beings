@@ -10,5 +10,5 @@ export async function run (client, message, args, author, addPing, channel) {
         message.channel.send(text)
 
         message.channel.stopTyping();
-    });
+    }).catch(err => console.log(err))
 }

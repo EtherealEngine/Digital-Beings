@@ -35,7 +35,7 @@ export async function run (client, message, args, author, addPing, channel) {
                         console.log('response1: ' + text)
                         message.channel.send(text).then(async function (msg) {
                             onMessageResponseUpdated(channel, message.id, msg.id)
-                            addMessageToHistory(channel, msg.id, author, text)
+                            addMessageToHistory(channel, msg.id, author.id, text)
                         })
                     }
                 }
@@ -57,7 +57,7 @@ export async function run (client, message, args, author, addPing, channel) {
                                     const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
                                     message.channel.send(text).then(async function (msg) {
                                         onMessageResponseUpdated(channel, message.id, msg.id)
-                                        addMessageToHistory(channel, msg.id, author, text)
+                                        addMessageToHistory(channel, msg.id, author.id, text)
                                     })
                                 } else {
                                     let text = replacePlaceholders(lines[i])
@@ -65,7 +65,7 @@ export async function run (client, message, args, author, addPing, channel) {
                                     console.log('response2: ' + text)
                                     message.channel.send(text).then(async function (msg) {
                                         onMessageResponseUpdated(channel, message.id, msg.id)
-                                        addMessageToHistory(channel, msg.id, author, text)
+                                        addMessageToHistory(channel, msg.id, author.id, text)
                                     })
                                 }
                             } else {
@@ -74,7 +74,7 @@ export async function run (client, message, args, author, addPing, channel) {
                                 console.log('response3: ' + text)
                                 message.channel.send(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel, message.id, msg.id)
-                                    addMessageToHistory(channel, msg.id, author, text)
+                                    addMessageToHistory(channel, msg.id, author.id, text)
                                 })
                             }
                         }
@@ -88,7 +88,7 @@ export async function run (client, message, args, author, addPing, channel) {
                             const text = '<@!' + author + '> ' + emptyResponse
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel, message.id, msg.id)
-                                addMessageToHistory(channel, msg.id, author, text)
+                                addMessageToHistory(channel, msg.id, author.id, text)
                             })
                         } else {
                             let text = emptyResponse
@@ -96,13 +96,13 @@ export async function run (client, message, args, author, addPing, channel) {
                             console.log('response4: ' + text)
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel, message.id, msg.id)
-                                addMessageToHistory(channel, msg.id, author, text)
+                                addMessageToHistory(channel, msg.id, author.id, text)
                             })
                         }
                     }
                 }
             });          
             message.channel.stopTyping();
-        });
+        }).catch(err => console.log(err))
     })  
 }
