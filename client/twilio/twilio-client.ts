@@ -15,28 +15,7 @@ export const createTwilioClient = (messageResponseHandler) => {
     console.log('init')
     if (!accountSid || !authToken || !twilioNumber)  return console.warn("No API token for Twilio bot, skipping");
     console.log('twilio client created')
-    
-    const router = express.Router();
-    router.use(urlencoded({ extended: false }));
-    const app = express()
-    app.use('/sms', router.post("/", async (req: MessagingRequest, res: Response<string>) => {
-        await message(messageResponseHandler, req, res)
-      }))
-    app.get('/', (req, res) => {
-        res.send('Hello World I am running locally');
-    });
-    app.listen(twilioPort, () => { console.log(`Server listening on http://localhost:${twilioPort}`);
-    })
-    /*app = express();
-    init(messageResponseHandler)
-    app.use("/messages", router);
-    app.listen(twilioPort, () => {
-        console.log(`Server listening on http://localhost:${twilioPort}`);
-      });
-    client = new Twilio(accountSid, authToken, {
-        logLevel: 'debug',
-    })
-    sendMessage('+44 7398 049513', 'test')*/
+
 }
 
 export function sendMessage(toNumber, body) {
