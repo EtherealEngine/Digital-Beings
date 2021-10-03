@@ -35,6 +35,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
     # example_pb2.Request
     def HandleMessage(self, request, context):
         print('handle message')
+        print(request)
         try:
             response_obj = example_pb2.Response()
             agent_responses = self.digital_being.handle_message(**request.kwargs)
