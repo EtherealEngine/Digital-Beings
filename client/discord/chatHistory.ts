@@ -47,12 +47,15 @@ export function getResponse(channel, message) {
 export async function addMessageToHistory(chatId, messageId, senderName, content) {
     await postgres.getInstance.addMessageInHistory('discord', chatId, messageId, senderName, content)
 }
+export async function addMessageInHistoryWithDate(chatId, messageId, senderName, content, timestamp) {
+    await postgres.getInstance.addMessageInHistoryWithDate('discord', chatId, messageId, senderName, content, timestamp)
+}
 export async function deleteMessageFromHistory(chatId, messageId) {
     await postgres.getInstance.deleteMessage('discord', chatId, messageId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
     await postgres.getInstance.updateMessage('discord', chatId, messageId, newContent)
 }
-export async function wasHandled(chatId, messageId) {
-    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId)
+export async function wasHandled(chatId, messageId, sender, content, timestamp) {
+    return await postgres.getInstance.messageExists('discord', chatId, messageId, sender, content, timestamp)
 }

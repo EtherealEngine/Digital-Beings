@@ -1,4 +1,4 @@
-import { addMessageToHistory, wasHandled } from "../chatHistory";
+import { addMessageInHistoryWithDate, addMessageToHistory, deleteMessageFromHistory, wasHandled } from "../chatHistory";
 
 module.exports = async (client) => {    
     await client.users.fetch(process.env.LOG_DM_USER_ID).then((user) => {
@@ -9,15 +9,13 @@ module.exports = async (client) => {
         server.channels.cache.forEach((channel) => {
             if (channel.type === 'text' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
                 channel.messages.fetch({limit: 100}).then(async messages => {
-                    messages.forEach(function (msg) {
-                        if (!wasHandled(channel.id, msg.id)) {
-                            addMessageToHistory(channel.id, msg.id, msg.author.username, msg.content)
-                        }
+                    messages.forEach(async function (msg) {
+                        if (msg.deleted === true) await deleteMessageFromHistory(channel.id, msg.id)
+                        else await wasHandled(channel.id, msg.id, msg.author.username, msg.content, msg.createdTimestamp)
                     })
                 })
             } 
         })
-        console.log('added unread messages to chat history')
     }).catch(err => console.log(err))
     
     console.log('client is ready')

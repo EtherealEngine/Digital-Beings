@@ -1,5 +1,6 @@
 import psycopg2
 import os
+from json import dumps
 
 class postgres: 
     def __init__(self):
@@ -15,12 +16,15 @@ class postgres:
         query = """SELECT * FROM chat_history WHERE client_name=%s AND chat_id=%s"""
         self.cur.execute(query, [client_name, chat_id])
         results = self.cur.fetchall()
-        history = {}
+        history = []
         i = 0
         for res in results: 
-            history[res[4]] = res[5]
+            sender = res[4]
+            content = res[5]
+            createdAt = res[6]
+            history.append({ 'author': sender, 'content': content, 'createdAt': createdAt })
             i += 1
             if (i >= length):
                 break
-        return history
         
+        return dumps(history)

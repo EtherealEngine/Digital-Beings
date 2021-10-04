@@ -19,7 +19,7 @@ export const _commandToValue = ([name, args, description]) =>
     shortname: 'tweak',
     commands: [
       ['ping', ['HandleMessage'],['sender', 'message', 'client_name', 'chat_id'], 'ping all agents'],
-      ['pingagent', ['InvokeSoloAgent'],['sender', 'message', 'agent'], 'ping a single agent'],
+      ['pingagent', ['InvokeSoloAgent'],['sender', 'message', 'agent', 'createdAt'], 'ping a single agent'],
       ['agents', ['GetAgents'], [''], 'show all selected agents'],
       ['setagent', ['SetAgentFields'],['name', 'context'], 'update agents parameters'],
       ['commands', [''],[''], 'Shows all available commands'],

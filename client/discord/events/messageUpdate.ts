@@ -1,11 +1,17 @@
-import { getResponse, messageResponses } from "../chatHistory";
+import { getResponse, messageResponses, updateMessage } from "../chatHistory";
 
-module.exports = (client, message) => {
-    const {author, channel, id} = message;
+module.exports = async (client, message) => {
+    const {author, channel, content, id} = message;
     if (author.id === client.user.id) return
 
      const oldResponse = getResponse(channel.id, id)
-     if (oldResponse === undefined) return
+     if (oldResponse === undefined) {
+        await channel.messages.fetch(id).then(async msg => {
+            await updateMessage(channel.id, id, content)
+         });
+         return
+     }
+     await updateMessage(channel.id, id, content)
  
      channel.messages.fetch(oldResponse).then(async msg => { 
          channel.messages.fetch({limit: client.edit_messages_max_count}).then(async messages => {

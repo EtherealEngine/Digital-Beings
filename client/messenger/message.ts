@@ -17,7 +17,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
     args['command_info'] = [
         'ping',
         [ 'HandleMessage' ],
-        [ 'sender', 'message', 'client_name', 'chat_id' ],
+        [ 'sender', 'message', 'client_name', 'chat_id', 'createdAt' ],
         'ping all agents'
       ]
     args['grpc_args']['sender'] = senderPsid
@@ -30,6 +30,11 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
 
     args['grpc_args']['client_name'] = 'facebook'
     args['grpc_args']['chat_id'] = senderPsid
+
+    const date = new Date();
+    const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+    args['grpc_args']['createdAt'] = utcStr
 
     await messageResponseHandler(args, (response) => {
       console.log('response: ' + JSON.stringify(response))

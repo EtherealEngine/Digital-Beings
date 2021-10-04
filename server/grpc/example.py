@@ -50,6 +50,7 @@ class DigitalBeing():
     def handle_message(self, **kwargs):
         message = kwargs.get('message')
         chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), kwargs.get('client_name'), kwargs.get('chat_id'))
+        createdAt = kwargs.get('createdAt')
         if (message == None):
             if (hasattr(self, '_server')):
                 self._server.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")

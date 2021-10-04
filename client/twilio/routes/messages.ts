@@ -21,7 +21,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
     args['command_info'] = [
         'ping',
         [ 'HandleMessage' ],
-        [ 'sender', 'message', 'client_name', 'chat_id' ],
+        [ 'sender', 'message', 'client_name', 'chat_id', 'createdAt' ],
         'ping all agents'
       ]
     args['grpc_args']['sender'] = req.body.From
@@ -35,6 +35,11 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
     args['grpc_args']['client_name'] = 'telegram'
     args['grpc_args']['chat_id'] = req.body.From
 
+    const dateNow = new Date();
+    var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
+    const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+    args['grpc_args']['createdAt'] = utcStr
+    
     await messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
             console.log('response: ' + response.response[key])

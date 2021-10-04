@@ -51,20 +51,19 @@ module.exports = (client, message) => {
         exitConversation(author.id)
         mentions.members.forEach(pinged => exitConversation(pinged.id))
     }
-    if (!startConv) {
+    if (!startConv && !isMention) {
         if (startConvName.length > 0) {
             exitConversation(author.id)
             exitConversation(startConvName)
         }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().match(client.username_regex)
+    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().replace(',', '').replace('.', '').match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
     if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
         else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
         else if (isUserNameMention) {
-            if (client.username_regex === undefined) client.username_regex = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
             content = '!ping ' + content.replace(client.username_regex, '').trim()
         }
         else if (isInDiscussion || startConv) content = '!ping ' + content

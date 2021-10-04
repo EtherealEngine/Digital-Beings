@@ -88,7 +88,7 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         args['command_info'] = [
             'ping',
             [ 'HandleMessage' ],
-            [ 'sender', 'message', 'client_name', 'chat_id' ],
+            [ 'sender', 'message', 'client_name', 'chat_id', 'createdAt' ],
             'ping all agents'
           ]
         args['grpc_args']['sender'] = _sender
@@ -102,6 +102,11 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         args['grpc_args']['client_name'] = 'telegram'
         args['grpc_args']['chat_id'] = _sender
 
+        const dateNow = new Date();
+        var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
+        const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+        args['grpc_args']['createdAt'] = utcStr
+        
         await messageResponseHandler(args, (response) => {
             console.log(JSON.stringify(response))
             Object.keys(response.response).map(function(key, index) {

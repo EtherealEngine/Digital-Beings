@@ -13,6 +13,11 @@ export async function run (client, message, args, author, addPing, channel) {
 
     args.grpc_args['client_name'] = 'discord'
     args.grpc_args['chat_id'] = channel
+    
+    const date = new Date();
+    const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+    args.grpc_args['createdAt'] = utcStr
 
         console.log('content: ' + args.grpc_args.message)
         console.log(JSON.stringify(args))
