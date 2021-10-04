@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse } from "../utils";
-import { getChatHistory } from "./chatHistory";
+import { addMessageToHistory, getChatHistory } from "./chatHistory";
 
 const request = require('request')
 
@@ -17,7 +17,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
     args['command_info'] = [
         'ping',
         [ 'HandleMessage' ],
-        [ 'sender', 'message' ],
+        [ 'sender', 'message', 'client_name', 'chat_id' ],
         'ping all agents'
       ]
     args['grpc_args']['sender'] = senderPsid
@@ -28,8 +28,8 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
         args['grpc_method_params'] = args['command_info'][2];
     }
 
-    console.log(JSON.stringify(args['grpc_args']['sender']))
-    args['chat_history'] = await getChatHistory(receivedMessage.sender, 10)
+    args['grpc_args']['client_name'] = 'facebook'
+    args['grpc_args']['chat_id'] = senderPsid
 
     await messageResponseHandler(args, (response) => {
       console.log('response: ' + JSON.stringify(response))
@@ -38,7 +38,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
             if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
                 let text = response.response[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                callSendAPI(senderPsid, { 'text': text });
+                callSendAPI(senderPsid, { 'text': text }, text);
             }
             else if (response.response[key].length > 2000) {
                 const lines: string[] = []
@@ -56,7 +56,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
                         if (i === 0) {
                             let text = lines[1]
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                            callSendAPI(senderPsid, { 'text': text });
+                            callSendAPI(senderPsid, { 'text': text }, text);
                     }
                 }
             }
@@ -64,15 +64,16 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
             else {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                callSendAPI(senderPsid, { 'text': emptyResponse });
+                callSendAPI(senderPsid, { 'text': emptyResponse }, emptyResponse);
             }
         });          
     });
   }
 }
 
-function callSendAPI(senderPsid, response) {
+function callSendAPI(senderPsid, response, text) {
 
+  addMessageToHistory(senderPsid, senderPsid, text)
   console.log('sending response: ' + response)
   // The page access token we have generated in your app settings
   const PAGE_ACCESS_TOKEN = process.env.MESSENGER_TOKEN

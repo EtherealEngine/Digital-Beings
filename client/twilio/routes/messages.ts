@@ -21,7 +21,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
     args['command_info'] = [
         'ping',
         [ 'HandleMessage' ],
-        [ 'sender', 'message' ],
+        [ 'sender', 'message', 'client_name', 'chat_id' ],
         'ping all agents'
       ]
     args['grpc_args']['sender'] = req.body.From
@@ -32,7 +32,8 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
         args['grpc_method_params'] = args['command_info'][2];
     }
 
-    args['chat_history'] = await getChatHistory(req.body.From, 10)
+    args['grpc_args']['client_name'] = 'telegram'
+    args['grpc_args']['chat_id'] = req.body.From
 
     await messageResponseHandler(args, (response) => {
         Object.keys(response.response).map(function(key, index) {
@@ -43,7 +44,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
                 _resp.message(text)
                 res.set("Content-Type", "application/xml");
                 res.send(_resp.toString())     
-                addMessageToHistory(req.body.From, req.body.From, text)                 
+                addMessageToHistory(req.body.From, process.env.BOT_NAME, text)                 
             }
             else if (response.response[key].length > 2000) {
                 const lines: string[] = []
@@ -64,7 +65,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
                             _resp.message(text)
                             res.set("Content-Type", "application/xml");
                             res.send(_resp.toString()) 
-                            addMessageToHistory(req.body.From, req.body.From, text)
+                            addMessageToHistory(req.body.From, process.env.BOT_NAME, text)
                     }
                 }
             }
@@ -75,7 +76,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
                 _resp.message(emptyResponse)
                 res.set("Content-Type", "application/xml");
                 res.send(_resp.toString()) 
-                addMessageToHistory(req.body.From, req.body.From, emptyResponse)
+                addMessageToHistory(req.body.From, process.env.BOT_NAME, emptyResponse)
             }
         });          
     });

@@ -88,7 +88,7 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         args['command_info'] = [
             'ping',
             [ 'HandleMessage' ],
-            [ 'sender', 'message' ],
+            [ 'sender', 'message', 'client_name', 'chat_id' ],
             'ping all agents'
           ]
         args['grpc_args']['sender'] = _sender
@@ -99,9 +99,8 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
             args['grpc_method_params'] = args['command_info'][2];
         }
 
-        args['chat_history'] = await getChatHistory(messages[i].channelId, 10)
-
-        //console.log(JSON.stringify(args))
+        args['grpc_args']['client_name'] = 'telegram'
+        args['grpc_args']['chat_id'] = _sender
 
         await messageResponseHandler(args, (response) => {
             console.log(JSON.stringify(response))

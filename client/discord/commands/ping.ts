@@ -11,7 +11,6 @@ export async function run (client, message, args, author, addPing, channel) {
         return
     }
 
-    
     args.grpc_args['client_name'] = 'discord'
     args.grpc_args['chat_id'] = channel
 

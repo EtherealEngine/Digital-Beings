@@ -100,7 +100,7 @@ export async function onMessage(bot, msg, messageResponseHandler) {
     args['command_info'] = [
         'ping',
         [ 'HandleMessage' ],
-        [ 'sender', 'message' ],
+        [ 'sender', 'message', 'client_name', 'chat_id' ],
         'ping all agents'
       ]
     args['grpc_args']['sender'] = _sender
@@ -111,7 +111,9 @@ export async function onMessage(bot, msg, messageResponseHandler) {
         args['grpc_method_params'] = args['command_info'][2];
     }
 
-    args['chat_history'] = await getChatHistory(msg.chat.id, 10)
+    args['grpc_args']['client_name'] = 'telegram'
+    args['grpc_args']['chat_id'] = _sender
+
     await messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
@@ -121,11 +123,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                 if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                     })        
                 else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                 })              
            }
             else if (response.response[key].length > 2000) {
@@ -146,11 +148,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                             if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                                 onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                                addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                                addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                                 })              
                             else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
                                 onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                                addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                                addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                                 })              
                         }
                 }
@@ -161,11 +163,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
                 if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, emptyResponse)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
                     })             
                 else bot.sendMessage(msg.chat.id,emptyResponse).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, emptyResponse)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
                     })    
             }
         });          
