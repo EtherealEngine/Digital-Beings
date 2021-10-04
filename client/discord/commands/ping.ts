@@ -11,11 +11,12 @@ export async function run (client, message, args, author, addPing, channel) {
         return
     }
 
-    args['chat_history'] = []
+    args.grpc_args['chat_history'] = []
     message.channel.messages.fetch({limit: 10}).then(async messages => {
         messages.forEach(function (msg) {
-            args['chat_history'].push({ 'author': msg.author.username, 'content': msg.content })
-        })
+            args.grpc_args['chat_history'].push({ 'author': msg.author.username, 'content': msg.content })
+    })
+    args.grpc_args['chat_history'] = JSON.stringify(args.grpc_args['chat_history'])
 
         console.log('content: ' + args.grpc_args.message)
         console.log(JSON.stringify(args))

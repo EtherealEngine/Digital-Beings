@@ -47,6 +47,8 @@ class DigitalBeing():
 
     def handle_message(self, **kwargs):
         message = kwargs.get('message')
+        chat_history = kwargs.get('chat_history')
+        print(chat_history)
         print('handle message: ' + message)
         if ('\n' in message):
             message = message.replace('\n', ',')
