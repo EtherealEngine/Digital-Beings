@@ -50,8 +50,6 @@ class DigitalBeing():
         chat_history = kwargs.get('chat_history')
         print(chat_history)
         print('handle message: ' + message)
-        if ('\n' in message):
-            message = message.replace('\n', ',')
         if (message == None):
             if (hasattr(self, '_server')):
                 self._server.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")
@@ -61,6 +59,8 @@ class DigitalBeing():
         try:
             for model_name in param.SELECTED_AGENTS:
                 if model_name == 'gpt3':
+                    if ('\n' in message):
+                        message = message.replace('\n', "r''")
                     responses_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
                 elif model_name == 'rasa':
                     responses_dict['rasa'] = self.rasa_agent.invoke(message=message)
