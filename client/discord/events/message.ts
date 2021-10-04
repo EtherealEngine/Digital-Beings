@@ -63,7 +63,7 @@ module.exports = (client, message) => {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
         else if (isDirectMethion) content = '!ping ' + content.replace(client.name_regex, '').trim()
         else if (isUserNameMention) {
-            if (client.username_regex === undefined) client.username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
+            if (client.username_regex === undefined) client.username_regex = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
             content = '!ping ' + content.replace(client.username_regex, '').trim()
         }
         else if (isInDiscussion || startConv) content = '!ping ' + content
