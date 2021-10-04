@@ -11,12 +11,9 @@ export async function run (client, message, args, author, addPing, channel) {
         return
     }
 
-    args.grpc_args['chat_history'] = []
-    message.channel.messages.fetch({limit: 10}).then(async messages => {
-        messages.forEach(function (msg) {
-            args.grpc_args['chat_history'].push({ 'author': msg.author.username, 'content': msg.content })
-    })
-    args.grpc_args['chat_history'] = JSON.stringify(args.grpc_args['chat_history'])
+    
+    args.grpc_args['client_name'] = 'discord'
+    args.grpc_args['chat_id'] = channel
 
         console.log('content: ' + args.grpc_args.message)
         console.log(JSON.stringify(args))
@@ -28,7 +25,7 @@ export async function run (client, message, args, author, addPing, channel) {
                         const text = '<@!' + author + '> ' + replacePlaceholders(response.response[key])
                         message.channel.send(text).then(async function (msg) {
                             onMessageResponseUpdated(channel, message.id, msg.id)
-                            addMessageToHistory(channel, msg.id, author, text)
+                            addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                         })
                     }  else {
                         let text = replacePlaceholders(response.response[key])
@@ -36,7 +33,7 @@ export async function run (client, message, args, author, addPing, channel) {
                         console.log('response1: ' + text)
                         message.channel.send(text).then(async function (msg) {
                             onMessageResponseUpdated(channel, message.id, msg.id)
-                            addMessageToHistory(channel, msg.id, author.id, text)
+                            addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                         })
                     }
                 }
@@ -58,7 +55,7 @@ export async function run (client, message, args, author, addPing, channel) {
                                     const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
                                     message.channel.send(text).then(async function (msg) {
                                         onMessageResponseUpdated(channel, message.id, msg.id)
-                                        addMessageToHistory(channel, msg.id, author.id, text)
+                                        addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                                     })
                                 } else {
                                     let text = replacePlaceholders(lines[i])
@@ -66,7 +63,7 @@ export async function run (client, message, args, author, addPing, channel) {
                                     console.log('response2: ' + text)
                                     message.channel.send(text).then(async function (msg) {
                                         onMessageResponseUpdated(channel, message.id, msg.id)
-                                        addMessageToHistory(channel, msg.id, author.id, text)
+                                        addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                                     })
                                 }
                             } else {
@@ -75,7 +72,7 @@ export async function run (client, message, args, author, addPing, channel) {
                                 console.log('response3: ' + text)
                                 message.channel.send(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel, message.id, msg.id)
-                                    addMessageToHistory(channel, msg.id, author.id, text)
+                                    addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                                 })
                             }
                         }
@@ -89,7 +86,7 @@ export async function run (client, message, args, author, addPing, channel) {
                             const text = '<@!' + author + '> ' + emptyResponse
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel, message.id, msg.id)
-                                addMessageToHistory(channel, msg.id, author.id, text)
+                                addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                             })
                         } else {
                             let text = emptyResponse
@@ -97,7 +94,7 @@ export async function run (client, message, args, author, addPing, channel) {
                             console.log('response4: ' + text)
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel, message.id, msg.id)
-                                addMessageToHistory(channel, msg.id, author.id, text)
+                                addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
                             })
                         }
                     }
@@ -105,5 +102,4 @@ export async function run (client, message, args, author, addPing, channel) {
             });          
             message.channel.stopTyping();
         }).catch(err => console.log(err))
-    })  
 }

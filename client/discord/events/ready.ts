@@ -11,7 +11,7 @@ module.exports = async (client) => {
                 channel.messages.fetch({limit: 100}).then(async messages => {
                     messages.forEach(function (msg) {
                         if (!wasHandled(channel.id, msg.id)) {
-                            addMessageToHistory(channel.id, msg.id, msg.author, msg.content)
+                            addMessageToHistory(channel.id, msg.id, msg.author.username, msg.content)
                         }
                     })
                 })

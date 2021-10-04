@@ -1,5 +1,5 @@
 import { startsWithCapital } from "../../utils";
-import { exitConversation, isInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
+import { addMessageToHistory, exitConversation, isInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
@@ -19,6 +19,7 @@ module.exports = (client, message) => {
 
     // Ignore all bots
     if (author.bot) return;
+    addMessageToHistory(channel.id, id, author.username, content)
 
     const botMention = `<@!${client.user}>`;
     const isDM = channel.type === 'dm';

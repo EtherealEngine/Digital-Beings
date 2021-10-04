@@ -16,6 +16,7 @@ from agents.repeat.repeat import Repeat
 
 from jsondb import jsondb as jsondb
 from tcpServer import tcpServer as _server
+from postgres import postgres as _db
 
 import logging
 
@@ -26,6 +27,7 @@ class DigitalBeing():
     def __init__(self, **kwargs):
         self.jsondb = jsondb()
         self.jsondb.getAgents()
+        self.postgres = _db()
         if (os.getenv('LOAD_DISCORD_LOGGER') == 'True'):
             self._server = _server('127.0.0.1', 7778)
         for model_name in param.SELECTED_AGENTS:
@@ -47,8 +49,7 @@ class DigitalBeing():
 
     def handle_message(self, **kwargs):
         message = kwargs.get('message')
-        chat_history = kwargs.get('chat_history')
-        print(chat_history)
+        chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), kwargs.get('client_name'), kwargs.get('chat_id'))
         print('handle message: ' + message)
         if (message == None):
             if (hasattr(self, '_server')):
