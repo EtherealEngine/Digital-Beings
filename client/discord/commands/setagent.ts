@@ -15,16 +15,14 @@ export async function run (client, message, args, author, addPing, channel) {
     }
     await client.messageResponseHandler(args, (response) => {
         console.log('setagents response: ' + JSON.stringify(response))
+        let str = ''
         Object.keys(response.response).map(function(key, index) {
             if (response.response[key].length <= 2000 && response.response[key].length > 0) {
-                client.embed
-                .addFields({name: key, value: response.response[key]})
+                str += key + ': ' + response.response[key] + '\n'
             }
         }); 
-        if (client.embed.fields.length === 0) client.embed.description = 'empty response'
-        message.channel.send(client.embed);
-        client.embed.description = ''
-        client.embed.fields = [];  // clear previous responses
+        if (str.length === 0 ) str = 'empty response'
+        message.channel.send(str)
         message.channel.stopTyping();
     }).catch(err => console.log(err))
 }

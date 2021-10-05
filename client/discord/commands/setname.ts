@@ -2,9 +2,7 @@ import * as fs from 'fs';
 
 export async function run (client, message, args, author, addPing, channel) {
     if (args.parsed_words === undefined || args.parsed_words.length !== 1) {
-        client.embed.description = 'Invalid format, !setname name'
-        message.channel.send(client.embed)
-        client.embed.description = ''
+        message.channel.send('Invalid format, !setname name')
         message.channel.stopTyping()
         return
     }
@@ -18,8 +16,6 @@ export async function run (client, message, args, author, addPing, channel) {
     fs.writeFileSync('../config.json', JSON.stringify(config))
 
     console.log(client.bot_name + ' - ' + client.name_regex)
-    client.embed.description = 'Updated bot name to: ' + name
-    message.channel.send(client.embed)
-    client.embed.description = ''
+    message.channel.send('Updated bot name to: ' + name)
     message.channel.stopTyping()
 }
