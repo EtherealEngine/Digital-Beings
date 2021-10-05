@@ -8,7 +8,7 @@ module.exports = async (client) => {
     await client.guilds.cache.forEach((server) => {
         if (!server.deleted){
         console.log('fetching messages from server: ' + server.name)
-        server.channels.cache.forEach((channel) => {
+        server.channels.cache.forEach(async (channel) => {
             if (channel.type === 'text' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
                 channel.messages.fetch({limit: 100}).then(async messages => {
                     messages.forEach(async function (msg) {
@@ -16,7 +16,7 @@ module.exports = async (client) => {
                         else await wasHandled(channel.id, msg.id, msg.author.username, msg.content, msg.createdTimestamp)
                     })
                 })
-            } 
+            }
         })
     }
     })
