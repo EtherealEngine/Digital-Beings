@@ -114,3 +114,5 @@ dist
 # TernJS port file
 .tern-port
 yarn.lock
+server/agents/repeat/__pycache__/repeat.cpython-38.pyc
+yarn.lock
