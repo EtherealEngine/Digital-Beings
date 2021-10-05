@@ -58,7 +58,7 @@ module.exports = (client, message) => {
         }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().replace(',', '').replace('.', '').match(client.username_regex)
+    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
     if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()

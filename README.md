@@ -101,7 +101,7 @@ DigitalBeing requires the following to run:
      * Login to postgres with an admin user
      * CREATE DATABASE digitalbeing;
      * \c digitalbeing
-     * CREATE TABLE chat_history(client_name text, chat_id text, message_id text, global_message_id text, sender text, content text);
+     * CREATE TABLE chat_history(client_name text, chat_id text, message_id text, global_message_id text, sender text, content text, createdAt text);
      * Update the variables in the .env for the PG with your credentials
 
 ## Twilio Setup

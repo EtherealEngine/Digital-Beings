@@ -21,8 +21,8 @@ class postgres:
         for res in results: 
             sender = res[4]
             content = res[5]
-            createdAt = res[6]
-            history.append({ 'author': sender, 'content': content, 'createdAt': createdAt })
+            #createdAt = res[6]
+            history.append({ 'author': sender, 'content': content })
             i += 1
             if (i >= length):
                 break
