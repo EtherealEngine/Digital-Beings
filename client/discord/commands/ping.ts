@@ -41,45 +41,25 @@ export async function run (client, message, args, author, addPing, channel) {
                         })
                     }
                 }
-                else if (response.response[key].length > 2000) {
-                    const lines: string[] = []
-                    let line: string = ''
-                    for(let i = 0; i < response.response[key].length; i++) {
-                        line+= response.response[key]
-                        if (i >= 1980 && (line[i] === ' ' || line[i] === '')) {
-                            lines.push(line)
-                            line = ''
-                        }
+                else if (response.response[key].length >= 2000) {
+                    let text: string = ''
+                    if (addPing) {
+                        text = '<@!' + author + '> ' + replacePlaceholders(response.response[key])
+                        message.channel.send(text).then(async function (msg) {
+                            onMessageResponseUpdated(channel, message.id, msg.id)
+                            addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
+                        })
+                    } else {
+                        text = replacePlaceholders(response.response[key])
+                        while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                        console.log('response2: ' + text)
+                        
                     }
-    
-                    for (let i = 0; i< lines.length; i++) {
-                        if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
-                            if (i === 0) {
-                                if (addPing) {
-                                    const text = '<@!' + author + '> ' + replacePlaceholders(lines[i])
-                                    message.channel.send(text).then(async function (msg) {
-                                        onMessageResponseUpdated(channel, message.id, msg.id)
-                                        addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                                    })
-                                } else {
-                                    let text = replacePlaceholders(lines[i])
-                                    while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                                    console.log('response2: ' + text)
-                                    message.channel.send(text).then(async function (msg) {
-                                        onMessageResponseUpdated(channel, message.id, msg.id)
-                                        addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                                    })
-                                }
-                            } else {
-                                let text = replacePlaceholders(lines[i])
-                                while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                                console.log('response3: ' + text)
-                                message.channel.send(text).then(async function (msg) {
-                                    onMessageResponseUpdated(channel, message.id, msg.id)
-                                    addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                                })
-                            }
-                        }
+                    if (text.length > 0) {
+                        message.channel.send(text, { split: true }).then(async function (msg) {
+                            onMessageResponseUpdated(channel, message.id, msg.id)
+                            addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
+                        })
                     }
                 }
                 else {
