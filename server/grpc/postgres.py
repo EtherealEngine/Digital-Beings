@@ -13,15 +13,13 @@ class postgres:
                             password=os.getenv('PGPASSWORD'))
         self.cur = self.postgres_con.cursor()
     
-    def getHistory(self, length, client_name, chat_id, currentSender, currentMsg):
+    def getHistory(self, length, client_name, chat_id):
         query = """SELECT * FROM chat_history WHERE client_name=%s AND chat_id=%s"""
         self.cur.execute(query, [client_name, chat_id])
         results = self.cur.fetchall()
         history = []
         i = 0
-        print('starting sort')
         if len(results) > 0:
-            print('shorting')
             try:
                 sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=True)
                 for res in sortedArray:
