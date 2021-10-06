@@ -57,5 +57,9 @@ export async function updateMessage(chatId, messageId, newContent) {
     await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent)
 }
 export async function wasHandled(chatId, messageId) {
-    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId)
+    return await postgres.getInstance.messageExists2('xr-engine', chatId, messageId)
+}
+
+export async function saveIfHandled(chatId, messageId, sender, content, timestamp) {
+    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId, sender, content, timestamp)
 }

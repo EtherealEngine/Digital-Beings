@@ -9,6 +9,7 @@ const { MessagingResponse } = twiml;
 
 export async function message(messageResponseHandler, req: MessagingRequest, res: Response<string>) {
     console.log('received message: ' + req.body.Body)
+    addMessageToHistory(req.body.From, req.body.From, req.body.Body)   
     const message = '!ping ' + req.body.Body
       
     const _resp = new MessagingResponse();
@@ -32,8 +33,8 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
         args['grpc_method_params'] = args['command_info'][2];
     }
 
-    args['grpc_args']['client_name'] = 'telegram'
-    args['grpc_args']['chat_id'] = req.body.From
+    args['grpc_args']['client_name'] = 'twilio'
+    args['grpc_args']['chat_id'] = req.body.From + ''
 
     const dateNow = new Date();
     var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
@@ -51,7 +52,7 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
                 res.send(_resp.toString())     
                 addMessageToHistory(req.body.From, process.env.BOT_NAME, text)                 
             }
-            else if (response.response[key].length > 2000) {
+            else if (response.response[key].length > 160) {
                 const lines: string[] = []
                 let line: string = ''
                 for(let i = 0; i < response.response[key].length; i++) {

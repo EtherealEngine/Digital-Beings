@@ -51,7 +51,6 @@ class DigitalBeing():
         try:
             if (hasattr(self, '_server')):
                 self._server.sendMessage(text)
-
         except:
             logger.exception("sendDiscordMessage")
 
@@ -83,7 +82,6 @@ class DigitalBeing():
             logger.exception("handle_message")
             if (hasattr(self, '_server')):
                 self._server.sendMessage("Exception handle_message: " + err)
-            print("Exception handle_message: " + err)
             return { 'none': 'none' }
 
 

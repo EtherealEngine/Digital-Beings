@@ -3,6 +3,7 @@ import { addMessageToHistory, exitConversation, getChatHistory, isInConversation
 import { botName, username_regex } from "../telegram-client"
 
 export async function onMessage(bot, msg, messageResponseHandler) {
+    addMessageToHistory(msg.chat.id, msg.message_id, msg.from.username === undefined ? msg.from.first_name : msg.from.username, msg.text)
     console.log(JSON.stringify(msg))
     const date = Date.now() / 1000
     const msgDate = msg.date
@@ -112,7 +113,7 @@ export async function onMessage(bot, msg, messageResponseHandler) {
     }
 
     args['grpc_args']['client_name'] = 'telegram'
-    args['grpc_args']['chat_id'] = _sender
+    args['grpc_args']['chat_id'] = msg.chat.id + ''
 
     const dateNow = new Date();
     var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
@@ -135,34 +136,6 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                 })              
            }
-            else if (response.response[key].length > 2000) {
-                const lines: string[] = []
-                let line: string = ''
-                for(let i = 0; i < response.response[key].length; i++) {
-                    line+= response.response[key]
-                    if (i >= 1980 && (line[i] === ' ' || line[i] === '')) {
-                        lines.push(line)
-                        line = ''
-                    }
-                }
-
-                for (let i = 0; i< lines.length; i++) {
-                    if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
-                        if (i === 0) {
-                            let text = lines[1]
-                            while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                            if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
-                                onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                                addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                                })              
-                            else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
-                                onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
-                                addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                                })              
-                        }
-                }
-            }
-        }
             else {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()

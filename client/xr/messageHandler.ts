@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../utils";
-import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage, wasHandled } from "./chatHistory";
+import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, saveIfHandled, sentMessage, wasHandled } from "./chatHistory";
 
 export async function handleMessages(messageResponseHandler, messages, bot) {
     for (let i = 0; i < messages.length; i++) {
@@ -23,10 +23,10 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         const hours_diff = Math.ceil(diff/3600)
         const mins_diff = Math.ceil((diff-hours_diff)/60)
         if (mins_diff > 12 || (mins_diff <= 5 && hours_diff > 1)) {
-            if (!wasHandled(messages[i].channelId, messages[i].id)) {
-                addMessageToHistory(messages[i].channelId, messages[i].id, messages[i].senderName !== undefined ? messages[i].senderName : messages[i].sender.name, messages[i].text)
-            }
-
+            const date = new Date(msgDate);
+            const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+            saveIfHandled(messages[i].channelId, messages[i].id, messages[i].senderName !== undefined ? messages[i].senderName : messages[i].sender.name, messages[i].text, utcStr)
             continue
         }
 
@@ -99,8 +99,8 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
             args['grpc_method_params'] = args['command_info'][2];
         }
 
-        args['grpc_args']['client_name'] = 'telegram'
-        args['grpc_args']['chat_id'] = _sender
+        args['grpc_args']['client_name'] = 'xr-engine'
+        args['grpc_args']['chat_id'] = messages[i].channelId
 
         const dateNow = new Date();
         var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
