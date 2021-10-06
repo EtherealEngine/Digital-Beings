@@ -61,7 +61,7 @@ export function moreThanOneInConversation() {
     let count: number = 0
     for(let c in conversation) {
         if (conversation[c] === undefined) continue
-        if (conversation[c].isInConversation !== undefined && conversation[c].isInConversation === true) count++
+        if (conversation[c].isInConversation !== undefined && conversation[c].isInConversation === true && conversation[c].timeOutFinished === false) count++
     }
 
     return count > 1
