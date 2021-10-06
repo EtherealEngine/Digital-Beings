@@ -13,7 +13,7 @@ class postgres:
                             password=os.getenv('PGPASSWORD'))
         self.cur = self.postgres_con.cursor()
     
-    def getHistory(self, length, client_name, chat_id, currentSender, currentMsg):
+    def getHistory(self, length, client_name, chat_id):
         query = """SELECT * FROM chat_history WHERE client_name=%s AND chat_id=%s"""
         self.cur.execute(query, [client_name, chat_id])
         results = self.cur.fetchall()
