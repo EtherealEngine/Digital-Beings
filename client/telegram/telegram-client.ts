@@ -1,11 +1,9 @@
 import TelegramBot = require("node-telegram-bot-api")
-import { getRandomEmptyResponse } from "../utils"
-import { exitConversation, getResponse, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "./chatHistory"
 import { onMessage } from "./events/message"
 import { onMessageEdit } from "./events/message_edit"
 
 const token = process.env.TELEGRAM_BOT_TOKEN
-export const username_regex = new RegExp('((?:digital|being)(?: |$))', 'ig')
+export const username_regex = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
 export let botName = ''
 
 export const createTelegramClient = (messageResponseHandler) => {

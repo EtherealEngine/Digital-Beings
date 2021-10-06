@@ -77,7 +77,7 @@ export async function onMessage(bot, msg, messageResponseHandler) {
             }
         }
 
-        const isUserNameMention = content.toLowerCase().match(username_regex)
+        const isUserNameMention = content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(username_regex)
         const isInDiscussion = isInConversation(_sender)
         if (!content.startsWith('!') && !otherMention) {
             if (isMention) content = '!ping ' + content.replace('!', '').trim()
