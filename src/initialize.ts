@@ -37,7 +37,7 @@ const pyConnect = require('./pyconnect');
             }
             require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
             //require("../client/messenger/messenger-client").createMessengerClient(messageResponseHandler);
-            require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
+            //require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
             //require("../client/twilio/twilio-client").createTwilioClient(messageResponseHandler);
             //require("../client/whatsapp/whatsapp-client").createWhatsappClient(messageResponseHandler);
             //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);

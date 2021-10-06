@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../utils";
-import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, saveIfHandled, sentMessage, wasHandled } from "./chatHistory";
+import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, moreThanOneInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, saveIfHandled, sentMessage, wasHandled } from "./chatHistory";
 
 export async function handleMessages(messageResponseHandler, messages, bot) {
     for (let i = 0; i < messages.length; i++) {
@@ -40,7 +40,7 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         if (prevMessageTimers[messages[i].channelId] !== undefined) clearTimeout(prevMessageTimers[messages[i].channelId])
         prevMessageTimers[messages[i].channelId] = setTimeout(() => prevMessage[messages[i].channelId] = '', 120000)
         
-        addPing = _prev !== undefined && _prev !== '' && _prev !== _sender
+        addPing = (_prev !== undefined && _prev !== '' && _prev !== _sender) || moreThanOneInConversation()
 
         let startConv = false
         let startConvName = ''

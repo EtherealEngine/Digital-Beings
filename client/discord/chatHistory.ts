@@ -3,7 +3,7 @@ import { postgres } from "../postgres"
 export const prevMessage: { [channel: string]: string } = {}
 export const prevMessageTimers: { [channel: string]: any } = {}
 export const messageResponses: { [channel: string]: { [messageId: string]: string } } = {}
-export const conversation: { [user: string]: any } = {}
+export const conversation: { [user: string]: { timeoutId: any, timeOutFinished: boolean, isInConversation: boolean } } = {}
 
 export function onMessageDeleted(channel, messageId) {
     if (messageResponses[channel] !== undefined && messageResponses[channel][messageId] !== undefined) {
@@ -20,22 +20,39 @@ export function getMessage(channel, messageId) {
 }
 
 export function isInConversation(user): boolean {
-    return conversation[user] !== undefined
+    return conversation[user] !== undefined && conversation[user].isInConversation === true
 }
 
 export function sentMessage(user) {
-    if (conversation[user] !== undefined) {
-        clearTimeout(conversation[user])
-        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
+    for(let c in conversation) {
+        if (c === user) continue
+        if (conversation[c] !== undefined && conversation[c].timeOutFinished === true) {
+            exitConversation(c)
+        }
+    }
+
+    if (conversation[user] === undefined) {
+        conversation[user] = { timeoutId: undefined, timeOutFinished: true, isInConversation: true }
+        if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
+        conversation[user].timeoutId = setTimeout(() => {
+            conversation[user].timeoutId = undefined
+            conversation[user].timeOutFinished = true
+        }, 120000)
     } else {
-        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
+        conversation[user].timeoutId = setTimeout(() => {
+            conversation[user].timeoutId = undefined
+            conversation[user].timeOutFinished = true
+        }, 120000)
     }
 }
 
 export function exitConversation(user) {
     if (conversation[user] !== undefined) {
-        clearTimeout(conversation[user])
-        conversation[user] = undefined
+        if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
+        conversation[user].timeoutId = undefined
+        conversation[user].timeOutFinished = true
+        conversation[user].isInConversation = false
+        delete conversation[user]
     }
 }
 
@@ -58,4 +75,14 @@ export async function updateMessage(chatId, messageId, newContent) {
 }
 export async function wasHandled(chatId, messageId, sender, content, timestamp) {
     return await postgres.getInstance.messageExists('discord', chatId, messageId, sender, content, timestamp)
+}
+
+export function moreThanOneInConversation() {
+    let count: number = 0
+    for(let c in conversation) {
+        if (conversation[c] === undefined) continue
+        if (conversation[c].isInConversation !== undefined && conversation[c].isInConversation === true) count++
+    }
+
+    return count > 1
 }

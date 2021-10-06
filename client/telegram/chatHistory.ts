@@ -21,22 +21,50 @@ export function getMessage(chatId, messageId) {
 }
 
 export function isInConversation(user): boolean {
-    return conversation[user] !== undefined
+    return conversation[user] !== undefined && conversation[user].isInConversation === true
 }
 
 export function sentMessage(user) {
-    if (conversation[user] !== undefined) {
-        clearTimeout(conversation[user])
+    for(let c in conversation) {
+        if (c === user) continue
+        if (conversation[c] !== undefined && conversation[c].timeOutFinished === true) {
+            exitConversation(c)
+        }
     }
-    
-    conversation[user] = setTimeout(function() { conversation[user] = undefined }, 120000)
+
+    if (conversation[user] === undefined) {
+        conversation[user] = { timeoutId: undefined, timeOutFinished: true, isInConversation: true }
+        if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
+        conversation[user].timeoutId = setTimeout(() => {
+            conversation[user].timeoutId = undefined
+            conversation[user].timeOutFinished = true
+        }, 120000)
+    } else {
+        conversation[user].timeoutId = setTimeout(() => {
+            conversation[user].timeoutId = undefined
+            conversation[user].timeOutFinished = true
+        }, 120000)
+    }
 }
 
 export function exitConversation(user) {
     if (conversation[user] !== undefined) {
-        clearTimeout(conversation[user])
-        conversation[user] = undefined
+        if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
+        conversation[user].timeoutId = undefined
+        conversation[user].timeOutFinished = true
+        conversation[user].isInConversation = false
+        delete conversation[user]
     }
+}
+
+export function moreThanOneInConversation() {
+    let count: number = 0
+    for(let c in conversation) {
+        if (conversation[c] === undefined) continue
+        if (conversation[c].isInConversation !== undefined && conversation[c].isInConversation === true) count++
+    }
+
+    return count > 1
 }
 
 export function getResponse(chatId, message) {

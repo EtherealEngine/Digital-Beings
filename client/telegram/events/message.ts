@@ -1,5 +1,5 @@
 import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
-import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
+import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, moreThanOneInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
 import { botName, username_regex } from "../telegram-client"
 
 export async function onMessage(bot, msg, messageResponseHandler) {
@@ -35,7 +35,7 @@ export async function onMessage(bot, msg, messageResponseHandler) {
             if (prevMessageTimers[msg.chat.id] !== undefined) clearTimeout(prevMessageTimers[msg.chat.id])
             prevMessageTimers[msg.chat.id] = setTimeout(() => prevMessage[msg.chat.id] = '', 120000)
         }
-        addPing = _prev !== undefined && _prev !== '' && _prev !== _sender
+        addPing = (_prev !== undefined && _prev !== '' && _prev !== _sender) || moreThanOneInConversation()
 
         const isMention = msg.entities !== undefined && msg.entities.length === 1 && msg.entities[0].type === 'mention' && content.includes('@' + process.env.TELEGRAM_BOT_NAME)
         const otherMention = msg.entities !== undefined && msg.entities.length > 0 && msg.entities[0].type === 'mention'  && !content.includes('@' + process.env.TELEGRAM_BOT_NAME)
