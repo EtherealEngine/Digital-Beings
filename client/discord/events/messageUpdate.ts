@@ -8,7 +8,7 @@ module.exports = async (client, message) => {
      if (oldResponse === undefined) {
         await channel.messages.fetch(id).then(async msg => {
             await updateMessage(channel.id, id, content)
-         });
+         }).catch(console.error);
          return
      }
      await updateMessage(channel.id, id, content)

@@ -129,11 +129,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                 if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                    })        
+                    }).catch(console.error)
                 else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                })              
+                }).catch(console.error)       
            }
             else if (response.response[key].length > 2000) {
                 const lines: string[] = []
@@ -154,11 +154,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                             if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                                 onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                                 addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                                })              
+                                }).catch(console.error)          
                             else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
                                 onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                                 addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                                })              
+                                }).catch(console.error)           
                         }
                 }
             }
@@ -169,11 +169,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                 if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
-                    })             
+                    }).catch(console.error)           
                 else bot.sendMessage(msg.chat.id,emptyResponse).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
-                    })    
+                    }).catch(console.error)
             }
         });          
     }).catch(err => console.log(err))
