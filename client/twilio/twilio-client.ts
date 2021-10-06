@@ -26,6 +26,6 @@ export function sendMessage(toNumber, body) {
     client.messages.create({from: twilioNumber,
         to: toNumber,
         body: body
-    }).then((message) => console.log('sent message: ' + message.sid))
+    }).then((message) => console.log('sent message: ' + message.sid)).catch(console.error)
     console.log('send message to: ' + toNumber + ' body: ' + body)
 }

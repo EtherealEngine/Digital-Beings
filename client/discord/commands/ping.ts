@@ -30,7 +30,8 @@ export async function run (client, message, args, author, addPing, channel) {
                         message.channel.send(text).then(async function (msg) {
                             onMessageResponseUpdated(channel, message.id, msg.id)
                             addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                        })
+                        }).catch(console.error)
+
                     }  else {
                         let text = replacePlaceholders(response.response[key])
                         while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
@@ -38,7 +39,7 @@ export async function run (client, message, args, author, addPing, channel) {
                         message.channel.send(text).then(async function (msg) {
                             onMessageResponseUpdated(channel, message.id, msg.id)
                             addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                        })
+                        }).catch(console.error)
                     }
                 }
                 else if (response.response[key].length >= 2000) {
@@ -71,7 +72,7 @@ export async function run (client, message, args, author, addPing, channel) {
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel, message.id, msg.id)
                                 addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                            })
+                            }).catch(console.error)
                         } else {
                             let text = emptyResponse
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
@@ -79,7 +80,7 @@ export async function run (client, message, args, author, addPing, channel) {
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel, message.id, msg.id)
                                 addMessageToHistory(channel, msg.id, process.env.BOT_NAME, text)
-                            })
+                            }).catch(console.error)
                         }
                     }
                 }

@@ -124,17 +124,17 @@ export async function onMessage(bot, msg, messageResponseHandler) {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {
             console.log('response: ' + response.response[key])
-            if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
+            if (response.response[key] !== undefined && response.response[key].length > 0) {
                 let text = response.response[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                 if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                    })        
+                    }).catch(console.error)
                 else bot.sendMessage(msg.chat.id,text).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
-                })              
+                }).catch(console.error)       
            }
             else {
                 let emptyResponse = getRandomEmptyResponse()
@@ -142,11 +142,11 @@ export async function onMessage(bot, msg, messageResponseHandler) {
                 if (addPing) bot.sendMessage(msg.chat.id,`<a href="tg://user?id=${msg.from.id}">${msg.from.first_name}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
-                    })             
+                    }).catch(console.error)           
                 else bot.sendMessage(msg.chat.id,emptyResponse).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, msg.message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
-                    })    
+                    }).catch(console.error)
             }
         });          
     }).catch(err => console.log(err))

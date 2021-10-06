@@ -9,7 +9,7 @@ export let botName = ''
 export const createTelegramClient = (messageResponseHandler) => {
     if (!token) return console.warn("No API token for Telegram bot, skipping");
     const bot = new TelegramBot(token, {polling: true})
-    bot.getMe().then(info => botName = info.username)
+    bot.getMe().then(info => botName = info.username).catch(console.error)
 
     bot.on('message', async (msg) => {
         await onMessage(bot, msg, messageResponseHandler)

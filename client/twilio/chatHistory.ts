@@ -11,5 +11,5 @@ export async function getChatHistory(chatId, length) {
 }
 
 export async function addMessageToHistory(chatId, senderName, content) {
-    getLastMessageId(chatId).then(messageId => postgres.getInstance.addMessageInHistory('twilio', chatId, messageId + '', senderName, content))
+    getLastMessageId(chatId).then(messageId => postgres.getInstance.addMessageInHistory('twilio', chatId, messageId + '', senderName, content)).catch(console.error)
 }

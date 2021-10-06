@@ -1,9 +1,9 @@
-import {  deleteMessageFromHistory, wasHandled } from "../chatHistory";
+import { deleteMessageFromHistory, wasHandled } from "../chatHistory";
 
-module.exports = async (client) => {    
+module.exports = async (client) => {
     await client.users.fetch(process.env.LOG_DM_USER_ID).then((user) => {
         client.log_user = user
-    }).catch(console.error);
+    }).catch((error) => { console.log(error) });
 
     await client.guilds.cache.forEach((server) => {
         if (!server.deleted){
@@ -18,8 +18,7 @@ module.exports = async (client) => {
                 })
             }
         })
-    }
-    })
+    }});
     
     console.log('client is ready')
 }
