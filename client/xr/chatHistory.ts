@@ -20,23 +20,50 @@ export function getMessage(chatId, messageId) {
 }
 
 export function isInConversation(user): boolean {
-    return conversation[user] !== undefined
+    return conversation[user] !== undefined && conversation[user].isInConversation === true
 }
 
 export function sentMessage(user) {
-    if (conversation[user] !== undefined) {
-        clearTimeout(conversation[user])
-        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
+    for(let c in conversation) {
+        if (c === user) continue
+        if (conversation[c] !== undefined && conversation[c].timeOutFinished === true) {
+            exitConversation(c)
+        }
+    }
+
+    if (conversation[user] === undefined) {
+        conversation[user] = { timeoutId: undefined, timeOutFinished: true, isInConversation: true }
+        if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
+        conversation[user].timeoutId = setTimeout(() => {
+            conversation[user].timeoutId = undefined
+            conversation[user].timeOutFinished = true
+        }, 120000)
     } else {
-        conversation[user] = setTimeout(() => conversation[user] = undefined, 120000)
+        conversation[user].timeoutId = setTimeout(() => {
+            conversation[user].timeoutId = undefined
+            conversation[user].timeOutFinished = true
+        }, 120000)
     }
 }
 
 export function exitConversation(user) {
     if (conversation[user] !== undefined) {
-        clearTimeout(conversation[user])
-        conversation[user] = undefined
+        if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
+        conversation[user].timeoutId = undefined
+        conversation[user].timeOutFinished = true
+        conversation[user].isInConversation = false
+        delete conversation[user]
     }
+}
+
+export function moreThanOneInConversation() {
+    let count: number = 0
+    for(let c in conversation) {
+        if (conversation[c] === undefined) continue
+        if (conversation[c].isInConversation !== undefined && conversation[c].isInConversation === true && conversation[c].timeOutFinished === false) count++
+    }
+
+    return count > 1
 }
 
 export function getResponse(chatId, message) {
@@ -57,5 +84,9 @@ export async function updateMessage(chatId, messageId, newContent) {
     await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent)
 }
 export async function wasHandled(chatId, messageId) {
-    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId)
+    return await postgres.getInstance.messageExists2('xr-engine', chatId, messageId)
+}
+
+export async function saveIfHandled(chatId, messageId, sender, content, timestamp) {
+    return await postgres.getInstance.messageExists('xr-engine', chatId, messageId, sender, content, timestamp)
 }

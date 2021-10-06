@@ -7,6 +7,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
   console.log('receivedMessage: ' + receivedMessage.text + ' from: ' + senderPsid)
 
   if (receivedMessage.text) {
+    addMessageToHistory(senderPsid, senderPsid, receivedMessage.text)
     const message = '!ping ' + receivedMessage.text
       
     const args = {}
@@ -29,7 +30,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
     }
 
     args['grpc_args']['client_name'] = 'facebook'
-    args['grpc_args']['chat_id'] = senderPsid
+    args['grpc_args']['chat_id'] = senderPsid + ''
 
     const date = new Date();
     const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
@@ -45,7 +46,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                 callSendAPI(senderPsid, { 'text': text }, text);
             }
-            else if (response.response[key].length > 2000) {
+            else if (response.response[key].length > 20000) {
                 const lines: string[] = []
                 let line: string = ''
                 for(let i = 0; i < response.response[key].length; i++) {
@@ -77,8 +78,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
 }
 
 function callSendAPI(senderPsid, response, text) {
-
-  addMessageToHistory(senderPsid, senderPsid, text)
+  addMessageToHistory(senderPsid, process.env.BOT_NAME, text)
   console.log('sending response: ' + response)
   // The page access token we have generated in your app settings
   const PAGE_ACCESS_TOKEN = process.env.MESSENGER_TOKEN

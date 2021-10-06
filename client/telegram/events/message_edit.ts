@@ -38,7 +38,15 @@ export async function onMessageEdit(bot, msg, messageResponseHandler) {
         args['grpc_method'] = args['command_info'][1][0];
         args['grpc_method_params'] = args['command_info'][2];
     }
-    args['chat_history'] = await getChatHistory(msg.chat.id, 10)
+    
+    args['grpc_args']['client_name'] = 'telegram'
+    args['grpc_args']['chat_id'] = msg.chat.id + ''
+
+    const dateNow = new Date();
+    var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
+    const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+    args['grpc_args']['createdAt'] = utcStr
+    
     await messageResponseHandler(args, (response) => {
         console.log(JSON.stringify(response))
         Object.keys(response.response).map(function(key, index) {

@@ -1,5 +1,5 @@
 import { startsWithCapital } from "../../utils";
-import { addMessageToHistory, exitConversation, isInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
+import { addMessageToHistory, conversation, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 
 module.exports = (client, message) => {
     const args = {}
@@ -15,8 +15,7 @@ module.exports = (client, message) => {
         if (prevMessageTimers[channel.id] !== undefined) clearTimeout(prevMessageTimers[channel.id])
         prevMessageTimers[channel.id] = setTimeout(() => prevMessage[channel.id] = '', 120000)
     }
-    const addPing = _prev !== undefined && _prev !== '' && _prev !== author
-
+    const addPing = (_prev !== undefined && _prev !== '' && _prev !== author) || moreThanOneInConversation()
     // Ignore all bots
     if (author.bot) return;
     addMessageToHistory(channel.id, id, author.username, content)

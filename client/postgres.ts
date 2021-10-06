@@ -78,8 +78,11 @@ export class postgres {
     }
 
     async updateMessage(client_name: string, chat_id: string, message_id: string, newContent: string) {
-        const query = "UPDATE chat_history SET content=$1 WHERE client_name=$2 AND chat_id=$3 AND message_id=$4"
-        const values = [ newContent, client_name, chat_id, message_id ]
+        const date = new Date();
+        const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+        const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+        const query = "UPDATE chat_history SET content=$1, createdAt=$2 WHERE client_name=$3 AND chat_id=$4 AND message_id=$5"
+        const values = [ newContent, utcStr, client_name, chat_id, message_id ]
 
         await this.client.query(query, values, (err, res) => {
             if (err) {
@@ -113,6 +116,18 @@ export class postgres {
                         }
                       })
                 }
+            }
+        })
+    }
+    async messageExists2(client_name: string, chat_id: string, message_id: string) {
+        const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2 AND message_id=$3"
+        const values = [ client_name, chat_id, message_id ]
+
+        return await this.client.query(query, values, (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            } else {
+                return res && res.rows && res.rows.length > 0
             }
         })
     }

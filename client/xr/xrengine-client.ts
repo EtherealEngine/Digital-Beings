@@ -551,7 +551,7 @@ class XREngineBot {
             name = this.name
         }
 
-        this.username_regex = new RegExp(this.name, 'ig')
+        this.username_regex = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
 
         if (this.headless) {
             // Disable rendering for headless, otherwise chromium uses a LOT of CPU

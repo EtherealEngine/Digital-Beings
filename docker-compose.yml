@@ -8,7 +8,7 @@ services:
       PGPASSWORD: digitalbeing_default_pw
       PGDATABASE: digitalbeing
       GRPC_SERVER_PORT: 7777
-      CHAT_HISTORY_MESSAGES_COUNT: 10
+      CHAT_HISTORY_MESSAGES_COUNT: 20
     volumes:
         - "./:/DigitalBeing"
 
