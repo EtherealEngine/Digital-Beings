@@ -19,9 +19,7 @@ class postgres:
         results = self.cur.fetchall()
         history = []
         i = 0
-        print('starting sort')
         if len(results) > 0:
-            print('shorting')
             try:
                 sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=True)
                 for res in sortedArray:

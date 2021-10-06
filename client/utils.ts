@@ -6,7 +6,7 @@ export const emptyResponse: string[] = [
     'Idk',
     'You tell me',
     'If you tell me, we will both know',
-    'It\'s a sectret',
+    'It\'s a secret',
     'Some things you should figure by your self',
     'No you',
     'I don\'n know'
