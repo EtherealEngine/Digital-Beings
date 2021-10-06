@@ -96,7 +96,9 @@ export class postgres {
             if (err) {
               console.log(err + ' ' + err.stack)
             } else {
-                if (res.rows && res.rows.length) return
+                if (res.rows && res.rows.length) {
+                    this.updateMessage(client_name, chat_id, message_id, content);
+                }
                 else {
                     const date = new Date(timestamp)
                     const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());

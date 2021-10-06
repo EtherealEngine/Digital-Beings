@@ -1,5 +1,6 @@
 import psycopg2
 import os
+from datetime import datetime
 from json import dumps
 
 class postgres: 
@@ -18,13 +19,19 @@ class postgres:
         results = self.cur.fetchall()
         history = []
         i = 0
-        for res in results: 
-            sender = res[4]
-            content = res[5]
-            #createdAt = res[6]
-            history.append({ 'author': sender, 'content': content })
-            i += 1
-            if (i >= length):
-                break
+        if len(results) > 0:
+            try:
+                sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=True)
+                for res in sortedArray:
+                    sender = res[4]
+                    content = res[5]
+                    #createdAt = res[6]
+                    history.append({ 'author': sender, 'content': content })
+                    i += 1
+                    if (i >= length):
+                        break
+            except Exception as ex: 
+                print('caught excpeition in sort')
+                print(ex)
         
         return dumps(history)
