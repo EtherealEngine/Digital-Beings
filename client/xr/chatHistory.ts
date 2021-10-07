@@ -3,7 +3,7 @@ import { postgres } from "../postgres"
 export const prevMessage: { [chatId: string]: string } = {}
 export const prevMessageTimers: { [chatId: string]: any } = {}
 export const messageResponses: { [chatId: string]: { [messageId: string]: string } } = {}
-export const conversation: { [user: string]: any } = {}
+export const conversation: { [user: string]: { timeoutId: any, timeOutFinished: boolean, isInConversation: boolean } } = {}
 
 export function onMessageDeleted(chatId, messageId) {
     if (messageResponses[chatId] !== undefined && messageResponses[chatId][messageId] !== undefined) {
@@ -35,14 +35,20 @@ export function sentMessage(user) {
         conversation[user] = { timeoutId: undefined, timeOutFinished: true, isInConversation: true }
         if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
         conversation[user].timeoutId = setTimeout(() => {
-            conversation[user].timeoutId = undefined
-            conversation[user].timeOutFinished = true
-        }, 120000)
+            console.log('conversaion for ' + user + ' ended')
+            if (conversation[user] !== undefined) {
+                conversation[user].timeoutId = undefined
+                conversation[user].timeOutFinished = true
+            }
+        }, 720000)
     } else {
         conversation[user].timeoutId = setTimeout(() => {
-            conversation[user].timeoutId = undefined
-            conversation[user].timeOutFinished = true
-        }, 120000)
+            console.log('conversaion for ' + user + ' ended')
+            if (conversation[user] !== undefined) {
+                conversation[user].timeoutId = undefined
+                conversation[user].timeOutFinished = true
+            }
+        }, 720000)
     }
 }
 

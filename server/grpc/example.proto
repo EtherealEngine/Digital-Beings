@@ -14,4 +14,7 @@ service Agent {
     rpc InvokeSoloAgent(Request) returns (Response) {}
     rpc GetAgents(Request) returns (Response) {}
     rpc SetAgentFields(Request) returns (Response) {}
+    rpc HandleSlashCommand(Request) returns (Response) {} 
+    rpc HandleUserUpdate(Request) returns (Response) {}
+    rpc HandleMessageReaction(Request) returns (Response) {}
 }

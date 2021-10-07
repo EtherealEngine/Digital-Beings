@@ -39,6 +39,21 @@ class AgentStub(object):
                 request_serializer=example__pb2.Request.SerializeToString,
                 response_deserializer=example__pb2.Response.FromString,
                 )
+        self.HandleSlashCommand = channel.unary_unary(
+                '/Agent/HandleSlashCommand',
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
+                )
+        self.HandleUserUpdate = channel.unary_unary(
+                '/Agent/HandleUserUpdate',
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
+                )
+        self.HandleMessageReaction = channel.unary_unary(
+                '/Agent/HandleMessageReaction',
+                request_serializer=example__pb2.Request.SerializeToString,
+                response_deserializer=example__pb2.Response.FromString,
+                )
 
 
 class AgentServicer(object):
@@ -74,6 +89,24 @@ class AgentServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def HandleSlashCommand(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def HandleUserUpdate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def HandleMessageReaction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AgentServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -99,6 +132,21 @@ def add_AgentServicer_to_server(servicer, server):
             ),
             'SetAgentFields': grpc.unary_unary_rpc_method_handler(
                     servicer.SetAgentFields,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
+            ),
+            'HandleSlashCommand': grpc.unary_unary_rpc_method_handler(
+                    servicer.HandleSlashCommand,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
+            ),
+            'HandleUserUpdate': grpc.unary_unary_rpc_method_handler(
+                    servicer.HandleUserUpdate,
+                    request_deserializer=example__pb2.Request.FromString,
+                    response_serializer=example__pb2.Response.SerializeToString,
+            ),
+            'HandleMessageReaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.HandleMessageReaction,
                     request_deserializer=example__pb2.Request.FromString,
                     response_serializer=example__pb2.Response.SerializeToString,
             ),
@@ -192,6 +240,57 @@ class Agent(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Agent/SetAgentFields',
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def HandleSlashCommand(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/HandleSlashCommand',
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def HandleUserUpdate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/HandleUserUpdate',
+            example__pb2.Request.SerializeToString,
+            example__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def HandleMessageReaction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Agent/HandleMessageReaction',
             example__pb2.Request.SerializeToString,
             example__pb2.Response.FromString,
             options, channel_credentials,

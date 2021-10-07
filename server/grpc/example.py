@@ -1,4 +1,5 @@
 
+from json import dumps
 import os
 import sys
 
@@ -84,6 +85,39 @@ class DigitalBeing():
                 self._server.sendMessage("Exception handle_message: " + err)
             return { 'none': 'none' }
 
+    def handle_slash_command(self, **kwargs):
+        try:
+            chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), kwargs.get('client_name'), kwargs.get('chat_id'))
+            chat_history = { kwargs.get('command') + ' ' + kwargs.get('args'): chat_history }
+            chat_history = dumps(chat_history)
+            print(chat_history)
+            return { 'none': 'not implemented' }
+        
+        except Exception as err:
+            logger.exception("handle_message")
+            if (hasattr(self, '_server')):
+                self._server.sendMessage("Exception handle_message: " + err)
+            return { 'none': 'none' }
+
+    def handle_user_update(self, **kwargs):
+        try:
+            return { 'none': 'not implemented' }
+        
+        except Exception as err:
+            logger.exception("handle_message")
+            if (hasattr(self, '_server')):
+                self._server.sendMessage("Exception handle_message: " + err)
+            return { 'none': 'none' }
+
+    def handle_message_reaction(self, **kwargs):
+        try:
+            return { 'none': 'not implemented' }
+        
+        except Exception as err:
+            logger.exception("handle_message")
+            if (hasattr(self, '_server')):
+                self._server.sendMessage("Exception handle_message: " + err)
+            return { 'none': 'none' }
 
     def get_agents(self):
         try:

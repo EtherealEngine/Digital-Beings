@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rexample.proto\"^\n\x07Request\x12$\n\x06kwargs\x18\x01 \x03(\x0b\x32\x14.Request.KwargsEntry\x1a-\n\x0bKwargsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"f\n\x08Response\x12)\n\x08response\x18\x01 \x03(\x0b\x32\x17.Response.ResponseEntry\x1a/\n\rResponseEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xd1\x01\n\x05\x41gent\x12)\n\x10InitializeAgents\x12\x08.Request\x1a\t.Response\"\x00\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x12(\n\x0fInvokeSoloAgent\x12\x08.Request\x1a\t.Response\"\x00\x12\"\n\tGetAgents\x12\x08.Request\x1a\t.Response\"\x00\x12\'\n\x0eSetAgentFields\x12\x08.Request\x1a\t.Response\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\rexample.proto\"^\n\x07Request\x12$\n\x06kwargs\x18\x01 \x03(\x0b\x32\x14.Request.KwargsEntry\x1a-\n\x0bKwargsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"f\n\x08Response\x12)\n\x08response\x18\x01 \x03(\x0b\x32\x17.Response.ResponseEntry\x1a/\n\rResponseEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xd9\x02\n\x05\x41gent\x12)\n\x10InitializeAgents\x12\x08.Request\x1a\t.Response\"\x00\x12&\n\rHandleMessage\x12\x08.Request\x1a\t.Response\"\x00\x12(\n\x0fInvokeSoloAgent\x12\x08.Request\x1a\t.Response\"\x00\x12\"\n\tGetAgents\x12\x08.Request\x1a\t.Response\"\x00\x12\'\n\x0eSetAgentFields\x12\x08.Request\x1a\t.Response\"\x00\x12+\n\x12HandleSlashCommand\x12\x08.Request\x1a\t.Response\"\x00\x12)\n\x10HandleUserUpdate\x12\x08.Request\x1a\t.Response\"\x00\x12.\n\x15HandleMessageReaction\x12\x08.Request\x1a\t.Response\"\x00\x62\x06proto3'
 )
 
 
@@ -214,7 +214,7 @@ _AGENT = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=218,
-  serialized_end=427,
+  serialized_end=563,
   methods=[
   _descriptor.MethodDescriptor(
     name='InitializeAgents',
@@ -260,6 +260,36 @@ _AGENT = _descriptor.ServiceDescriptor(
     name='SetAgentFields',
     full_name='Agent.SetAgentFields',
     index=4,
+    containing_service=None,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='HandleSlashCommand',
+    full_name='Agent.HandleSlashCommand',
+    index=5,
+    containing_service=None,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='HandleUserUpdate',
+    full_name='Agent.HandleUserUpdate',
+    index=6,
+    containing_service=None,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='HandleMessageReaction',
+    full_name='Agent.HandleMessageReaction',
+    index=7,
     containing_service=None,
     input_type=_REQUEST,
     output_type=_RESPONSE,

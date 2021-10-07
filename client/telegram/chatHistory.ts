@@ -36,14 +36,20 @@ export function sentMessage(user) {
         conversation[user] = { timeoutId: undefined, timeOutFinished: true, isInConversation: true }
         if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
         conversation[user].timeoutId = setTimeout(() => {
-            conversation[user].timeoutId = undefined
-            conversation[user].timeOutFinished = true
-        }, 120000)
+            console.log('conversaion for ' + user + ' ended')
+            if (conversation[user] !== undefined) {
+                conversation[user].timeoutId = undefined
+                conversation[user].timeOutFinished = true
+            }
+        }, 720000)
     } else {
         conversation[user].timeoutId = setTimeout(() => {
-            conversation[user].timeoutId = undefined
-            conversation[user].timeOutFinished = true
-        }, 120000)
+            console.log('conversaion for ' + user + ' ended')
+            if (conversation[user] !== undefined) {
+                conversation[user].timeoutId = undefined
+                conversation[user].timeOutFinished = true
+            }
+        }, 720000)
     }
 }
 

@@ -106,7 +106,57 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             DB.sendDiscordMessage('InvokeSoloAgent exception: ' + err)
             print('InvokeSoloAgent exception: ' + err)
             return { 'key': 'none', 'value': 'none' }
-       
+    
+    def HandleSlashCommand(self, request, context):
+        print('handle slash command')
+        print(request)
+        try:
+            response = example_pb2.Response()
+            agent_responses = self.digital_being.handle_slash_command(**request.kwargs)
+            response.response.update(agent_responses)
+            if (response == None):
+                response = { 'none': 'none' }
+            return response
+        except Exception as err:
+            print("exception")
+            logger.exception()
+            DB.sendDiscordMessage('HandleMessage exception: ' + err)
+            print('HandleMessage exception: ' + err)
+            return { 'none': 'none' }        
+
+    def HandleUserUpdate(self, request, context):
+        print('handle user update')
+        print(request)
+        try:
+            response = example_pb2.Response()
+            agent_responses = self.digital_being.handle_user_update(**request.kwargs)
+            response.response.update(agent_responses)
+            if (response == None):
+                response = { 'none': 'none' }
+            return response
+        except Exception as err:
+            print("exception")
+            logger.exception()
+            DB.sendDiscordMessage('HandleMessage exception: ' + err)
+            print('HandleMessage exception: ' + err)
+            return { 'none': 'none' }    
+
+    def HandleMessageReaction(self, request, context):
+        print('handle message reaction')
+        print(request)
+        try:
+            response = example_pb2.Response()
+            agent_responses = self.digital_being.handle_message_reaction(**request.kwargs)
+            response.response.update(agent_responses)
+            if (response == None):
+                response = { 'none': 'none' }
+            return response
+        except Exception as err:
+            print("exception")
+            logger.exception()
+            DB.sendDiscordMessage('HandleMessage exception: ' + err)
+            print('HandleMessage exception: ' + err)
+            return { 'none': 'none' }    
 
 try:
     # create a gRPC server
