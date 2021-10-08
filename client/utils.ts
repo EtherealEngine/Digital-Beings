@@ -20,18 +20,5 @@ export function startsWithCapital(word){
 }
 
 export function emojiToUnicode(emoji) {
-  const TEN_BITS = parseInt('1111111111', 2)
-  
-  function u(codeUnit) {
-    return '\\u' + codeUnit.toString(16).toUpperCase();
-  }
-
-  if (emoji <= 0xFFFF) {
-    return u(emoji);
-  }
-
-  emoji -= 0x10000;
-  const leadSurrogate = 0xD800 + (emoji >> 10);
-  var tailSurrogate = 0xDC00 + (emoji & TEN_BITS)
-  return u(leadSurrogate) + u(tailSurrogate);
+  return emoji.codePointAt(0).toString(16);
 }
