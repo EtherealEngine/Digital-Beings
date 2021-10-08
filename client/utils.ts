@@ -18,3 +18,20 @@ export function getRandomEmptyResponse(): string {
 export function startsWithCapital(word){
   return word.charAt(0) === word.charAt(0).toUpperCase()
 }
+
+export function emojiToUnicode(emoji) {
+  const TEN_BITS = parseInt('1111111111', 2)
+  
+  function u(codeUnit) {
+    return '\\u' + codeUnit.toString(16).toUpperCase();
+  }
+
+  if (emoji <= 0xFFFF) {
+    return u(emoji);
+  }
+
+  emoji -= 0x10000;
+  const leadSurrogate = 0xD800 + (emoji >> 10);
+  var tailSurrogate = 0xDC00 + (emoji & TEN_BITS)
+  return u(leadSurrogate) + u(tailSurrogate);
+}

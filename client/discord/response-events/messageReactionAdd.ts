@@ -1,10 +1,11 @@
+import { emojiToUnicode } from "../../utils";
+
 export async function handleMessageReactionAdd(messageResponseHandler, client, reaction, user) {
     const { message } = reaction
-    console.log(JSON.stringify(user))
-    console.log(JSON.stringify(message))
     const emojiName = reaction.emoji.name
-    console.log(emojiName)
     
+    const unicode = emojiToUnicode(emojiName)
+    console.log('unicode: ' + unicode)
     const args = {}
     args['grpc_args'] = {};
 
