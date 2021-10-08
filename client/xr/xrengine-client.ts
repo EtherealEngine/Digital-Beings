@@ -1,6 +1,7 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
 import { redisDb } from "../redisDb";
+import { detectOsOption, getOS } from "../utils";
 import { handleMessages } from "./messageHandler";
 import { speechToText } from "./stt";
 import { generateVoice } from './tts'
@@ -14,22 +15,6 @@ const { existsSync } = require('fs');
 const doTests: boolean = false
 
 const _redisDb = new redisDb()
-
-function getOS() {
-    const platform = process.platform;
-    console.log(platform);
-    let os;
-    if (platform.includes('darwin')) {
-      os = 'Mac OS';
-    } else if (platform.includes('win32')) {
-      os = 'Windows';
-    } else if (platform.includes('linux')) {
-      os = 'Linux';
-    }
-  
-    return os;
-}
-
 
 async function createXREngineClient(messageResponseHandler) {
     //generateVoice('hello there', (buf, path) => {}, false)
@@ -351,38 +336,6 @@ class XREngineBot {
         })
     }
 
-    /**
-     * Detect OS platform and set google chrome path.
-     */
-    detectOsOption() {
-        const os = getOS();
-        const options: { executablePath: any } = {executablePath: null};
-        let chromePath = '';
-        switch (os) {
-            case 'Mac OS':
-                chromePath = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome';
-                break;
-            case 'Windows':
-                chromePath = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe';
-                break;
-            case 'Linux':
-                chromePath = '/usr/bin/google-chrome';
-                break;
-            default:
-                break;
-        }
-
-        if (chromePath) {
-            if (existsSync(chromePath)) {
-                options.executablePath = chromePath;
-            }
-            else {
-                console.warn("Warning! Please install Google Chrome to make bot workiing correctly in headless mode.\n");
-            }
-        }
-        return options;
-    }
-
     /** Launches the puppeteer browser instance. It is not necessary to call this
      *  directly in most cases. It will be done automatically when needed.
      */
@@ -404,7 +357,7 @@ class XREngineBot {
                 '--allow-file-access=1',
             ],
             ignoreDefaultArgs: ['--mute-audio'],
-            ...this.detectOsOption()
+            ...detectOsOption()
         };
 
         this.browser = await browserLauncher.browser(options);
