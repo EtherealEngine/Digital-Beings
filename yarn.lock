@@ -1939,6 +1939,40 @@
   "resolved" "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
   "version" "1.1.1"
 
+"emoji-chars@^1.0.0":
+  "integrity" "sha512-1t7WbkKzQ1hV4dHWM4u8g0SFHSAbxx+8o/lvXisDLTesljSFaxl2wLgMtx4wH922sNcIuLbFty/AuqUDJORd1A=="
+  "resolved" "https://registry.npmjs.org/emoji-chars/-/emoji-chars-1.0.12.tgz"
+  "version" "1.0.12"
+  dependencies:
+    "emoji-unicode-map" "^1.0.0"
+
+"emoji-dictionary@^1.0.11":
+  "integrity" "sha512-pVTiN0StAU2nYy+BtcX/88DavMDjUcONIA6Qsg7/IyDq8xOsRFuC49F7XLUPr7Shlz4bt0/RAqPjuqjpsj3vbA=="
+  "resolved" "https://registry.npmjs.org/emoji-dictionary/-/emoji-dictionary-1.0.11.tgz"
+  "version" "1.0.11"
+  dependencies:
+    "emoji-chars" "^1.0.0"
+    "emoji-name-map" "^1.0.0"
+    "emoji-names" "^1.0.1"
+    "emoji-unicode-map" "^1.0.0"
+    "emojilib" "^2.0.2"
+
+"emoji-name-map@^1.0.0", "emoji-name-map@^1.1.0":
+  "integrity" "sha512-MSM8y6koSqh/2uEMI2VoKA+Ac0qL5RkgFGP/pzL6n5FOrOJ7FOZFxgs7+uNpqA+AT+WmdbMPXkd3HnFXXdz4AA=="
+  "resolved" "https://registry.npmjs.org/emoji-name-map/-/emoji-name-map-1.2.9.tgz"
+  "version" "1.2.9"
+  dependencies:
+    "emojilib" "^2.0.2"
+    "iterate-object" "^1.3.1"
+    "map-o" "^2.0.1"
+
+"emoji-names@^1.0.1":
+  "integrity" "sha512-ABXVMPYU9h1/0lNNE9VaT9OxxWXXAv/By8gVMzQYIx7jrhWjyLFVyC34CAN+EP/1e+5WZCklvClo5KSklPCAeg=="
+  "resolved" "https://registry.npmjs.org/emoji-names/-/emoji-names-1.0.12.tgz"
+  "version" "1.0.12"
+  dependencies:
+    "emoji-name-map" "^1.0.0"
+
 "emoji-regex@^7.0.1":
   "integrity" "sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA=="
   "resolved" "https://registry.npmjs.org/emoji-regex/-/emoji-regex-7.0.3.tgz"
@@ -1948,6 +1982,19 @@
   "integrity" "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
   "resolved" "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz"
   "version" "8.0.0"
+
+"emoji-unicode-map@^1.0.0":
+  "integrity" "sha512-GWcWILFyDfR8AU7FRLhKk0lnvcljoEIXejg+XY3Ogz6/ELaQLMo0m4d9R3i79ikIULVEysHBGPsOEcjcFxtN+w=="
+  "resolved" "https://registry.npmjs.org/emoji-unicode-map/-/emoji-unicode-map-1.1.11.tgz"
+  "version" "1.1.11"
+  dependencies:
+    "emoji-name-map" "^1.1.0"
+    "iterate-object" "^1.3.1"
+
+"emojilib@^2.0.2":
+  "integrity" "sha512-5U0rVMU5Y2n2+ykNLQqMoqklN9ICBT/KsvC1Gz6vqHbz2AXXGkG+Pm5rMWk/8Vjrr/mY9985Hi8DYzn1F09Nyw=="
+  "resolved" "https://registry.npmjs.org/emojilib/-/emojilib-2.4.0.tgz"
+  "version" "2.4.0"
 
 "encodeurl@~1.0.2":
   "integrity" "sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k="
@@ -3284,6 +3331,11 @@
     "lodash.isstring" "^4.0.1"
     "lodash.uniqby" "^4.7.0"
 
+"iterate-object@^1.3.0", "iterate-object@^1.3.1":
+  "integrity" "sha512-4dG1D1x/7g8PwHS9aK6QV5V94+ZvyP4+d19qDv43EzImmrndysIl4prmJ1hWWIGCqrZHyaHBm6BSEWHOLnpoNw=="
+  "resolved" "https://registry.npmjs.org/iterate-object/-/iterate-object-1.3.4.tgz"
+  "version" "1.3.4"
+
 "java-properties@^1.0.0":
   "integrity" "sha512-qjdpeo2yKlYTH7nFdK0vbZWuTCesk4o63v5iVOlhMQPfuIZQfW/HI35SjfhA+4qpg36rnFSvUK5b1m+ckIblQQ=="
   "resolved" "https://registry.npmjs.org/java-properties/-/java-properties-1.0.2.tgz"
@@ -3781,6 +3833,13 @@
     "promise-retry" "^2.0.1"
     "socks-proxy-agent" "^6.0.0"
     "ssri" "^8.0.0"
+
+"map-o@^2.0.1":
+  "integrity" "sha512-BxazE81fVByHWasyXhqKeo2m7bFKYu+ZbEfiuexMOnklXW+tzDvnlTi/JaklEeuuwqcqJzPaf9q+TWptSGXeLg=="
+  "resolved" "https://registry.npmjs.org/map-o/-/map-o-2.0.10.tgz"
+  "version" "2.0.10"
+  dependencies:
+    "iterate-object" "^1.3.0"
 
 "map-obj@^1.0.0":
   "integrity" "sha1-2TPOuSBdgr3PSIb2dCvcK03qFG0="

@@ -21,10 +21,6 @@ export function startsWithCapital(word){
   return word.charAt(0) === word.charAt(0).toUpperCase()
 }
 
-export function emojiToUnicode(emoji) {
-  return emoji.codePointAt(0).toString(16);
-}
-
 export function getOS() {
   const platform = process.platform;
   console.log(platform);

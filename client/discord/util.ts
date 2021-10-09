@@ -21,7 +21,7 @@ export const _commandToValue = ([name, args, description]) =>
       ['ping', ['HandleMessage'],['sender', 'message', 'client_name', 'chat_id'], 'ping all agents'],
       ['slash_command', ['HandleSlashCommand'], [ 'sender', 'command', 'args', 'client_name', 'chat_id', 'createdAt' ], 'handle slash command'],
       ['user_update', ['HandleUserUpdate'], [ 'username', 'event', 'createdAt' ], 'handle user update'],
-      ['message_reaction', ['HandleMessageReaction'], [ 'client_name', 'chat_id', 'message_id', 'user', 'reaction', 'createdAt' ], 'handle message reaction'],
+      ['message_reaction', ['HandleMessageReaction'], [ 'client_name', 'chat_id', 'message_id', 'content', 'user', 'reaction', 'createdAt' ], 'handle message reaction'],
       ['pingagent', ['InvokeSoloAgent'],['sender', 'message', 'agent', 'createdAt'], 'ping a single agent'],
       ['agents', ['GetAgents'], [''], 'show all selected agents'],
       ['setagent', ['SetAgentFields'],['name', 'context'], 'update agents parameters'],
