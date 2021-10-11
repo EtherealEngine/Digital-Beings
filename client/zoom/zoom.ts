@@ -1,5 +1,8 @@
+import { from } from "request/node_modules/form-data";
 import { detectOsOption } from "../utils";
 const browserLauncher = require('../../src/browser-launcher')
+import { launch, getStream }  from "puppeteer-stream"
+import * as fs from 'fs'
 
 export class zoom {
     messageResponseHandler;
@@ -14,35 +17,25 @@ export class zoom {
     }
     
     async init() {
-        const headless = !process.env.GUI
         const options = {
-            headless: headless,
+            headless: false,
             ignoreHTTPSErrors: true,
             args: [
-                "--disable-gpu",
-                "--use-fake-ui-for-media-stream=1",
-                "--use-fake-device-for-media-stream=1",
-                `--use-file-for-fake-video-capture=${this.fakeMediaPath}/video.y4m`,
-                `--use-file-for-fake-audio-capture=${this.fakeMediaPath}/audio.wav`,
+                "--use-fake-device-for-media-stream",
+                '--use-fake-ui-for-media-stream',
+                //`--use-file-for-fake-video-capture=${this.fakeMediaPath}video.y4m`,
+                `--use-file-for-fake-audio-capture=${this.fakeMediaPath}test_audio.wav`,
                 '--disable-web-security=1',
-                '--disable-extensions-except=/path/to/manifest/folder/',
-                '--load-extension=/path/to/manifest/folder/',
-                //     '--use-fake-device-for-media-stream',
-                //     '--use-file-for-fake-video-capture=/Users/apple/Downloads/football_qcif_15fps.y4m',
-                //     // '--use-file-for-fake-audio-capture=/Users/apple/Downloads/BabyElephantWalk60.wav',
-                '--allow-file-access=1',
+                "--autoplay-policy=no-user-gesture-required",
             ],
-            ignoreDefaultArgs: ['--mute-audio'],
+            ignoreDefaultArgs: ['--mute-audio', '--mute-video'],
             ...detectOsOption()
         };
+        console.log(JSON.stringify(options))
 
-        this.browser = await browserLauncher.browser(options)
+        this.browser = await launch(options)
         this.page = await this.browser.newPage()
         this.page.on('console', message => {
-        });
-        this.page.on('dialog', async dialog => {
-            console.log(dialog.message());
-            await dialog.dismiss();
         });
     
         this.page.setViewport({ width: 0, height: 0 })
@@ -59,6 +52,68 @@ export class zoom {
             await this.clickElementById('button', 'joinBtn')
             await this.delay(20000)
         } catch (ex) {}
+
+        let audioBuffer = []
+        let videoBuffer = []
+        let audioStream = await getStream(this.page, { audio: true, video: false });
+        let videoStream = await getStream(this.page, { audio: false, video: true });
+
+        let done = false;
+
+        while(!done) {
+            try {
+        audioStream.on('data', function(data) {
+            audioBuffer.push(data);
+        });
+        audioStream.on('error', function(err) {
+            console.log('audioStream error: ' + err)
+        });
+        videoStream.on('data', function(data) {
+            videoBuffer.push(data);
+        });
+        videoStream.on('error', function(err) {
+            console.log('audioStream error: ' + err)
+        });
+        done = true
+    } catch (err) { console.log('error') ; done = false }
+    }
+
+    await this.page.evaluate(async () => {
+        const video: any= await document.createElement("video");
+        console.log('creating video');
+        video.setAttribute('id', 'video-mock');
+        video.setAttribute("src", 'https://woolyss.com/f/spring-vp9-vorbis.webm');
+        video.setAttribute("crossorigin", "anonymous");
+        video.setAttribute("controls", "");
+        console.log('created video');
+
+        video.oncanplay = async () => {
+            console.log('play')
+            const stream = await video.captureStream();
+
+            navigator.mediaDevices.getUserMedia = () => Promise.resolve(stream);
+        };
+
+        document.querySelector("body").appendChild(video);
+    });
+
+        const dataUrl = await this.page.evaluate(async () => {
+            const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+            await sleep(5000);
+            return (document.getElementById('main-video') as any).toDataURL();
+        });
+
+        const data = Buffer.from(dataUrl.split(',').pop(), 'base64');
+        fs.writeFileSync('image.png', data);        
+
+        await this.catchScreenshot()
+        await this.delay(5000)
+        await this.catchScreenshot()
+        await this.delay(5000)
+        await this.catchScreenshot()
+        await this.delay(5000)
+        await this.catchScreenshot()
+        await this.delay(5000)
     }
 
     async clickElementById(elemType, id) {
