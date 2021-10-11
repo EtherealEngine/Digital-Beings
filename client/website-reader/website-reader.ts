@@ -24,6 +24,7 @@ export const createWebsiteReader = async (bookUrl: string, maxPage) => {
     await navigate(bookUrl);
     await delay(5000);
 
+    let _text: string = '';
     for(let i = 1; i < maxPage; i++) {
         const text = await page.evaluate(() => {
             const el = document.getElementById('demo');
@@ -31,10 +32,11 @@ export const createWebsiteReader = async (bookUrl: string, maxPage) => {
         })
     
         const data = getText(text);
-        fs.writeFileSync('page' + i + '.txt', data);
+        _text += data + '\n';
         navigate(bookUrl.substring(0, bookUrl.length - 1) + (i + 1))
         await delay(5000);
     }
+    fs.writeFileSync('book.txt', _text);
 };
 
 const getText = (text: string) => {
