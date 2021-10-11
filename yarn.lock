@@ -593,10 +593,10 @@
     "@types/node" "*"
     "@types/request" "*"
 
-"@types/node@*", "@types/node@14.17.20":
-  "integrity" "sha512-gI5Sl30tmhXsqkNvopFydP7ASc4c2cLfGNQrVKN3X90ADFWFsPEsotm/8JHSUJQKTHbwowAHtcJPeyVhtKv0TQ=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.17.20.tgz"
-  "version" "14.17.20"
+"@types/node@*", "@types/node@14.17.21":
+  "integrity" "sha512-zv8ukKci1mrILYiQOwGSV4FpkZhyxQtuFWGya2GujWg+zVAeRQ4qbaMmWp9vb9889CFA8JECH7lkwCL6Ygg8kA=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.17.21.tgz"
+  "version" "14.17.21"
 
 "@types/node@^8.10.50":
   "integrity" "sha512-tktOkFUA4kXx2hhhrB8bIFb5TbwzS4uOhKEmwiD+NoiL0qtP2OQ9mFldbgD4dV1djrlBYP6eBuQZiWjuHUpqFw=="
@@ -677,10 +677,10 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
-"@types/three@0.132.2":
-  "integrity" "sha512-DpaP0sObpHvKX8zdfCqyTK526N8lQ86Qstp6MnQJ3jNYie7Bv9AMRTALuoIH8dgVZ62z9twuNvEarWHXOZwmSw=="
-  "resolved" "https://registry.npmjs.org/@types/three/-/three-0.132.2.tgz"
-  "version" "0.132.2"
+"@types/three@0.133.0":
+  "integrity" "sha512-neDN9L64GK1fhT2raWXYIFvIr6ktM6XYgssfTh4zZp+XRgowD1qJ4/w79hLrLQ0w87u1E91ZfvHB0198wBsuHg=="
+  "resolved" "https://registry.npmjs.org/@types/three/-/three-0.133.0.tgz"
+  "version" "0.133.0"
 
 "@types/tough-cookie@*":
   "integrity" "sha512-I99sngh224D0M7XgW1s120zxCt3VYQ3IQsuw3P3jbq5GG4yc79+ZjyKznyOGIQrflfylLgcfekeZW/vk0yng6A=="
@@ -870,8 +870,6 @@
   "version" "1.0.0"
 
 "are-we-there-yet@^2.0.0":
-  "integrity" "sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw=="
-  "resolved" "https://registry.npmjs.org/are-we-there-yet/-/are-we-there-yet-2.0.0.tgz"
   "version" "2.0.0"
   dependencies:
     "delegates" "^1.0.0"
@@ -1951,7 +1949,7 @@
   dependencies:
     "emoji-unicode-map" "^1.0.0"
 
-"emoji-dictionary@^1.0.11":
+"emoji-dictionary@1.0.11":
   "integrity" "sha512-pVTiN0StAU2nYy+BtcX/88DavMDjUcONIA6Qsg7/IyDq8xOsRFuC49F7XLUPr7Shlz4bt0/RAqPjuqjpsj3vbA=="
   "resolved" "https://registry.npmjs.org/emoji-dictionary/-/emoji-dictionary-1.0.11.tgz"
   "version" "1.0.11"
@@ -6344,10 +6342,10 @@
   "resolved" "https://registry.npmjs.org/tweetnacl/-/tweetnacl-1.0.3.tgz"
   "version" "1.0.3"
 
-"twilio@3.68.0":
-  "integrity" "sha512-xVFx/TbibpQtYwkDzuqPS8fsBGg8ZZ2iUtGU68dC9Dv1cngmxePcvxmyFxgPEd6wpnexJHHrCyiSr+LBaBEcDg=="
-  "resolved" "https://registry.npmjs.org/twilio/-/twilio-3.68.0.tgz"
-  "version" "3.68.0"
+"twilio@3.69.0":
+  "integrity" "sha512-mm330UFTlFh6GyLZUPVSLO0uVCigW7JdX/wyyV3VuBJ4Z8ie/aNmgztd3xWQr6RBB98gCwJ+UtumqIfixVUm8A=="
+  "resolved" "https://registry.npmjs.org/twilio/-/twilio-3.69.0.tgz"
+  "version" "3.69.0"
   dependencies:
     "axios" "^0.21.1"
     "dayjs" "^1.8.29"
