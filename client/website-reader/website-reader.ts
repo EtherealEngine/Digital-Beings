@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 let browser;
 let page;
-
+  
 export const createWebsiteReader = async (bookUrl: string, maxPage) => {
     const options = {
         headless: true,
@@ -47,7 +47,9 @@ const getText = (text: string) => {
             //
         }
         else {
-            _res = lines[i].split('<p>').join('')
+            _res = lines[i].split('<p></p>').join('\n---\n')
+            _res = _res.split('\n---\n\n---\n').join('')
+            _res = _res.split('<p>').join('')
             _res = _res.split('</p>').join('\n');
             _res = _res.replace(/<\/?[^>]+(>|$)/g, "");
         }
