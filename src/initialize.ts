@@ -43,8 +43,7 @@ const pyConnect = require('./pyconnect');
             //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
             //require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
             //require("../client/zoom/zoom-client").createZoomClient(messageResponseHandler);
-            require("../client/website-reader/website-reader.ts").createWebsiteReader('https://booksvooks.com/scrolablehtml/pale-blue-dot-a-vision-of-the-human-future-in-space-pdf.html?page=1', 210);
-        }
+         }
     ); 
 })();
 
