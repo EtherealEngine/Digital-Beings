@@ -42,7 +42,7 @@ const pyConnect = require('./pyconnect');
             //require("../client/whatsapp/whatsapp-client").createWhatsappClient(messageResponseHandler);
             //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
             //require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
-            //require("../client/zoom/zoom-client").createZoomClient(messageResponseHandler);
+            require("../client/zoom/zoom-client").createZoomClient(messageResponseHandler);
          }
     ); 
 })();

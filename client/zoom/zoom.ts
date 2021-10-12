@@ -4,6 +4,10 @@ const browserLauncher = require('../../src/browser-launcher')
 import { launch, getStream }  from "puppeteer-stream"
 import * as fs from 'fs'
 
+
+interface HTMLVideoElementWithCaputreStream extends HTMLVideoElement{
+    captureStream(): MediaStream;
+  }
 export class zoom {
     messageResponseHandler;
     fakeMediaPath
@@ -20,23 +24,26 @@ export class zoom {
         const options = {
             headless: false,
             ignoreHTTPSErrors: true,
+            devtools: true,
             args: [
-                "--use-fake-device-for-media-stream",
                 '--use-fake-ui-for-media-stream',
+                '--use-fake-device-for-media-stream',
                 //`--use-file-for-fake-video-capture=${this.fakeMediaPath}video.y4m`,
-                `--use-file-for-fake-audio-capture=${this.fakeMediaPath}test_audio.wav`,
-                '--disable-web-security=1',
-                "--autoplay-policy=no-user-gesture-required",
+                //`--use-file-for-fake-audio-capture=${this.fakeMediaPath}test_audio.wav`,
+                '--disable-web-security',
             ],
             ignoreDefaultArgs: ['--mute-audio', '--mute-video'],
+            defaultViewport: {
+                width: 1920,
+                height: 1080,
+            },
             ...detectOsOption()
         };
         console.log(JSON.stringify(options))
 
         this.browser = await launch(options)
         this.page = await this.browser.newPage()
-        this.page.on('console', message => {
-        });
+        this.page.on('console', (log) => console.log(log._text));
     
         this.page.setViewport({ width: 0, height: 0 })
         await this.page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
@@ -53,67 +60,81 @@ export class zoom {
             await this.delay(20000)
         } catch (ex) {}
 
-        let audioBuffer = []
-        let videoBuffer = []
-        let audioStream = await getStream(this.page, { audio: true, video: false });
-        let videoStream = await getStream(this.page, { audio: false, video: true });
+        await this.playVideo('https://woolyss.com/f/spring-vp9-vorbis.webm')
 
-        let done = false;
+        await this.clickElementById('button', 'audioOptionMenu');
+        const linkHandlers = await this.page.$x("//a[contains(text(), 'Fake Audio Input 1')]");
 
-        while(!done) {
-            try {
-        audioStream.on('data', function(data) {
-            audioBuffer.push(data);
-        });
-        audioStream.on('error', function(err) {
-            console.log('audioStream error: ' + err)
-        });
-        videoStream.on('data', function(data) {
-            videoBuffer.push(data);
-        });
-        videoStream.on('error', function(err) {
-            console.log('audioStream error: ' + err)
-        });
-        done = true
-    } catch (err) { console.log('error') ; done = false }
+        if (linkHandlers.length > 0) {
+            await linkHandlers[0].click();
+        } else {
+            throw new Error("Link not found");
+        }
+        await this.clickElementById('button', 'videoOptionMenu');
+        const linkHandlers2 = await this.page.$x("//a[contains(text(), 'fake_device_0')]");
+        if (linkHandlers2.length > 0) {
+            await linkHandlers2[0].click();
+        } else {
+            throw new Error("Link not found");
+        }
+
+        await this.getVideo();
+        this.frameCapturerer();
     }
 
-    await this.page.evaluate(async () => {
-        const video: any= await document.createElement("video");
-        console.log('creating video');
-        video.setAttribute('id', 'video-mock');
-        video.setAttribute("src", 'https://woolyss.com/f/spring-vp9-vorbis.webm');
-        video.setAttribute("crossorigin", "anonymous");
-        video.setAttribute("controls", "");
-        console.log('created video');
+    frameCapturerer() {
+        setTimeout(() => {
+            this.getRemoteScreenshot();
+            this.frameCapturerer();
+        }, 500);
+    }
 
-        video.oncanplay = async () => {
-            console.log('play')
-            const stream = await video.captureStream();
-
-            navigator.mediaDevices.getUserMedia = () => Promise.resolve(stream);
-        };
-
-        document.querySelector("body").appendChild(video);
-    });
-
+    c = 0;
+    async getRemoteScreenshot() {
         const dataUrl = await this.page.evaluate(async () => {
             const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
             await sleep(5000);
-            return (document.getElementById('main-video') as any).toDataURL();
+            return (document.getElementById('main-video') as HTMLCanvasElement).toDataURL();
         });
 
+        this.c++;
         const data = Buffer.from(dataUrl.split(',').pop(), 'base64');
-        fs.writeFileSync('image.png', data);        
+        fs.writeFileSync('image' + this.c + '.png', data);      
+    }
 
-        await this.catchScreenshot()
-        await this.delay(5000)
-        await this.catchScreenshot()
-        await this.delay(5000)
-        await this.catchScreenshot()
-        await this.delay(5000)
-        await this.catchScreenshot()
-        await this.delay(5000)
+    async getVideo() {
+        await this.page.evaluate(async () => {
+            const video = document.getElementById('main-video') as HTMLCanvasElement;
+            const stream = video.captureStream();
+            const recorder = new MediaRecorder(stream)
+            recorder.addEventListener('error', (error) => {console.log('recorder error: ' + error);});
+            recorder.addEventListener('dataavailable', ({data}) => { 
+                console.log('data: ' + JSON.stringify(data))
+            });
+            recorder.start(5000);
+            console.log(stream.id);
+        });
+    }
+
+    async playVideo(url: string) {
+        await this.page.evaluate(async (_url) => {
+            const video = await document.createElement("video") as HTMLVideoElementWithCaputreStream;
+            video.setAttribute('id', 'video-mock');
+            video.setAttribute("src", _url);
+            video.setAttribute("crossorigin", "anonymous");
+            video.setAttribute("controls", "");
+            
+            video.oncanplay = async () => {
+                video.play();
+            }
+
+            video.onplay = async () => {
+                const stream = video.captureStream();
+
+                navigator.mediaDevices.getUserMedia = () => Promise.resolve(stream);
+            };
+        }, url);
+        await this.delay(5000);
     }
 
     async clickElementById(elemType, id) {
