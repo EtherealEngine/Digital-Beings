@@ -5,7 +5,7 @@ import * as fs from 'fs';
 let browser;
 let page;
   
-export const createWebsiteReader = async (bookUrl: string, maxPage) => {
+export const createWebsiteReader = async (bookUrl: string, maxPage: number, fileName: string) => {
     const options = {
         headless: true,
         ignoreHTTPSErrors: true,
@@ -36,7 +36,7 @@ export const createWebsiteReader = async (bookUrl: string, maxPage) => {
         navigate(bookUrl.substring(0, bookUrl.length - 1) + (i + 1))
         await delay(5000);
     }
-    fs.writeFileSync('book.txt', _text);
+    fs.writeFileSync(fileName + '.txt', _text);
 };
 
 const getText = (text: string) => {
