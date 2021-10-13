@@ -2051,7 +2051,7 @@ emoji-names@^1.0.1:
   dependencies:
     emoji-name-map "^1.0.0"
 
-emoji-regex@^10.0.0:
+emoji-regex@10.0.0:
   version "10.0.0"
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-10.0.0.tgz"
   integrity sha512-KmJa8l6uHi1HrBI34udwlzZY1jOEuID/ft4d8BSSEdRyap7PwBEt910453PJa5MuGvxkLqlt4Uvhu7tttFHViw==
@@ -5255,7 +5255,7 @@ pupa@^2.1.1:
   dependencies:
     escape-goat "^2.0.0"
 
-puppeteer-extra-plugin-stealth@^2.8.2:
+puppeteer-extra-plugin-stealth@2.8.2:
   version "2.8.2"
   resolved "https://registry.npmjs.org/puppeteer-extra-plugin-stealth/-/puppeteer-extra-plugin-stealth-2.8.2.tgz"
   integrity sha512-1WaiLKRSJ9IAnNS3jqHu9yg2O8CgSh3shPuEhhpgzVfICRb6D8JkrUBJW6UxOwI7/aQc9XSzf+lidIb9x9tj8w==
@@ -5292,7 +5292,7 @@ puppeteer-extra-plugin@^3.2.0:
     debug "^4.1.1"
     merge-deep "^3.0.1"
 
-puppeteer-extra@^3.2.3:
+puppeteer-extra@3.2.3:
   version "3.2.3"
   resolved "https://registry.npmjs.org/puppeteer-extra/-/puppeteer-extra-3.2.3.tgz"
   integrity sha512-CnSN9yIedbAbS8WmRybaDHJLf6goRk+VYM/kbH6i/+EMadCaAeh2O+1/mFUMN2LbkbDNAp2Vd/UwrTVCHjTxyg==
@@ -5302,7 +5302,7 @@ puppeteer-extra@^3.2.3:
     debug "^4.1.1"
     deepmerge "^4.2.2"
 
-puppeteer-stream@^2.0.6:
+puppeteer-stream@2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/puppeteer-stream/-/puppeteer-stream-2.0.6.tgz"
   integrity sha512-k+IcSTgehhTeVr/hJuyOy0uYyr3ZcRt4L/959o5Wkkphy0Dv2w7bfrK5+wdqH6E9AeP+7XUBi5/HVyDY+Kf4Hw==
@@ -6876,7 +6876,7 @@ xtend@^4.0.0, xtend@~4.0.1:
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
-xvfb@^0.4.0:
+xvfb@0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/xvfb/-/xvfb-0.4.0.tgz"
   integrity sha512-g55AbjcBL4Bztfn7kiUrR0ne8mMUsFODDJ+HFGf5OuHJqKKccpExX2Qgn7VF2eImw1eoh6+riXHser1J4agrFA==
