@@ -3,6 +3,7 @@ from concurrent import futures
 import logging
 import time
 import os
+import emoji
 
 # import the generated classes
 import example_pb2
@@ -34,7 +35,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             response.response.update({"response":"Initialized all agents"})
             return response
         except Exception as err:
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('InitializeAgents exception:' + err)
             print('InitializeAgents exception:' + err)
             return {"response":"Couldn't initialize all agents"}
@@ -54,8 +55,8 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response = { 'none': 'none' }
             return response
         except Exception as err:
-            print("exception")
-            logger.exception()
+            print("exception ", err)
+            logger.exception(err)
             DB.sendDiscordMessage('HandleMessage exception: ' + err)
             print('HandleMessage exception: ' + err)
             return { 'none': 'none' }        
@@ -70,7 +71,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = { 'key': 'none', 'value': 'name' }
             return response_obj
         except Exception as err:
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('GetAgents exception: ' + err)
             print('GetAgents exception: ' + err)
             return { 'key': 'none', 'value': 'name' }
@@ -86,7 +87,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = {'name': 'none', 'context': 'none'}
             return response_obj
         except Exception as err:
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('SetAgentFields exception: ' + err)
             print('SetAgentFields exception: ' + err)
             return {'name': 'none', 'context': 'none'}
@@ -102,7 +103,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
                 response_obj = { 'key': 'none', 'value': 'none' }
             return response_obj
         except Exception as err:
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('InvokeSoloAgent exception: ' + err)
             print('InvokeSoloAgent exception: ' + err)
             return { 'key': 'none', 'value': 'none' }
@@ -119,7 +120,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             return response
         except Exception as err:
             print("exception")
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('HandleMessage exception: ' + err)
             print('HandleMessage exception: ' + err)
             return { 'none': 'none' }        
@@ -136,7 +137,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             return response
         except Exception as err:
             print("exception")
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('HandleMessage exception: ' + err)
             print('HandleMessage exception: ' + err)
             return { 'none': 'none' }    
@@ -153,7 +154,7 @@ class AgentServicer(example_pb2_grpc.AgentServicer):
             return response
         except Exception as err:
             print("exception")
-            logger.exception()
+            logger.exception(err)
             DB.sendDiscordMessage('HandleMessage exception: ' + err)
             print('HandleMessage exception: ' + err)
             return { 'none': 'none' }    

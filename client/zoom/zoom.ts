@@ -31,8 +31,8 @@ export class zoom {
                 //`--use-file-for-fake-video-capture=${this.fakeMediaPath}video.y4m`,
                 //`--use-file-for-fake-audio-capture=${this.fakeMediaPath}test_audio.wav`,
                 '--disable-web-security',
+                '--autoplay-policy=no-user-gesture-required'
             ],
-            ignoreDefaultArgs: ['--mute-audio', '--mute-video'],
             defaultViewport: {
                 width: 1920,
                 height: 1080,
@@ -63,6 +63,7 @@ export class zoom {
         await this.playVideo('https://woolyss.com/f/spring-vp9-vorbis.webm')
 
         await this.clickElementById('button', 'audioOptionMenu');
+        await this.catchScreenshot();
         const linkHandlers = await this.page.$x("//a[contains(text(), 'Fake Audio Input 1')]");
 
         if (linkHandlers.length > 0) {
@@ -71,6 +72,7 @@ export class zoom {
             throw new Error("Link not found");
         }
         await this.clickElementById('button', 'videoOptionMenu');
+        await this.catchScreenshot();
         const linkHandlers2 = await this.page.$x("//a[contains(text(), 'fake_device_0')]");
         if (linkHandlers2.length > 0) {
             await linkHandlers2[0].click();
@@ -78,6 +80,19 @@ export class zoom {
             throw new Error("Link not found");
         }
 
+        
+        await this.clickElementById('button', 'audioOptionMenu');
+        await this.catchScreenshot();
+        const linkHandlers3 = await this.page.$x("//a[contains(text(), 'Fake Audio Output 1')]");
+
+        if (linkHandlers3.length > 0) {
+            await linkHandlers3[0].click();
+        } else {
+            throw new Error("Link not found");
+        }
+        
+        await this.clickElementById('button', 'audioOptionMenu');
+        await this.catchScreenshot();
         await this.getVideo();
         this.frameCapturerer();
     }
@@ -99,7 +114,7 @@ export class zoom {
 
         this.c++;
         const data = Buffer.from(dataUrl.split(',').pop(), 'base64');
-        fs.writeFileSync('image' + this.c + '.png', data);      
+        //fs.writeFileSync('image' + this.c + '.png', data);      
     }
 
     async getVideo() {
@@ -116,9 +131,12 @@ export class zoom {
         });
     }
 
+    videoCreated: boolean = false
     async playVideo(url: string) {
-        await this.page.evaluate(async (_url) => {
-            const video = await document.createElement("video") as HTMLVideoElementWithCaputreStream;
+        await this.page.evaluate(async (_url, _videCreated) => {
+            let video = undefined;
+            if (!this.videoCreated) video = await document.createElement("video", { }) as HTMLVideoElementWithCaputreStream;
+            else video = await document.getElementById("video-mock") as HTMLVideoElementWithCaputreStream;
             video.setAttribute('id', 'video-mock');
             video.setAttribute("src", _url);
             video.setAttribute("crossorigin", "anonymous");
@@ -133,8 +151,9 @@ export class zoom {
 
                 navigator.mediaDevices.getUserMedia = () => Promise.resolve(stream);
             };
-        }, url);
-        await this.delay(5000);
+        }, url, this.videoCreated);
+        this.videoCreated = true;
+        await this.delay(10000);
     }
 
     async clickElementById(elemType, id) {

@@ -1,7 +1,16 @@
 import { startsWithCapital } from "../../utils";
 import { addMessageToHistory, conversation, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
+const emojiRegex = require('emoji-regex');
+const emoji = require("emoji-dictionary");
 
 module.exports = (client, message) => {
+    const reg = emojiRegex();
+    let match;
+    let emojis: { name: string, emoji: any }[] = []
+    while((match = reg.exec(message.content)) !== null) {
+        emojis.push({ name: emoji.getName(match[0]), emoji: match[0] });
+    }
+    console.log('Emojis: ' + JSON.stringify(emojis));
     const args = {}
     args['grpc_args'] = {};
 

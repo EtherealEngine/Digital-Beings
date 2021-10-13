@@ -3,6 +3,8 @@ from json import dumps
 import os
 import sys
 
+import emoji
+
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
@@ -70,13 +72,14 @@ class DigitalBeing():
                 if model_name == 'gpt3':
                     if ('\n' in message):
                         message = message.replace('\n', "r''")
-                    responses_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
+                    responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
                 elif model_name == 'rasa':
-                    responses_dict['rasa'] = self.rasa_agent.invoke(message=message)
+                    responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
                 elif model_name == "repeat":
-                    responses_dict = self.repeat_agent.handle_message(message)
+                    responses_dict['repeat'] = self.addEmojis(self.repeat_agent.handle_message(message))
                 else:
-                    responses_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=self.context)
+                    responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=self.context))
+            
             return responses_dict
 
         except Exception as err:
@@ -84,6 +87,26 @@ class DigitalBeing():
             if (hasattr(self, '_server')):
                 self._server.sendMessage("Exception handle_message: " + err)
             return { 'none': 'none' }
+
+    def addEmojis(self, msg):
+        msg = msg.strip()
+        res = ''
+        words = msg.split(' ')
+        i = 0
+        while i < len(words):
+            temp: str = emoji.emojize(':' + words[i] + ':')
+            if words[i] in temp:
+                i += 1
+                continue
+            else:
+                words[i] = temp
+            i += 1
+                    
+        print(words)
+        for x in words:
+            res += x + ' '
+
+        return res
 
     def handle_slash_command(self, **kwargs):
         try:
