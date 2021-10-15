@@ -13,7 +13,7 @@ sys.path.append(parentdir)
 # These might be red in your IDE, since we are adding parent dir to path (above)
 import agent_params as param
 from agents.openchat.agents.gpt3 import GPT3Agent
-from agents.openchat.agents.rasa import RasaAgent
+#from agents.openchat.agents.rasa import RasaAgent
 from agents.openchat.openchat import OpenChat
 from agents.repeat.repeat import Repeat
 
@@ -39,8 +39,8 @@ class DigitalBeing():
                 print('got self context: ' + self.context)
                 if model_name == 'gpt3':
                     self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
-                elif model_name == 'rasa':
-                    self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
+                #elif model_name == 'rasa':
+                #    self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
                 elif model_name =="repeat":
                     self.repeat_agent = Repeat()
                 else:
@@ -190,8 +190,8 @@ class DigitalBeing():
             context = self.jsondb.getTopicForAgent(model_name.lstrip())
             if model_name == 'gpt3':
                 response_dict['gpt3'] = self.gpt3_agent.invoke_api(message=message)
-            elif model_name == 'rasa':
-                response_dict['rasa'] = self.rasa_agent.invoke(message=message)
+            #elif model_name == 'rasa':
+            #    response_dict['rasa'] = self.rasa_agent.invoke(message=message)
             else:
                 response_dict[model_name] = self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=context)
             return response_dict

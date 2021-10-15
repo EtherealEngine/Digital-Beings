@@ -9,13 +9,16 @@ module.exports = (client, message) => {
     let emojis: { name: string, emoji: any }[] = []
     while((match = reg.exec(message.content)) !== null) {
         emojis.push({ name: emoji.getName(match[0]), emoji: match[0] });
+        console.log(match[0]);
+        message.content = message.content.replace(match[0], match[0] + ' :' + emoji.getName(match[0]) + ':');
     }
-    console.log('Emojis: ' + JSON.stringify(emojis));
+    console.log('Emojis: ' + JSON.stringify(emojis))
     const args = {}
     args['grpc_args'] = {};
 
     let {author, channel, content, mentions, id} = message;
 
+    console.log('msg: ' + content);
     if (content === '') content = '{sent media}'
     let _prev = undefined
     if (!author.bot) {
