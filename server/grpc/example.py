@@ -73,8 +73,8 @@ class DigitalBeing():
                     if ('\n' in message):
                         message = message.replace('\n', "r''")
                     responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
-                elif model_name == 'rasa':
-                    responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
+                #elif model_name == 'rasa':
+                #    responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
                 elif model_name == "repeat":
                     responses_dict['repeat'] = self.addEmojis(self.repeat_agent.handle_message(message))
                 else:
@@ -94,12 +94,7 @@ class DigitalBeing():
         words = msg.split(' ')
         i = 0
         while i < len(words):
-            temp: str = emoji.emojize(':' + words[i] + ':')
-            if words[i] in temp:
-                i += 1
-                continue
-            else:
-                words[i] = temp
+            words[i] = emoji.emojize(words[i])
             i += 1
                     
         print(words)
