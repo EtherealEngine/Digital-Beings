@@ -3,7 +3,7 @@ import { addMessageToHistory, conversation, exitConversation, isInConversation, 
 const emojiRegex = require('emoji-regex');
 const emoji = require("emoji-dictionary");
 
-module.exports = (client, message) => {
+module.exports = async (client, message) => {
     const reg = emojiRegex();
     let match;
     let emojis: { name: string, emoji: any }[] = []
@@ -80,7 +80,26 @@ module.exports = (client, message) => {
         else if (isInDiscussion || startConv) content = '!ping ' + content
     }
 
-    if (content.startsWith('!ping')) sentMessage(author.id)
+    if (content.startsWith('!ping')) {
+        sentMessage(author.id)
+        const mention = `<@!${client.user.id}>`;
+        console.log(content + ' 1st: ' + content.startsWith('!ping join') + ' 2nd: ' + content.startsWith('!ping ' + mention + ' join') + ' - ' + ('!ping ' + mention + ' join'))
+
+        if (content.startsWith('!ping join') || content.startsWith('!ping ' + mention + ' join')) {
+            const d = content.split(' ')
+            const index = d.indexOf('join') + 1
+            if (d.length > index) {
+                const channelName = d[index]
+                await message.guild.channels.cache.forEach(async (channel) => {
+                    if (channel.type === 'voice' && channel.name === channelName) {
+                        channel.join()
+                        return false
+                    }
+                })
+                return
+            }
+        }
+    }
 
     // Set flag to true to skip using prefix if mentioning or DMing us
     const prefixOptionalWhenMentionOrDM = client.config.prefixOptionalWhenMentionOrDM
