@@ -21,6 +21,7 @@ export async function run (client, message, args, author, addPing, channel) {
 
         console.log('content: ' + args.grpc_args.message)
         console.log(JSON.stringify(args))
+    for(let i = 0; i < 2; i++) {
         await client.messageResponseHandler(args, (response) => {
             Object.keys(response.response).map(function(key, index) {
                 console.log('response: ' + response.response[key])
@@ -87,4 +88,5 @@ export async function run (client, message, args, author, addPing, channel) {
             });          
             message.channel.stopTyping();
         }).catch(err => console.log(err))
+    }
 }
