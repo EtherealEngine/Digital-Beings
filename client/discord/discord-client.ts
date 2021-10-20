@@ -6,7 +6,7 @@ import { initClient } from './tcpClient';
 import { helpFields, _findCommand, _parseWords } from './util';
 
 const Discord = require('discord.js');
-const {Util, Intents} = require('discord.js')
+const {Intents} = require('discord.js')
 const config = require("./config.json");
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
 
@@ -15,7 +15,7 @@ export let client = undefined
 const createDiscordClient = (messageResponseHandler) => {
 
     if (!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
-    client = new Discord.Client({ intents: [ Intents.GUILDS, Intents.GUILD_MEMBERS, Intents.GUILD_PRESENCES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
+    client = new Discord.Client({ intents: [ Intents.GUILDS, Intents.GUILD_MEMBERS, Intents.GUILD_VOICE_STATES, Intents.GUILD_PRESENCES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     client.config = config;
     client.helpFields = helpFields;

@@ -1,5 +1,4 @@
 import { postgres } from "../client/postgres";
-import { redisDb } from "../client/redisDb";
 import { createWebServer } from "../client/webserver";
 
 require('dotenv-flow').config();

@@ -1,7 +1,11 @@
+import { exec } from "child_process";
 import { startsWithCapital } from "../../utils";
+import { connectToVoiceChannel, createListeningStream } from "../audioPlayer";
 import { addMessageToHistory, conversation, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 const emojiRegex = require('emoji-regex');
 const emoji = require("emoji-dictionary");
+import * as fs from 'fs'
+import { OpusEncoder } from "prism-media/dist/opus/adapters/OpusEncoder";
 
 module.exports = async (client, message) => {
     const reg = emojiRegex();
@@ -92,7 +96,8 @@ module.exports = async (client, message) => {
                 const channelName = d[index]
                 await message.guild.channels.cache.forEach(async (channel) => {
                     if (channel.type === 'voice' && channel.name === channelName) {
-                        channel.join()
+                        const vConnection = await connectToVoiceChannel(channel);
+                        await createListeningStream(vConnection.receiver, author.id)
                         return false
                     }
                 })
