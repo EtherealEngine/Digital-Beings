@@ -1,3 +1,4 @@
+import { userDatabase } from "../../userDatabase";
 import { startsWithCapital } from "../../utils";
 import { addMessageToHistory, conversation, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 const emojiRegex = require('emoji-regex');
@@ -17,6 +18,10 @@ module.exports = async (client, message) => {
     args['grpc_args'] = {};
 
     let {author, channel, content, mentions, id} = message;
+    if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) {
+        console.log('user is banned')
+        return
+    }
 
     console.log('msg: ' + content);
     if (content === '') content = '{sent media}'

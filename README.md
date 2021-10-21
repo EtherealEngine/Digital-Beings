@@ -102,6 +102,7 @@ DigitalBeing requires the following to run:
      * CREATE DATABASE digitalbeing;
      * \c digitalbeing
      * CREATE TABLE chat_history(client_name text, chat_id text, message_id text, global_message_id text, sender text, content text, createdAt text);
+     * CREATE TABLE blocked_users(user_id varchar(255), client varchar(25));
      * Update the variables in the .env for the PG with your credentials
 
 ## Twilio Setup

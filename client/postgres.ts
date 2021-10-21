@@ -1,5 +1,6 @@
 import e = require('express');
 import { Pool, Client } from 'pg';
+import { userDatabase } from './userDatabase';
 
 export class postgres {
     static getInstance: postgres
@@ -147,5 +148,44 @@ export class postgres {
                 return 1
             }
         })
+    }
+
+    async getBannedUsers() {
+        const query = "SELECT * FROM blocked_users;"
+
+        await this.client.query(query, (err, res) => {
+            if (err) console.log(err + ' ' + err.stack)
+            else new userDatabase(res.rows);
+        });
+    }
+    async banUser(user_id: string, client: string) {
+        const query = "INSERT INTO blocked_users(user_id, client) VALUES($1, $2);"    
+        const values = [ user_id, client ]
+            
+        this.client.query(query, values, (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            }
+          })
+
+    }
+    async unbanUser(user_id: string, client: string) {
+        const query = "DELETE FROM blocked_users WHERE user_id=$1 AND client=$2"
+        const values = [ user_id, client ]
+
+        this.client.query(query, values, (err, res) => {
+            if (err) {
+                console.log(err + ' ' + err.stack)
+            }
+        });
+    }
+    async isUserBanned(user_id: string, client: string): Promise<boolean> {
+        const query = "SELECT * FROM blocked_users WHERE user_id=$1 AND client=$2"
+        const values = [ user_id, client ]
+
+        return await this.client.query(query, values, (err, res) =>{
+            if (err) console.log(err + ' ' + err.stack)
+            else return res !== undefined && res.rows !== undefined && res.rows.length > 0
+        });
     }
 }

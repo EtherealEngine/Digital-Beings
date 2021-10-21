@@ -1,9 +1,11 @@
+import { userDatabase } from "../../userDatabase";
 import { getRandomEmptyResponse } from "../../utils";
 import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "../chatHistory";
 import { replacePlaceholders } from "../util";
 
 module.exports = async (client, message) => {
     const {author, channel, content, id} = message;
+    if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) return
     if (author.id === client.user.id) {
         await channel.messages.fetch(id).then(async msg => {
             console.log('updating local msg to db')

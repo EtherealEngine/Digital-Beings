@@ -1,15 +1,18 @@
 import { postgres } from "../client/postgres";
 import { redisDb } from "../client/redisDb";
+import { userDatabase } from "../client/userDatabase";
 import { createWebServer } from "../client/webserver";
 
 require('dotenv-flow').config();
 
 createWebServer()
 new postgres().connect()
+postgres.getInstance.getBannedUsers()
 
 const expectedServerDelta = 1000 / 60;
 let lastTime = 0;
 // @ts-ignore
+
 globalThis.requestAnimationFrame = (f) => {
     const serverLoop = () => {
         const now = Date.now();

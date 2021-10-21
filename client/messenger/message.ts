@@ -1,9 +1,12 @@
+import { userDatabase } from "../userDatabase";
 import { getRandomEmptyResponse } from "../utils";
 import { addMessageToHistory, getChatHistory } from "./chatHistory";
 
 const request = require('request')
 
 export async function handleMessage(senderPsid, receivedMessage, messageResponseHandler) {
+  if (userDatabase.getInstance.isUserBanned(senderPsid, 'messenger')) return
+  
   console.log('receivedMessage: ' + receivedMessage.text + ' from: ' + senderPsid)
 
   if (receivedMessage.text) {

@@ -1,3 +1,4 @@
+import { userDatabase } from "../../userDatabase"
 import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
 import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, moreThanOneInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
 import { botName, username_regex } from "../telegram-client"
@@ -11,7 +12,8 @@ export async function onMessage(bot, msg, messageResponseHandler) {
     const hours_diff = Math.ceil(diff/3600)
     const mins_diff = Math.ceil((diff-hours_diff)/60)
     if (mins_diff > 12 || (mins_diff <= 12 && hours_diff > 1)) return
-    
+
+    if (userDatabase.getInstance.isUserBanned(msg.from.id, 'telegram')) return    
     let content = msg.text
     const _sender = msg.from.username === undefined ? msg.from.first_name : msg.from.username
     addMessageToHistory(msg.chat.id, msg.message_id, _sender, content)

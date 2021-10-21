@@ -1,6 +1,7 @@
 import { urlencoded, Response } from 'express';
 import { twiml } from 'twilio';
 import { getChatHistory } from '../../telegram/chatHistory';
+import { userDatabase } from '../../userDatabase';
 import { getRandomEmptyResponse } from '../../utils';
 import { addMessageToHistory } from '../chatHistory';
 import { MessagingRequest } from '../types/request';
@@ -8,6 +9,7 @@ import { MessagingRequest } from '../types/request';
 const { MessagingResponse } = twiml;
 
 export async function message(messageResponseHandler, req: MessagingRequest, res: Response<string>) {
+    if (userDatabase.getInstance.isUserBanned(req.body.From, 'twilio')) return
     console.log('received message: ' + req.body.Body)
     addMessageToHistory(req.body.From, req.body.From, req.body.Body)   
     const message = '!ping ' + req.body.Body

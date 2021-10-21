@@ -1,3 +1,4 @@
+import { userDatabase } from "../userDatabase";
 import { getRandomEmptyResponse, startsWithCapital } from "../utils";
 import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, moreThanOneInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, saveIfHandled, sentMessage, wasHandled } from "./chatHistory";
 
