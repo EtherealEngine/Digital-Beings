@@ -23,12 +23,15 @@ export async function run (client, message, args, author, addPing, channel) {
     console.log('content: ' + args.grpc_args.message)
     console.log(JSON.stringify(args))
 
-    let count: number = 1
+    let count: number = 2
     const _text = message.content.toLowerCase()
     if (_text.includes('hi') && !_text.includes('lecture')) {
         count = 1
     }
     if (_text.includes('hey') && !_text.includes('lecture')) {
+        count = 1
+    }
+    if (_text.includes('how are you')) {
         count = 1
     }
     else if (_text.includes('hi') && _text.includes('lecture')) {

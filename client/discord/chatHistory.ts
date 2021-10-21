@@ -40,7 +40,7 @@ export function sentMessage(user) {
                 conversation[user].timeoutId = undefined
                 conversation[user].timeOutFinished = true
             }
-        }, 720000)
+        }, 480000)
     } else {
         conversation[user].timeoutId = setTimeout(() => {
             console.log('conversaion for ' + user + ' ended')
@@ -48,11 +48,12 @@ export function sentMessage(user) {
                 conversation[user].timeoutId = undefined
                 conversation[user].timeOutFinished = true
             }
-        }, 720000)
+        }, 480000)
     }
 }
 
 export function exitConversation(user) {
+    console.log('force exit conv')
     if (conversation[user] !== undefined) {
         if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
         conversation[user].timeoutId = undefined
