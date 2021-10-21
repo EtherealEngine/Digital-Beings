@@ -1,3 +1,4 @@
+import { chatFilter } from "../../chatFilter";
 import { userDatabase } from "../../userDatabase";
 import { getRandomEmptyResponse } from "../../utils";
 import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "../chatHistory";
@@ -5,6 +6,7 @@ import { replacePlaceholders } from "../util";
 
 module.exports = async (client, message) => {
     const {author, channel, content, id} = message;
+    const oldText = content
     if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) return
     if (author.id === client.user.id) {
         await channel.messages.fetch(id).then(async msg => {
@@ -26,6 +28,17 @@ module.exports = async (client, message) => {
          channel.messages.fetch({limit: client.edit_messages_max_count}).then(async messages => {
              messages.forEach(async function(edited) {
                  if (edited.id === id) {
+                    if (chatFilter.getInstance.isBadWord(edited.content, edited.author.id, 'discord', function(_user) {
+                        edited.author.send('You got 5 warnings, at 10 you will get blocked!')
+                    }, 
+                    function (_user) {
+                        userDatabase.getInstance.banUser(edited.author.id, 'client')
+                        edited.lineReply('blocked')
+                    })) {
+                        edited.edit(oldText)
+                        return
+                    }
+
                     await updateMessage(channel.id, edited.id, edited.content)
                     const newText = edited.content.startsWith('!ping') ? edited.content : '!ping ' + edited.content
                  

@@ -1,3 +1,4 @@
+import { chatFilter } from "../client/chatFilter";
 import { postgres } from "../client/postgres";
 import { redisDb } from "../client/redisDb";
 import { userDatabase } from "../client/userDatabase";
@@ -7,7 +8,8 @@ require('dotenv-flow').config();
 
 createWebServer()
 new postgres().connect()
-postgres.getInstance.getBannedUsers()
+postgres.getInstance.getBannedUsers(true)
+new chatFilter();
 
 const expectedServerDelta = 1000 / 60;
 let lastTime = 0;

@@ -20,9 +20,43 @@ export async function run (client, message, args, author, addPing, channel) {
     const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
     args.grpc_args['createdAt'] = utcStr
 
-        console.log('content: ' + args.grpc_args.message)
-        console.log(JSON.stringify(args))
-    for(let i = 0; i < 2; i++) {
+    console.log('content: ' + args.grpc_args.message)
+    console.log(JSON.stringify(args))
+
+    let count: number = 1
+    const _text = message.content.toLowerCase()
+    if (_text.includes('hi') && !_text.includes('lecture')) {
+        count = 1
+    }
+    if (_text.includes('hey') && !_text.includes('lecture')) {
+        count = 1
+    }
+    else if (_text.includes('hi') && _text.includes('lecture')) {
+        args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
+        count = 9
+    }
+    else if (_text.includes('hi') && _text.includes('teach')) {
+        args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
+        count = 6
+    }
+    else if (_text.includes('hey') && _text.includes('lecture')) {
+        args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
+        count = 9
+    }
+    else if (_text.includes('hey') && _text.includes('teach')) {
+        args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
+        count = 6
+    }
+    else if (_text.includes('lecture')) {
+        count = 9
+    }
+    else if (_text.includes('teach')) {
+        count = 6
+    }
+
+    console.log('count: ' + count)
+
+    for(let i = 0; i < count; i++) {
         await client.messageResponseHandler(args, (response) => {
             Object.keys(response.response).map(function(key, index) {
                 console.log('response: ' + response.response[key])
@@ -84,5 +118,7 @@ export async function run (client, message, args, author, addPing, channel) {
             });          
             message.channel.stopTyping();
         }).catch(err => console.log(err))
+
+        args.grpc_args['message'] = 'm continue'
     }
 }

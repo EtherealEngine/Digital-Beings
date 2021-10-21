@@ -150,12 +150,15 @@ export class postgres {
         })
     }
 
-    async getBannedUsers() {
+    async getBannedUsers(init: boolean) {
         const query = "SELECT * FROM blocked_users;"
 
         await this.client.query(query, (err, res) => {
             if (err) console.log(err + ' ' + err.stack)
-            else new userDatabase(res.rows);
+            else {
+                if (init) new userDatabase(res.rows);
+                else userDatabase.getInstance.bannedUsers = res.rows
+            }
         });
     }
     async banUser(user_id: string, client: string) {

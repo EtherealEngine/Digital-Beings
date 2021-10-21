@@ -1,8 +1,10 @@
+import { chatFilter } from "../../chatFilter";
 import { userDatabase } from "../../userDatabase";
 import { startsWithCapital } from "../../utils";
 import { addMessageToHistory, conversation, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 const emojiRegex = require('emoji-regex');
 const emoji = require("emoji-dictionary");
+const inlinereply = require('discord-reply');
 
 module.exports = async (client, message) => {
     const reg = emojiRegex();
@@ -20,6 +22,16 @@ module.exports = async (client, message) => {
     let {author, channel, content, mentions, id} = message;
     if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) {
         console.log('user is banned')
+        return
+    }
+    
+    if (chatFilter.getInstance.isBadWord(content, author.id, 'discord', function(_user, ratings) {
+        author.send('You got ' + ratings + ' warnings, at 10 you will get blocked!')
+    }, 
+    function (_user) {
+        userDatabase.getInstance.banUser(author.id, 'discord')
+        message.lineReply('blocked')
+    })) {
         return
     }
 
