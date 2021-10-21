@@ -1,6 +1,7 @@
 import { waitForClientReady } from "grpc";
 import { resolve } from "path";
 import { redisDb } from "../redisDb";
+import { userDatabase } from "../userDatabase";
 import { detectOsOption, getOS } from "../utils";
 import { handleMessages } from "./messageHandler";
 import { speechToText } from "./stt";
@@ -209,7 +210,8 @@ class XREngineBot {
             messages[i].createdAt = new Date(messages[i].createdAt).getTime() / 1000
             messages[i].author = ['xr-engine', senderId]
 
-            if (this.chatHistory.includes(messageId) || this.userId === senderId) {
+            if (this.chatHistory.includes(messageId) || this.userId === senderId || 
+                userDatabase.getInstance.isUserBanned(senderId, 'xr-engine')) {
                 const index : number = await this.getMessageIndex(messages, messageId)
                 if (index > -1) messages.splice(index, 1)
             }
