@@ -23,7 +23,7 @@ export async function run (client, message, args, author, addPing, channel) {
     console.log('content: ' + args.grpc_args.message)
     console.log(JSON.stringify(args))
 
-    let count: number = 2
+    let count: number = 3
     const _text = message.content.toLowerCase()
     if (_text.includes('hi') && !_text.includes('lecture')) {
         count = 1
@@ -36,25 +36,25 @@ export async function run (client, message, args, author, addPing, channel) {
     }
     else if (_text.includes('hi') && _text.includes('lecture')) {
         args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
-        count = 9
+        count = 10
     }
     else if (_text.includes('hi') && _text.includes('teach')) {
         args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
-        count = 6
+        count = 5
     }
     else if (_text.includes('hey') && _text.includes('lecture')) {
         args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
-        count = 9
+        count = 10
     }
     else if (_text.includes('hey') && _text.includes('teach')) {
         args.grpc_args['message'] = args.grpc_args['message'].replace(new RegExp('hi', 'ig'), '')
-        count = 6
+        count = 5
     }
     else if (_text.includes('lecture')) {
-        count = 9
+        count = 10
     }
     else if (_text.includes('teach')) {
-        count = 6
+        count = 5
     }
 
     console.log('count: ' + count)
