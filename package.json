@@ -46,7 +46,7 @@
     "puppeteer-stream": "2.0.6",
     "redis": "4.0.0-rc.3",
     "tedis": "0.1.12",
-    "ts-node": "10.2.1",
+    "ts-node": "10.4.0",
     "twilio": "3.69.0",
     "twit": "2.2.11",
     "twitter-autohook": "1.7.2",
