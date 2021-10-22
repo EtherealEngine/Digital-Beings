@@ -105,7 +105,7 @@ DigitalBeing requires the following to run:
      * CREATE TABLE blocked_users(user_id varchar(255), client varchar(25));
      * DROP TABLE IF EXISTS chat_filter;
      * CREATE TABLE chat_filter(half int, max int);
-     * INSERT INTO TABLE chat_filter(half, max) VALUES(5, 10);
+     * INSERT INTO chat_filter(half, max) VALUES(5, 10);
      * CREATE TABLE IF NOT EXISTS bad_words(word varchar(255), rating int);
      * Update the variables in the .env for the PG with your credentials
 
