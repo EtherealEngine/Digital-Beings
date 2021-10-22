@@ -62,17 +62,84 @@ def block_manager():
         html += '</body></html>'
         return html
     elif request.method == 'POST':
-        if ('ban_user' in request.form):
+        if 'ban_user' in request.form:
             user_id = request.form['user_id']
             client = request.form['client']
             _postgres.blockUser(user_id, client)
-        elif ('unban_user' in request.form):
+        elif 'unban_user' in request.form:
             user_id = request.form['user_id']
             client = request.form['client']
             _postgres.unblockUser(user_id, client)
             
         return flask.make_response(flask.redirect('block_manager'))
 
+@app.route('/chat_filter_manager', methods=['POST', 'GET'])
+def chat_filter_manager():
+    if request.method == 'GET':
+        half, max = _postgres.getChatFilterRatings()
+        bad_words = _postgres.getBadWordsRatings()
+        html = read_file('main.html')
+        html += '<center>'
+        html += '<h1>Chat Filter Manager</h1>'
+        html += '<h2>Ratings: half - ' + str(half) + ' | max - ' + str(max) + '</h2>'
+        html += '<form action="/chat_filter_manager" method="post" id="update_ratings">'
+        html += '<label for="user_id">Half:</label><br>'
+        html += '<input type="text" id="half" name="half" value="' + str(half) + '"><br>'
+        html += '<label for="client">Max:</label><br>'
+        html += '<input type="text" id="max" name="max" value="' + str(max) + '"><br><br>'
+        html += '<input type="submit" name="update_ratings" value="Update Ratings">'
+        html += '</form>'
+        html += '<h2>Add bad words</h2>'
+        html += '<form action="/chat_filter_manager" method="post" id="add_bad_word">'
+        html += '<label for="user_id">Word:</label><br>'
+        html += '<input type="text" id="word" name="word" value=""><br>'
+        html += '<label for="client">Rating:</label><br>'
+        html += '<input type="text" id="rating" name="rating" value=""><br><br>'
+        html += '<input type="submit" name="add_bad_word" value="Update Ratings">'
+        html += '</form>'
+        html += '<h4>Bad Words</h4>'
+        html += '<table>'
+        html += '<tr>'
+        html += '<th>Word</th>'
+        html += '<th>Rating</th>'
+        html += '<th>Edit</th>'
+        html += '<th>Remove</th>'
+        html += '</tr>'
+        for i in bad_words:
+            html += '<tr>'
+            html += '<td>' + str(i['key']) + '</td>'
+            html += '<td>' + str(i['value']) + '</td>'
+            html += '<td><form action="/chat_filter_manager" method="post" id="edit_bad_word">'
+            html += '<input type="hidden" id="word" name="word" value="' + str(i['key']) + '">'
+            html += '<input type="text" id="new_rating" name="new_rating" value="' + str(i['value']) + '">'
+            html += '<input type="submit" name="edit_bad_word" value="Edit"></form></td>'
+            html += '<td><form action="/chat_filter_manager" method="post" id="remove_bad_word">'
+            html += '<input type="hidden" id="word" name="word" value="' + str(i['key']) + '">'
+            html += '<input type="submit" name="remove_bad_word" value="Remove"></form></td>'
+            html += '</tr>'
+        html += '</table>'
+        html += '</center>'
+        html += '</body></html>'
+        return html
+    elif request.method == 'POST':
+        print (request.form)
+        if 'update_ratings' in request.form:
+            half = request.form['half'].strip()
+            max = request.form['max'].strip()
+            _postgres.updateChatFilter(half, max) 
+        if 'add_bad_word' in request.form:
+            word = request.form['word'].strip()
+            rating = request.form['rating'].strip()
+            _postgres.addBadWord(word, rating)
+        if 'remove_bad_word' in request.form:
+            word = request.form['word'].strip()
+            _postgres.removeBadWord(word)
+        if 'edit_bad_word' in request.form:
+            word = request.form['word'].strip()
+            newRating = request.form['new_rating'].strip()
+            _postgres.editBadWord(word, newRating)
+
+        return flask.make_response(flask.redirect('chat_filter_manager'))
 
 if __name__ == '__main__':
     print('connecting to the database')

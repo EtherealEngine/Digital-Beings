@@ -1,3 +1,0 @@
-fuck = 4
-porn = 4
-test = 5

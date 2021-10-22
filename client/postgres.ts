@@ -1,5 +1,6 @@
 import e = require('express');
 import { Pool, Client } from 'pg';
+import { chatFilter } from './chatFilter';
 import { userDatabase } from './userDatabase';
 
 export class postgres {
@@ -186,9 +187,38 @@ export class postgres {
         const query = "SELECT * FROM blocked_users WHERE user_id=$1 AND client=$2"
         const values = [ user_id, client ]
 
-        return await this.client.query(query, values, (err, res) =>{
+        return await this.client.query(query, values, (err, res) => {
             if (err) console.log(err + ' ' + err.stack)
             else return res !== undefined && res.rows !== undefined && res.rows.length > 0
         });
+    }
+
+    async getChatFilterData(init: boolean) {
+        const query = "SELECT * FROM chat_filter"
+
+        await this.client.query(query, async (err, res) => {
+            if (err) console.log(err + ' ' + err.stack) 
+            else {
+                const half = parseInt(res.rows[0].half)
+                const max = parseInt(res.rows[0].max)
+                
+                const query2 = "SELECT * FROM bad_words"
+
+                await this.client.query(query2, (err2, res2) => {
+                    if (err2) console.log(err2 + ' ' + err2.stack)
+                    else {
+                        const words: {word: string, rating: number}[] = []
+                        if (res2 !== undefined && res2.rows !== undefined) {
+                            for(let i = 0; i < res2.rows.length; i++) {
+                                words.push({ word: res2.rows[i].word, rating: parseInt(res2.rows[i].rating) })
+                            }
+                        }
+
+                        if (init) new chatFilter(half, max, words)
+                        else chatFilter.getInstance.update(half, max, words)
+                    }
+                })
+            }
+        })
     }
 }

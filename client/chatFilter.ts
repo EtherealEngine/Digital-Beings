@@ -1,15 +1,21 @@
 import * as fs from 'fs'
+import { postgres } from './postgres'
 
 export class chatFilter {
     static getInstance: chatFilter
 
     userHistory: {user: string, client: string, rating: number, _timeout: any}[] = []
 
+    half: number = 5
+    max: number = 10
     badWords: { word: string, rating: number }[] = []
 
-    constructor() {
+    constructor(half: number, max: number, badWords: { word: string, rating: number }[]) {
         chatFilter.getInstance = this
-        const data = fs.readFileSync('bad_words.txt', 'utf-8')
+        this.half = half
+        this.max = max
+        this.badWords = badWords
+        /*const data = fs.readFileSync('bad_words.txt', 'utf-8')
         const lines = data.split('\n')
         for(let i = 0; i < lines.length; i++) {
             const d = lines[i].split('=')
@@ -18,8 +24,16 @@ export class chatFilter {
                 const rating = parseInt(d[1].trim())
                 this.badWords.push({ word: word, rating: rating })
             }
-        }
-        console.log('loaded ' + this.badWords.length + ' bad words')
+        }*/
+        console.log('loaded ' + this.badWords.length + ' bad words, half: ' + half + ' max: ' + max)
+        setInterval(() => {
+            postgres.getInstance.getChatFilterData(false)
+        }, 60000)
+    }
+    update(half: number, max: number, badWords: { word: string, rating: number }[]) {
+        this.half = half
+        this.max = max
+        this.badWords = badWords
     }
 
     isBadWord(text: string, user: string, client: string, rating5: Function, rating10: Function): boolean {
@@ -53,10 +67,10 @@ export class chatFilter {
                     }
                  }, 72000)
 
-                if (this.userHistory[i].rating >= 5 && this.userHistory[i].rating < 10) {
+                if (this.userHistory[i].rating >= this.half && this.userHistory[i].rating < this.max) {
                     rating5(user, this.userHistory[i].rating);
                 }
-                else if (this.userHistory[i].rating >= 10) {
+                else if (this.userHistory[i].rating >= this.max) {
                     rating10(user, this.userHistory[i].rating)
                     if (this.userHistory[i]._timeout !== undefined) clearTimeout(this.userHistory[i]._timeout)
                 }
@@ -66,10 +80,10 @@ export class chatFilter {
         }
 
 
-        if (rating >= 5 && rating < 10) {
+        if (rating >= this.half && rating < this.max) {
             rating5(user, rating)
         }
-        else if (rating >= 10) {
+        else if (rating >= this.max) {
             rating10(user, rating)
             return
         }

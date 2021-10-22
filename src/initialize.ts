@@ -9,7 +9,7 @@ require('dotenv-flow').config();
 createWebServer()
 new postgres().connect()
 postgres.getInstance.getBannedUsers(true)
-new chatFilter();
+postgres.getInstance.getChatFilterData(true)
 
 const expectedServerDelta = 1000 / 60;
 let lastTime = 0;
