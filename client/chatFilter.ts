@@ -36,18 +36,20 @@ export class chatFilter {
         this.badWords = badWords
     }
 
-    isBadWord(text: string, user: string, client: string, rating5: Function, rating10: Function): boolean {
+    isBadWord(text: string, user: string, client: string, rating5: Function, rating10: Function): string[] {
         let rating = 0
+        const words: string[] = []
         const _text = text.toLowerCase()
 
         for(let i = 0; i < this.badWords.length; i++) {
             if (_text.includes(this.badWords[i].word.toLowerCase())) {
                 rating += this.badWords[i].rating
+                words.push(this.badWords[i].word)
             }
         }
 
         if (rating > 0) this.handleBadWord(user, client, rating, rating5, rating10)
-        return rating > 0
+        return words
     }
     handleBadWord(user: string, client: string, rating: number, rating5: Function, rating10: Function) {
         console.log('handle bad word, new rating: ' + rating)

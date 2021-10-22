@@ -25,14 +25,19 @@ module.exports = async (client, message) => {
         return
     }
     
-    if (chatFilter.getInstance.isBadWord(content, author.id, 'discord', function(_user, ratings) {
+    const bad_words = chatFilter.getInstance.isBadWord(content, author.id, 'discord', function(_user, ratings) {
         author.send('You got ' + ratings + ' warnings, at 10 you will get blocked!')
     }, 
     function (_user) {
         userDatabase.getInstance.banUser(author.id, 'discord')
         message.lineReply('blocked')
-    })) {
-        return
+    })
+    if (bad_words !== undefined && bad_words.length > 0) {
+        for(let word in bad_words) {
+            console.log('replacing word: ' + bad_words[word])
+            content = content.replace(new RegExp(bad_words[word], 'ig'), '')
+        }
+        console.log('new msg: ' + content)
     }
 
     console.log('msg: ' + content);
