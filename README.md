@@ -18,11 +18,12 @@ Interactive Endpoint Connector tools for Browsers, JS, TypeScript
 
 # Digital Being Agent API 
 
-### Python GRPC Agent API Bridge 
+### Python TCP Agent API Bridge 
 
 Connector tools for Python 3, Machine Learning tools such as TensorFlow, PyTorch, etc.
 
 Interaction API goals: Listen, Speak, Interact, Move, Emote
+[Networking Information](https://docs.google.com/document/d/1tLyZpVFIwr9jb2UoyO1_f4zu6heKj7i8marqDQ67P48/edit?usp=sharing)
 
 ## Supported Agents
 
