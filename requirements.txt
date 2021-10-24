@@ -20,7 +20,7 @@ tensorflow-probability==0.14.1
 threadpoolctl==3.0.0
 tokenizers==0.10.2
 torch==1.9.1
-torchtext==0.10.1
+torchtext==0.11.0
 tqdm==4.62.3
 transformers==4.11.3
 twilio==7.1.0
