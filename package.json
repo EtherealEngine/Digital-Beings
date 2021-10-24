@@ -42,7 +42,7 @@
     "puppeteer": "10.4.0",
     "puppeteer-extra": "3.2.3",
     "puppeteer-extra-plugin-stealth": "2.8.2",
-    "puppeteer-stream": "2.0.6",
+    "puppeteer-stream": "2.0.7",
     "redis": "4.0.0-rc.3",
     "tedis": "0.1.12",
     "ts-node": "10.2.1",
