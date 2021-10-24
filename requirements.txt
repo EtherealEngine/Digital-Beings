@@ -5,7 +5,7 @@ psycopg2
 emoji
 grpcio==1.41.0
 grpcio-tools==1.41.0
-numpy==1.18.5
+numpy==1.21.3
 oauthlib==3.1.0
 openai==0.10.5
 parlai==1.5.1
