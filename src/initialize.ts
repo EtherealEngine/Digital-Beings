@@ -1,7 +1,5 @@
-import { chatFilter } from "../client/chatFilter";
+import { tcpClient } from "../client/tcpClient";
 import { postgres } from "../client/postgres";
-import { redisDb } from "../client/redisDb";
-import { userDatabase } from "../client/userDatabase";
 import { createWebServer } from "../client/webserver";
 
 require('dotenv-flow').config();
@@ -30,24 +28,16 @@ globalThis.requestAnimationFrame = (f) => {
 const pyConnect = require('./pyconnect');
 
 (async function(){  
-    await pyConnect.invoke(
-        {
-            'grpc_args': {},
-            'grpc_method':'InitializeAgents',
-            'grpc_method_params':['']
-        },function(){
-            const messageResponseHandler = async (args, callback) => {
-                args.response = await pyConnect.invoke(args)
-                callback(args.response);
-            }
-            require("../client/discord/discord-client").createDiscordClient(messageResponseHandler);
-            //require("../client/messenger/messenger-client").createMessengerClient(messageResponseHandler);
-            //require('../client/telegram/telegram-client').createTelegramClient(messageResponseHandler);
-            //require("../client/twilio/twilio-client").createTwilioClient(messageResponseHandler);
-            //require("../client/whatsapp/whatsapp-client").createWhatsappClient(messageResponseHandler);
-            //require("../client/twitter/twitter-client").createTwitterClient(messageResponseHandler);
-            //require("../client/xr/xrengine-client").createXREngineClient(messageResponseHandler);
-            //require("../client/zoom/zoom-client").createZoomClient(messageResponseHandler);
+    await pyConnect.invoke(async function(){
+            await require("../client/discord/discord-client").createDiscordClient();
+            //require("../client/messenger/messenger-client").createMessengerClient();
+            //require('../client/telegram/telegram-client').createTelegramClient();
+            //require("../client/twilio/twilio-client").createTwilioClient();
+            //require("../client/whatsapp/whatsapp-client").createWhatsappClient();
+            //require("../client/twitter/twitter-client").createTwitterClient();
+            //require("../client/xr/xrengine-client").createXREngineClient();
+            //require("../client/zoom/zoom-client").createZoomClient();
+            await new tcpClient().init('127.0.0.1', 65532) 
          }
     ); 
 })();

@@ -35,7 +35,6 @@ export function sentMessage(user) {
         conversation[user] = { timeoutId: undefined, timeOutFinished: true, isInConversation: true }
         if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
         conversation[user].timeoutId = setTimeout(() => {
-            console.log('conversaion for ' + user + ' ended')
             if (conversation[user] !== undefined) {
                 conversation[user].timeoutId = undefined
                 conversation[user].timeOutFinished = true
@@ -43,7 +42,6 @@ export function sentMessage(user) {
         }, 480000)
     } else {
         conversation[user].timeoutId = setTimeout(() => {
-            console.log('conversaion for ' + user + ' ended')
             if (conversation[user] !== undefined) {
                 conversation[user].timeoutId = undefined
                 conversation[user].timeOutFinished = true
@@ -53,7 +51,6 @@ export function sentMessage(user) {
 }
 
 export function exitConversation(user) {
-    console.log('force exit conv')
     if (conversation[user] !== undefined) {
         if (conversation[user].timeoutId !== undefined) clearTimeout(conversation[user].timeoutId)
         conversation[user].timeoutId = undefined

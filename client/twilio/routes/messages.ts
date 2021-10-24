@@ -1,9 +1,12 @@
 import { urlencoded, Response } from 'express';
 import { twiml } from 'twilio';
+import twilio = require('twilio');
+import { tcpClient } from '../../tcpClient';
 import { getChatHistory } from '../../telegram/chatHistory';
 import { userDatabase } from '../../userDatabase';
 import { getRandomEmptyResponse } from '../../utils';
 import { addMessageToHistory } from '../chatHistory';
+import { sendMessage } from '../twilio-client';
 import { MessagingRequest } from '../types/request';
 
 const { MessagingResponse } = twiml;
@@ -14,7 +17,6 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
     addMessageToHistory(req.body.From, req.body.From, req.body.Body)   
     const message = '!ping ' + req.body.Body
       
-    const _resp = new MessagingResponse();
     const args = {}
     args['grpc_args'] = {};
 
@@ -41,51 +43,46 @@ export async function message(messageResponseHandler, req: MessagingRequest, res
     const dateNow = new Date();
     var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
     const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
-    args['grpc_args']['createdAt'] = utcStr
-    
-    await messageResponseHandler(args, (response) => {
-        Object.keys(response.response).map(function(key, index) {
-            console.log('response: ' + response.response[key])
-            if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
-                let text = response.response[key]
-                while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                _resp.message(text)
-                res.set("Content-Type", "application/xml");
-                res.send(_resp.toString())     
-                addMessageToHistory(req.body.From, process.env.BOT_NAME, text)                 
-            }
-            else if (response.response[key].length > 160) {
-                const lines: string[] = []
-                let line: string = ''
-                for(let i = 0; i < response.response[key].length; i++) {
-                    line+= response.response[key]
-                    if (i >= 1980 && (line[i] === ' ' || line[i] === '')) {
-                        lines.push(line)
-                        line = ''
-                    }
-                }
 
-                for (let i = 0; i< lines.length; i++) {
-                    if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
-                        if (i === 0) {
-                            let text = lines[1]
-                            while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                            _resp.message(text)
-                            res.set("Content-Type", "application/xml");
-                            res.send(_resp.toString()) 
-                            addMessageToHistory(req.body.From, process.env.BOT_NAME, text)
-                    }
+    tcpClient.getInstance.sendMessage(req.body.Body, 'x', 'Twilio', req.body.From, utcStr, false)
+}
+
+export async function handleTwilioMsg(chat_id, responses) {
+    Object.keys(responses).map(function(key, index) {
+        console.log('response: ' + responses[key])
+        if (responses[key] !== undefined && responses[key].length <= 2000 && responses[key].length > 0) {
+            let text = responses[key]
+            while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+            sendMessage(chat_id, text); 
+            addMessageToHistory(chat_id, process.env.BOT_NAME, text)                 
+        }
+        else if (responses[key].length > 160) {
+            const lines: string[] = []
+            let line: string = ''
+            for(let i = 0; i < responses[key].length; i++) {
+                line+= responses[key]
+                if (i >= 1980 && (line[i] === ' ' || line[i] === '')) {
+                    lines.push(line)
+                    line = ''
+                }
+            }
+
+            for (let i = 0; i< lines.length; i++) {
+                if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
+                    if (i === 0) {
+                        let text = lines[1]
+                        while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                        sendMessage(chat_id, text); 
+                        addMessageToHistory(chat_id, process.env.BOT_NAME, text)
                 }
             }
         }
-            else {
-                let emptyResponse = getRandomEmptyResponse()
-                while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                _resp.message(emptyResponse)
-                res.set("Content-Type", "application/xml");
-                res.send(_resp.toString()) 
-                addMessageToHistory(req.body.From, process.env.BOT_NAME, emptyResponse)
-            }
-        });          
-    });
+    }
+        else {
+            let emptyResponse = getRandomEmptyResponse()
+            while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
+            sendMessage(chat_id, emptyResponse); 
+            addMessageToHistory(chat_id, process.env.BOT_NAME, emptyResponse)
+        }
+    });  
 }

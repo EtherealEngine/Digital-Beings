@@ -1,7 +1,8 @@
 import { getRandomEmptyResponse } from "../../utils";
 import { sendSlashCommandResponse } from "./utils";
 
-export async function handleSlashCommand(messageResponseHandler, client, interaction) {
+export async function handleSlashCommand(client, interaction) {
+    const messageResponseHandler= undefined
     const command = interaction.data.name.toLowerCase();
     const sender = interaction.member.user.username + ''
     const chatId = interaction.channel_id + ''

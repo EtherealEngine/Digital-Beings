@@ -1,8 +1,9 @@
+import { tcpClient } from "../tcpClient";
 import { userDatabase } from "../userDatabase";
 import { getRandomEmptyResponse, startsWithCapital } from "../utils";
 import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, moreThanOneInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, saveIfHandled, sentMessage, wasHandled } from "./chatHistory";
 
-export async function handleMessages(messageResponseHandler, messages, bot) {
+export async function handleMessages(messages, bot) {
     for (let i = 0; i < messages.length; i++) {
         if (messages[i].text.includes('[') && messages[i].text.includes(']')) continue
         else if (messages[i].text.includes('joined the layer') || messages[i].text.includes('left the layer') || messages[i].text.length === 0) continue
@@ -74,8 +75,8 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         const isUserNameMention = content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(bot.username_regex)
         const isInDiscussion = isInConversation(_sender)
         if (!content.startsWith('!')) {
-        if (isUserNameMention) { console.log('is user mention'); content = '!ping ' + content.replace(bot.username_regex, '').trim()  }
-        else if (isInDiscussion || startConv) { console.log('isIndiscussion: ' + isInDiscussion + ' startConv: ' + startConv); content = '!ping ' + content}
+            if (isUserNameMention) { console.log('is user mention'); content = '!ping ' + content.replace(bot.username_regex, '').trim()  }
+            else if (isInDiscussion || startConv) { console.log('isIndiscussion: ' + isInDiscussion + ' startConv: ' + startConv); content = '!ping ' + content}
         }
 
         if (content.startsWith('!ping')) sentMessage(_sender)
@@ -107,49 +108,8 @@ export async function handleMessages(messageResponseHandler, messages, bot) {
         var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
         const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
         args['grpc_args']['createdAt'] = utcStr
-        
-        await messageResponseHandler(args, (response) => {
-            console.log(JSON.stringify(response))
-            Object.keys(response.response).map(function(key, index) {
-                console.log('response: ' + response.response[key])
-                if (response.response[key] !== undefined && response.response[key].length <= 2000 && response.response[key].length > 0) {
-                    let text = response.response[key]
-                    while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                    if (addPing) text = _sender + ' ' + text
-                    bot.sendMessage(text)         
-                }
-                else if (response.response[key].length > 2000) {
-                    const lines: string[] = []
-                    let line: string = ''
-                    for(let i = 0; i < response.response[key].length; i++) {
-                        line+= response.response[key]
-                        if (i >= 1980 && (line[i] === ' ' || line[i] === '')) {
-                            lines.push(line)
-                            line = ''
-                        }
-                    }
 
-                    for (let i = 0; i< lines.length; i++) {
-                        if (lines[i] !== undefined && lines[i] !== '' && lines[i].replace(/\s/g, '').length !== 0) {
-                            if (i === 0) {
-                                let text = lines[1]
-                                while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                                if (addPing) { 
-                                    text = _sender + ' ' + text
-                                    addPing = false
-                                }
-                                bot.sendMessage(text)                  
-                            }
-                        }
-                    }
-                }
-                else {
-                    let emptyResponse = getRandomEmptyResponse()
-                    while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                    if (addPing) emptyResponse = _sender + ' ' + emptyResponse
-                    bot.sendMessage(emptyResponse)         
-                }
-            });          
-        });
+        tcpClient.getInstance.sendMessage(content.replace('!ping', ''), messages[i].id, 'xr-engine', messages[i].channelId, utcStr, addPing, _sender)
     }
 }
+

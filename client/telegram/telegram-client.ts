@@ -1,6 +1,7 @@
 import TelegramBot = require("node-telegram-bot-api")
 import { onMessage } from "./events/message"
 import { onMessageEdit } from "./events/message_edit"
+import { telegramPacketHandler } from "./telegramPacketHandler"
 
 const token = process.env.TELEGRAM_BOT_TOKEN
 export const username_regex = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
@@ -13,9 +14,11 @@ export const createTelegramClient = (messageResponseHandler) => {
 
     bot.on('message', async (msg) => {
         await onMessage(bot, msg, messageResponseHandler)
+        msg.chat.id
     })
     bot.on('edited_message', async (msg) => {
         await onMessageEdit(bot, msg, messageResponseHandler)
     });
+    new telegramPacketHandler(bot)
     console.log('telegram client loaded')
 }

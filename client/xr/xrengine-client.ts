@@ -1,12 +1,9 @@
-import { waitForClientReady } from "grpc";
-import { resolve } from "path";
 import { redisDb } from "../redisDb";
 import { userDatabase } from "../userDatabase";
-import { detectOsOption, getOS } from "../utils";
+import { detectOsOption } from "../utils";
 import { handleMessages } from "./messageHandler";
-import { speechToText } from "./stt";
-import { generateVoice } from './tts'
 import { UsersInHarassmentRange, UsersInIntimateRange, UsersInRange, UsersLookingAt } from "./UsersInRange";
+import { xrEnginePacketHandler } from "./xrEnginePacketHandler";
 
 const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/location/test';
 
@@ -76,6 +73,7 @@ class XREngineBot {
         this.messageResponseHandler = messageResponseHandler;
         this.fakeMediaPath = fakeMediaPath;
 
+        new xrEnginePacketHandler(this)
         setInterval(() => this.getInstanceMessages(), 1000)
     }
 
@@ -235,7 +233,7 @@ class XREngineBot {
         }
 //#endregion
 
-        await handleMessages(this.messageResponseHandler, messages, this)
+        await handleMessages(messages, this)
         return this.activeChannel && messages;
     }
 
@@ -436,8 +434,8 @@ class XREngineBot {
             else if (message.text().startsWith('emotions|')) {
             }
                 
-            //if (this.autoLog)
-            //    console.log(">> ", message.text())
+            if (this.autoLog)
+                console.log(">> ", message.text())
         })
 
         this.page.setViewport({ width: 0, height: 0 });

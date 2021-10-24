@@ -2,26 +2,26 @@ import { handleGuildMemberAdd } from './response-events/guildMemberAdd';
 import { handleGuildMemberRemove } from './response-events/guildMemberRemove';
 import { handleMessageReactionAdd } from './response-events/messageReactionAdd';
 import { handleSlashCommand } from './slash_commands/handler';
-import { initClient } from './tcpClient';
+import { initClient } from './loggingClient';
 import { helpFields, _findCommand, _parseWords } from './util';
+import { discordPackerHandler } from './discordPackerHandler';
 
 const Discord = require('discord.js');
 const {Util, Intents} = require('discord.js')
 const config = require("./config.json");
-const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN;
+const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN 
 
 export let client = undefined
 
-const createDiscordClient = (messageResponseHandler) => {
-
-    if (!DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
+const createDiscordClient = () => {
+      if (!process.env.DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
     client = new Discord.Client({ intents: [ Intents.GUILDS, Intents.GUILD_MEMBERS, Intents.GUILD_PRESENCES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
+    console.log(JSON.stringify(client))
     client.config = config;
     client.helpFields = helpFields;
     client._findCommand = _findCommand;
     client._parseWords = _parseWords;
-    client.messageResponseHandler = messageResponseHandler
     client.bot_name = config.bot_name
     client.name_regex = new RegExp(config.bot_name, 'ig')
     client.username_regex = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
@@ -44,16 +44,16 @@ const createDiscordClient = (messageResponseHandler) => {
     });
 
     client.ws.on('INTERACTION_CREATE', async interaction => {
-      handleSlashCommand(messageResponseHandler, client, interaction)
+      handleSlashCommand(client, interaction)
     });
     client.on('guildMemberAdd', async user => {
-      handleGuildMemberAdd(messageResponseHandler, client, user);
+      handleGuildMemberAdd(user);
     });
     client.on('guildMemberRemove', async user => {
-      handleGuildMemberRemove(messageResponseHandler, client, user)
+      handleGuildMemberRemove(user)
     });
     client.on('messageReactionAdd', async (reaction, user) => {
-      handleMessageReactionAdd(messageResponseHandler, client, reaction, user)
+      handleMessageReactionAdd(reaction, user)
     });
 
     client.commands = new Discord.Collection();
@@ -70,7 +70,8 @@ const createDiscordClient = (messageResponseHandler) => {
       });
     });
 
-    client.login(DISCORD_API_TOKEN);
+    client.login(process.env.DISCORD_API_TOKEN);
+    new discordPackerHandler(client)
     initClient('127.0.0.1', 7778)
 };
 

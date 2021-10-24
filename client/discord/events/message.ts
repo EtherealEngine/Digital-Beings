@@ -12,16 +12,13 @@ module.exports = async (client, message) => {
     let emojis: { name: string, emoji: any }[] = []
     while((match = reg.exec(message.content)) !== null) {
         emojis.push({ name: emoji.getName(match[0]), emoji: match[0] });
-        console.log(match[0]);
         message.content = message.content.replace(match[0], match[0] + ' :' + emoji.getName(match[0]) + ':');
     }
-    console.log('Emojis: ' + JSON.stringify(emojis))
     const args = {}
     args['grpc_args'] = {};
 
     let {author, channel, content, mentions, id} = message;
     if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) {
-        console.log('user is banned')
         return
     }
     
@@ -34,13 +31,10 @@ module.exports = async (client, message) => {
     })
     if (bad_words !== undefined && bad_words.length > 0) {
         for(let word in bad_words) {
-            console.log('replacing word: ' + bad_words[word])
             content = content.replace(new RegExp(bad_words[word], 'ig'), '')
         }
-        console.log('new msg: ' + content)
     }
 
-    console.log('msg: ' + content);
     if (content === '') content = '{sent media}'
     let _prev = undefined
     if (!author.bot) {
@@ -105,8 +99,6 @@ module.exports = async (client, message) => {
     if (content.startsWith('!ping')) {
         sentMessage(author.id)
         const mention = `<@!${client.user.id}>`;
-        console.log(content + ' 1st: ' + content.startsWith('!ping join') + ' 2nd: ' + content.startsWith('!ping ' + mention + ' join') + ' - ' + ('!ping ' + mention + ' join'))
-
         if (content.startsWith('!ping join') || content.startsWith('!ping ' + mention + ' join')) {
             const d = content.split(' ')
             const index = d.indexOf('join') + 1
@@ -163,7 +155,6 @@ module.exports = async (client, message) => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
         });
     }
-    console.log(JSON.stringify(args))
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 
