@@ -37,7 +37,7 @@
     "emoji-regex": "10.0.0",
     "express": "4.17.1",
     "node-telegram-bot-api": "0.54.0",
-    "nodemon": "2.0.13",
+    "nodemon": "2.0.14",
     "pg": "8.7.1",
     "puppeteer": "10.4.0",
     "puppeteer-extra": "3.2.3",
