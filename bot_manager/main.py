@@ -5,9 +5,10 @@ import requests
 from postgres import postgres as postgres
 from utils import * 
 import os
+import envReader
 
 app = flask.Flask('bot_manager')
-_postgres = None
+_postgres: postgres = None
 
 @app.route('/', methods=['POST', 'GET', 'DELETE'])
 def api():
@@ -84,10 +85,10 @@ def chat_filter_manager():
         html += '<h2>Ratings: half - ' + str(half) + ' | max - ' + str(max) + '</h2>'
         html += '<form action="/chat_filter_manager" method="post" id="update_ratings">'
         html += '<label for="user_id">Half:</label><br>'
-        html += '<input type="text" id="half" name="half" value="' + str(half) + '"><br>'
+        html += '<input type="number" id="half" name="half" value="' + str(half) + '"><br>'
         html += '<label for="client">Max:</label><br>'
-        html += '<input type="text" id="max" name="max" value="' + str(max) + '"><br><br>'
-        html += '<input type="submit" name="update_ratings" value="Update Ratings">'
+        html += '<input type="number" id="max" name="max" value="' + str(max) + '"><br><br>'
+        html += '<input type="submit" name="update_ratings" value="Add Bad Word">'
         html += '</form>'
         html += '<h2>Add bad words</h2>'
         html += '<form action="/chat_filter_manager" method="post" id="add_bad_word">'
@@ -111,7 +112,7 @@ def chat_filter_manager():
             html += '<td>' + str(i['value']) + '</td>'
             html += '<td><form action="/chat_filter_manager" method="post" id="edit_bad_word">'
             html += '<input type="hidden" id="word" name="word" value="' + str(i['key']) + '">'
-            html += '<input type="text" id="new_rating" name="new_rating" value="' + str(i['value']) + '">'
+            html += '<input type="number" id="new_rating" name="new_rating" value="' + str(i['value']) + '">'
             html += '<input type="submit" name="edit_bad_word" value="Edit"></form></td>'
             html += '<td><form action="/chat_filter_manager" method="post" id="remove_bad_word">'
             html += '<input type="hidden" id="word" name="word" value="' + str(i['key']) + '">'
@@ -122,7 +123,6 @@ def chat_filter_manager():
         html += '</body></html>'
         return html
     elif request.method == 'POST':
-        print (request.form)
         if 'update_ratings' in request.form:
             half = request.form['half'].strip()
             max = request.form['max'].strip()
@@ -141,8 +141,78 @@ def chat_filter_manager():
 
         return flask.make_response(flask.redirect('chat_filter_manager'))
 
+@app.route('/keyword_manager', methods=['POST', 'GET'])
+def keyword_manager():
+    if request.method == 'GET':
+        keywords = _postgres.getKeywords()
+        html = read_file('main.html')
+        html += '<center>'
+        html += '<h1>Keywords Manager</h1>'
+        html += '<h2>Add keywords</h2>'
+        html += '<form action="/keyword_manager" method="post" id="add_keyword">'
+        html += '<label for="user_id">Word:</label><br>'
+        html += '<input type="text" id="word" name="word" value=""><br>'
+        html += '<label for="client">Count:</label><br>'
+        html += '<input type="number" id="count" name="count" value=""><br>'
+        html += '<label for="user_id">Agent:</label><br>'
+        html += '<input type="text" id="agent" name="agent" value=""><br><br>'
+        html += '<input type="submit" name="add_keyword" value="Add Keyword">'
+        html += '</form>'
+        html += '<h4>Replacent Rules, are used in order to replace certain words in the sentence if the keyword exists, <br>for example to remove hi from the phrase use (hi:,), to remove bad words: (bad_words:,), <br>if you want to replace the words rather than deleting use (hi:hey,)</h4>'
+        html += '<h4>Keywords</h4>'
+        html += '<table>'
+        html += '<tr>'
+        html += '<th>Word</th>'
+        html += '<th>Count</th>'
+        html += '<th>Agent</th>'
+        html += '<th>Edit</th>'
+        html += '<th>Remove</th>'
+        html += '</tr>'
+        for i in keywords:
+            html += '<tr>'
+            html += '<td>' + str(i['word']) + '</td>'
+            html += '<td>' + str(i['count']) + '</td>'
+            html += '<td>' + str(i['agent']) + '</td>'
+            html += '<td><form action="/keyword_manager" method="post" id="edit_keyword">'
+            html += '<label for="count">Count:</label>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; '
+            html += '<label for="agent">Agent:</label><br>'
+            html += '<input type="hidden" id="word" name="word" value="' + str(i['word']) + '">'
+            html += '<input type="number" id="count" name="count" value="' + str(i['count']) + '">'
+            html += '<input type="text" id="agent" name="agent" value="' + str(i['agent']) + '"><br><br>'
+            html += '<center><input type="submit" name="edit_keyword" value="Edit"></center></form></td>'
+            html += '<td><form action="/keyword_manager" method="post" id="remove_keyword">'
+            html += '<input type="hidden" id="word" name="word" value="' + str(i['word']) + '">'
+            html += '<input type="hidden" id="agent" name="agent" value="' + str(i['agent']) + '">'
+            html += '<input type="submit" name="remove_keyword" value="Remove"></form></td>'
+            html += '</tr>'
+        html += '</table>'
+        html += '</center>'
+        html += '</body></html>'
+        return html
+    elif request.method == 'POST':
+        if 'add_keyword' in request.form:
+            word = request.form['word'].strip()
+            count = request.form['count'].strip()
+            agent = request.form['agent'].strip()
+            _postgres.addKeyword(word, count, agent)
+        elif 'edit_keyword' in request.form:
+            word = request.form['word'].strip()
+            count = request.form['count'].strip()
+            agent = request.form['agent'].strip()
+            _postgres.editKeyword(word, count, agent)
+        elif 'remove_keyword' in request.form:
+            word = request.form['word'].strip()
+            agent = request.form['agent'].strip()
+            _postgres.removeKeyword(word, agent)
+
+        return flask.make_response(flask.redirect('keyword_manager'))
+
+
+
+
 if __name__ == '__main__':
+    envReader.read()
     print('connecting to the database')
     _postgres = postgres()
     print('starting server')
-    app.run(host='0.0.0.0', port=7777)
+    app.run(host=envReader.getValue('BOT_MANAGER_IP'), port=envReader.getValue('BOT_MANAGER_PORT'))

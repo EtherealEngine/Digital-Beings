@@ -2,15 +2,16 @@ import psycopg2
 import os
 from datetime import datetime
 from json import dumps
+import envReader
 
 class postgres: 
     def __init__(self):
         print('initializing postgres')
         self.postgres_con = psycopg2.connect(
-                            host='localhost',
-                            database='digitalbeing',
-                            user='postgres',
-                            password='newpassword')
+                            host=envReader.getValue('PGHOST'),
+                            database=envReader.getValue('PGDATABASE'),
+                            user=envReader.getValue('PGUSER'),
+                            password=envReader.getValue('PGPASSWORD'))
         self.cur = self.postgres_con.cursor()
     
     def getBlockedUsers(self):
@@ -78,7 +79,6 @@ class postgres:
                 for res in results:
                     bad_words.append({ 'key': res[0], 'value': res[1] })
             except Exception as ex:
-                print('caught excpeition in sort')
                 print(ex)
         
         return bad_words
@@ -106,3 +106,42 @@ class postgres:
         query = '''UPDATE bad_words SET rating=%s WHERE word=%s'''
         self.cur.execute(query, (newRating, word))
         self.postgres_con.commit()
+    
+    def getKeywords(self):
+        query = '''SELECT * FROM keywords'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        keywords = []
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    keywords.append({ 'word': res[0], 'count': res[1], 'agent': res[2] })
+            except Exception as ex:
+                print(ex)
+
+        return keywords
+
+    def addKeyword(self, word, count, agent):
+        if (self.keywordExists(word, agent)):
+            return
+
+        query = '''INSERT INTO keywords(word, count, agent) VALUES(%s, %s, %s)'''
+        self.cur.execute(query, (word, count, agent))
+        self.postgres_con.commit()
+    
+    def removeKeyword(self, word, agent):
+        query = '''DELETE FROM keywords WHERE word=%s AND agent=%s'''
+        self.cur.execute(query, (word, agent))
+        self.postgres_con.commit()
+    
+    def editKeyword(self, word, count, agent):
+        query = '''UPDATE keywords SET count=%s WHERE word=%s AND agent=%s'''
+        self.cur.execute(query, (count, word, agent))
+        self.postgres_con.commit()
+
+    def keywordExists(self, word, agent):
+        query = '''SELECT * FROM keywords WHERE word=%s AND agent=%s'''
+        self.cur.execute(query, (word, agent))
+        results = self.cur.fetchall()
+        return len(results) > 0

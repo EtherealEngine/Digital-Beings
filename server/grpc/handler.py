@@ -1,5 +1,6 @@
 
 from json import dumps
+import json
 import os
 import sys
 
@@ -19,6 +20,7 @@ from tcpServer import tcpServer as server
 from jsondb import jsondb as jsondb
 from postgres import postgres as _db
 from loggingServer import loggingServer as _loggingServer
+from keywordsManager import keywordsManager as kw
 
 import logging
 
@@ -31,6 +33,7 @@ class DigitalBeing():
             self.jsondb = jsondb()
             self.jsondb.getAgents()
             self.postgres = _db()
+            self.kw = kw(self.postgres)
             if (os.getenv('LOAD_DISCORD_LOGGER') == 'True'):
                 self._logginServer = _loggingServer('127.0.0.1', 7778)
             for model_name in param.SELECTED_AGENTS:
@@ -54,7 +57,7 @@ class DigitalBeing():
         except:
             logger.exception("sendDiscordMessage")
 
-    def handle_message(self, message, client_name, chat_id, createdAt):
+    def handle_message(self, packetId, message, client_name, chat_id, createdAt, message_id, addPing, args):
         try:
             chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id)
             if (message == None):
@@ -63,23 +66,81 @@ class DigitalBeing():
                 print("Exception invoke_solo_agent: invalid kwarg: message")
                 return { 'none': 'none' }
             responses_dict = {}
+            i = 0
             for model_name in param.SELECTED_AGENTS:
                 if model_name == 'gpt3':
-                    if ('\n' in message):
-                        message = message.replace('\n', "r''")
-                    responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
+                    text, count = self.kw.transformText(message, 'gpt3')
+                    i = 0
+                    responses_dict = {}
+                    while i < count:
+                        if ('\n' in message):
+                            message = message.replace('\n', "r''")
+                        responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=text))
+                    
+                        if (len(responses_dict) == 0):
+                            responses_dict = { 'none': 'none' }
+
+                        self.server.sendMessage(json.dumps([
+                                    packetId,
+                                    client_name,
+                                    chat_id,
+                                    message_id,
+                                    responses_dict,
+                                    addPing,
+                                    args
+                                ]))
+
+                        i += 1
+                        message = 'm continue'
                 elif model_name == "repeat":
-                    responses_dict['repeat'] = self.addEmojis(self.repeat_agent.handle_message(message))
+                    text, count = self.kw.transformText(message, 'repeat')
+                    i = 0
+                    responses_dict = {}
+                    while i < count:
+                        responses_dict['repeat'] = self.addEmojis(self.repeat_agent.handle_message(text))
+                    
+                        if (len(responses_dict) == 0):
+                            responses_dict = { 'none': 'none' }
+
+                        self.server.sendMessage(json.dumps([
+                                    packetId,
+                                    client_name,
+                                    chat_id,
+                                    message_id,
+                                    responses_dict,
+                                    addPing,
+                                    args
+                                ]))
+                                
+                        i += 1
+                        message = 'm continue'
                 else:
-                    responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=message, model_name=model_name, context=self.context))
-            
-            return responses_dict
+                    text, count = self.kw.transformText(message, model_name)
+                    i = 0
+                    responses_dict = {}
+                    while i < count:
+                        responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
+                    
+                        if (len(responses_dict) == 0):
+                            responses_dict = { 'none': 'none' }
+
+                        self.server.sendMessage(json.dumps([
+                                    packetId,
+                                    client_name,
+                                    chat_id,
+                                    message_id,
+                                    responses_dict,
+                                    addPing,
+                                    args
+                                ]))
+                                
+                        i += 1
+                        message = 'm continue'
 
         except Exception as err:
             logger.exception("handle_message")
             if (hasattr(self, '_logginServer')):
                 self._logginServer.sendMessage("Exception handle_message: " + err)
-            return { 'none': 'none' }
 
     def addEmojis(self, msg):
         msg = msg.strip()

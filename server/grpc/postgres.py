@@ -35,3 +35,19 @@ class postgres:
                 print(ex)
         
         return dumps(history)
+    
+    def getKeywords(self):
+        query = '''SELECT * FROM keywords'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        keywords = []
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    print('adding new keyword')
+                    keywords.append({ 'word': res[0], 'count': res[1], 'agent': res[2] })
+            except Exception as ex:
+                print(ex)
+                
+        return keywords
