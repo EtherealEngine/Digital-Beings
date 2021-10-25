@@ -108,6 +108,7 @@ DigitalBeing requires the following to run:
      * CREATE TABLE chat_filter(half int, max int);
      * INSERT INTO chat_filter(half, max) VALUES(5, 10);
      * CREATE TABLE IF NOT EXISTS bad_words(word varchar(255), rating int);
+     * CREATE TABLE IF NOT EXISTS keywords(word varchar(255), count varchar(5), agent varchar(255));
      * Update the variables in the .env for the PG with your credentials
 
 ## Twilio Setup
