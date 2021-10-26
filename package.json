@@ -53,7 +53,7 @@
     "xvfb": "0.4.0"
   },
   "devDependencies": {
-    "@types/node": "14.17.23",
+    "@types/node": "14.17.32",
     "@types/react": "17.0.29",
     "@types/react-dom": "17.0.9",
     "@types/three": "0.133.1",
