@@ -21,6 +21,7 @@ from jsondb import jsondb as jsondb
 from postgres import postgres as _db
 from loggingServer import loggingServer as _loggingServer
 from keywordsManager import keywordsManager as kw
+from aiChatFilterManager import aiChatFilterManager as aicfm
 
 import logging
 
@@ -28,12 +29,13 @@ logger = logging.getLogger("app.main")
 
 class DigitalBeing():
     def __init__(self):
-        try:
-            self.server = server('127.0.0.1', 65532, self)
+        try:            
+            self.server = server('127.0.0.1', int(os.getenv('TCP_PORT')), self)
             self.jsondb = jsondb()
             self.jsondb.getAgents()
             self.postgres = _db()
             self.kw = kw(self.postgres)
+            self.aicfm = aicfm(self.postgres)
             if (os.getenv('LOAD_DISCORD_LOGGER') == 'True'):
                 self._logginServer = _loggingServer('127.0.0.1', 7778)
             for model_name in param.SELECTED_AGENTS:
@@ -67,6 +69,7 @@ class DigitalBeing():
                 return { 'none': 'none' }
             responses_dict = {}
             i = 0
+            age_group = 12
             for model_name in param.SELECTED_AGENTS:
                 if model_name == 'gpt3':
                     text, count = self.kw.transformText(message, 'gpt3')
@@ -76,7 +79,14 @@ class DigitalBeing():
                         if ('\n' in message):
                             message = message.replace('\n', "r''")
                         responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=text))
-                    
+
+                        j = 0
+                        while self.aicfm.hasBadWord(responses_dict['gpt3'], age_group, model_name):
+                            responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message='m_continue'))
+                            j += 1
+                            if (j > self.aicfm.getMaxCount()):
+                                return
+
                         if (len(responses_dict) == 0):
                             responses_dict = { 'none': 'none' }
 
@@ -121,6 +131,13 @@ class DigitalBeing():
                     while i < count:
                         responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
                     
+                        j = 0
+                        while self.aicfm.hasBadWord(responses_dict[model_name], age_group, model_name):
+                            responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message='m continue', model_name=model_name, context=self.context))
+                            j += 1
+                            if (j > self.aicfm.getMaxCount()):
+                                return
+
                         if (len(responses_dict) == 0):
                             responses_dict = { 'none': 'none' }
 

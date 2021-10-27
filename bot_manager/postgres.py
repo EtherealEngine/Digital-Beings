@@ -145,3 +145,82 @@ class postgres:
         self.cur.execute(query, (word, agent))
         results = self.cur.fetchall()
         return len(results) > 0
+
+    def getAIMaxLoopCount(self):
+        query = '''SELECT * FROM ai_max_filter_count'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    return res[0]
+            except Exception as ex:
+                print(ex)
+
+        return 5
+    
+    def setAIMaxLoopCount(self, count):
+        query = '''INSERT INTO ai_max_filter_count(count) VALUES(%s)'''
+        self.cur.execute(query, (count))
+        self.postgres_con.commit()
+
+    def getAIChatFilter(self):
+        query = '''SELECT * FROM ai_chat_filter'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        _res1 = []
+        _res2 = []
+        _res3 = []
+        _res4 = []
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    if res[1] == 12:
+                        _res1.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                    elif res[1] == 16:
+                        _res2.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                    elif res[1] == 18:
+                        _res3.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                    else:
+                        _res4.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+            except Exception as ex:
+                print(ex)
+
+        return _res1, _res2, _res3, _res4
+
+    def addAIChatFilter(self, word, age, agent):
+        if (self.aiChatFilterExists(word, age, agent)) or self.filterIsDisabled(age, agent):
+            return
+
+        if (word == 'unlimited'):
+            query = '''DELETE FROM ai_chat_filter'''
+            self.cur.execute(query)
+            self.postgres_con.commit()
+            
+        query = '''INSERT INTO ai_chat_filter(word, age, agent) VALUES(%s, %s, %s)'''
+        self.cur.execute(query, (word, age, agent))
+        self.postgres_con.commit()
+    
+    def removeAIChatFilter(self, word, age, agent):
+        query = '''DELETE FROM ai_chat_filter WHERE word=%s AND age=%s AND agent=%s'''
+        self.cur.execute(query, (word, age, agent))
+        self.postgres_con.commit()
+
+    def aiChatFilterExists(self, word, age, agent):
+        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s AND agent=%s'''
+        self.cur.execute(query, (word, age, agent))
+        results = self.cur.fetchall()
+        return len(results) > 0
+
+    def filterIsDisabled(self, age, agent):
+        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s AND agent=%s'''
+        self.cur.execute(query, ('unlimited', age, agent))
+        results = self.cur.fetchall()
+        return len(results) > 0
+    
+    def updateAIChatFilter(self, word, age, agent):
+        query = '''UPDATE ai_chat_filter SET age=%s WHERE word=%s AND agent=%s'''
+        self.cur.execute(query, (age, word, agent))
+        self.postgres_con.commit()

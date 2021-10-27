@@ -37,7 +37,7 @@ const pyConnect = require('./pyconnect');
             //require("../client/twitter/twitter-client").createTwitterClient();
             //require("../client/xr/xrengine-client").createXREngineClient();
             //require("../client/zoom/zoom-client").createZoomClient();
-            await new tcpClient().init('127.0.0.1', 65532) 
+            await new tcpClient().init('127.0.0.1', process.env.TCP_PORT) 
          }
     ); 
 })();

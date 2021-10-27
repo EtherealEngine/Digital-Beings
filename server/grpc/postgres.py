@@ -34,7 +34,7 @@ class postgres:
                 print('caught excpeition in sort')
                 print(ex)
         
-        return dumps(history)
+        return history
     
     def getKeywords(self):
         query = '''SELECT * FROM keywords'''
@@ -51,3 +51,32 @@ class postgres:
                 print(ex)
                 
         return keywords
+
+    def getAIMaxLoopCount(self):
+        query = '''SELECT * FROM ai_max_filter_count'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    return res[0]
+            except Exception as ex:
+                print(ex)
+
+        return 5
+    
+    def getAIChatFilter(self):
+        query = '''SELECT * FROM ai_chat_filter'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        _res = []
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    _res.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+            except Exception as ex:
+                print(ex)
+
+        return _res

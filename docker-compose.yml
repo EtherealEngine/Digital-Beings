@@ -21,6 +21,18 @@ services:
       POSTGRES_USER: digitalbeing
       POSTGRES_PASSWORD: digitalbeing_default_pw
     ports:
-      - "5432:5432"
+      - "5432"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  
+  editor:
+    build: .
+    restart: always
+    command: ./editor.sh
+    environment:
+      PGHOST: digitalbeing_db
+      PGUSER: digitalbeing
+      PGPASSWORD: digitalbeing_default_pw
+      PGDATABASE: digitalbeing
+    ports:
+      - "7777:7777"
