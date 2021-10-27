@@ -1,7 +1,7 @@
 click==7.1.2
 flask==2.0.2
 flask-cors==3.0.10
-psycopg2
+psycopg2-binary
 emoji
 grpcio==1.41.0
 grpcio-tools==1.41.0
@@ -26,3 +26,5 @@ transformers==4.11.3
 twilio==7.1.0
 typeguard==2.13.0
 typer==0.4.0
+websockets
+asyncio
