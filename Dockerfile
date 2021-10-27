@@ -56,8 +56,9 @@ WORKDIR /bot_manager/
 COPY ./ /bot_manager/
 
 RUN pip install -r requirements.txt --no-cache-dir
-RUN python3 -m spacy download en_core_web_md
-RUN python3 -m spacy link en_core_web_md en
+#RUN python3 -m spacy download en_core_web_md
+#RUN python3 -m spacy link en_core_web_md en
+#spacy==3.1.3
 #RUN npm install
 
 #COPY . .

@@ -226,8 +226,12 @@ def keyword_manager():
         if 'add_keyword' in request.form:
             word = request.form['word'].strip()
             count = request.form['count'].strip()
-            agent = request.form['agent'].strip()
-            _postgres.addKeyword(word, count, agent)
+            data = list(request.form.listvalues())
+            agents = []
+            if len(data) >= 3:
+                agents = data[2]
+            for agent in agents:
+                _postgres.addKeyword(word, count, agent)
         elif 'edit_keyword' in request.form:
             word = request.form['word'].strip()
             count = request.form['count'].strip()
@@ -360,6 +364,11 @@ def chat_filter_manager_ai():
             else:
                 words = [ word ]
             ages = []
+            data = list(request.form.listvalues())
+            agents = []
+            if len(data) >= 3:
+                agents = data[2]
+
             if 'age12' in request.form and request.form['age12'] == 'on':
                 ages.append(12)
             if 'age16' in request.form and request.form['age16'] == 'on':
@@ -369,17 +378,17 @@ def chat_filter_manager_ai():
             if 'agexxx' in request.form and request.form['agexxx'] == 'on':
                 ages.append(19)
 
-            agent = request.form['agent'].strip()
             unlimited = request.form['unlimited'] if 'unlimited' in request.form else ''
             if (unlimited == 'on'):
                 word = 'unlimited'
 
             for word in words:
                 for age in ages:
-                    if (len(word) == 0 or len(agent) == 0):
-                        return flask.make_response(flask.redirect('chat_filter_manager_ai'))
+                    for agent in agents:
+                        if (len(word) == 0 or len(agent) == 0):
+                            return flask.make_response(flask.redirect('chat_filter_manager_ai'))
 
-                    _postgres.addAIChatFilter(word, age, agent)
+                        _postgres.addAIChatFilter(word, age, agent)
         elif 'edit_bad_Word' in request.form:
             word = request.form['word'].strip()
             age = request.form['age'].strip()
