@@ -48,8 +48,6 @@ class DigitalBeing():
                 else:
                     self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
                     self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
-
-            print('aicfm')
         except:
             logger.exception("__init__")
 
