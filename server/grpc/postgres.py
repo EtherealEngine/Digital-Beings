@@ -14,6 +14,7 @@ class postgres:
         self.cur = self.postgres_con.cursor()
     
     def getHistory(self, length, client_name, chat_id):
+        client_name = client_name.lower()
         query = """SELECT * FROM chat_history WHERE client_name=%s AND chat_id=%s"""
         self.cur.execute(query, [client_name, chat_id])
         results = self.cur.fetchall()
@@ -34,6 +35,7 @@ class postgres:
                 print('caught excpeition in sort')
                 print(ex)
         
+        print('got chat history: ', history)
         return history
     
     def getKeywords(self):
@@ -45,6 +47,7 @@ class postgres:
         if len(results) > 0:
             try:
                 for res in results:
+                    print('adding new keyword')
                     keywords.append({ 'word': res[0], 'count': res[1], 'agent': res[2] })
             except Exception as ex:
                 print(ex)
