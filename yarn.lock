@@ -1888,7 +1888,7 @@ dir-glob@^3.0.0, dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discord-reply@^0.1.2:
+discord-reply@0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/discord-reply/-/discord-reply-0.1.2.tgz"
   integrity sha512-4XAFjJrhrmxsnDSPOQPqtjH534tx92KNFOW1uGZvxlKnPHcdCvbkrd8U/9vm/JQl5xDcbQQFUNoXs2k8kC8BKg==
@@ -4260,10 +4260,10 @@ node-telegram-bot-api@0.54.0:
     request "^2.83.0"
     request-promise "^4.2.2"
 
-nodemon@2.0.13:
-  version "2.0.13"
-  resolved "https://registry.npmjs.org/nodemon/-/nodemon-2.0.13.tgz"
-  integrity sha512-UMXMpsZsv1UXUttCn6gv8eQPhn6DR4BW+txnL3IN5IHqrCwcrT/yWHfL35UsClGXknTH79r5xbu+6J1zNHuSyA==
+nodemon@2.0.14:
+  version "2.0.14"
+  resolved "https://registry.npmjs.org/nodemon/-/nodemon-2.0.14.tgz"
+  integrity sha512-frcpDx+PviKEQRSYzwhckuO2zoHcBYLHI754RE9z5h1RGtrngerc04mLpQQCPWBkH/2ObrX7We9YiwVSYZpFJQ==
   dependencies:
     chokidar "^3.2.2"
     debug "^3.2.6"
@@ -5175,10 +5175,10 @@ puppeteer-extra@3.2.3:
     debug "^4.1.1"
     deepmerge "^4.2.2"
 
-puppeteer-stream@2.0.6:
-  version "2.0.6"
-  resolved "https://registry.npmjs.org/puppeteer-stream/-/puppeteer-stream-2.0.6.tgz"
-  integrity sha512-k+IcSTgehhTeVr/hJuyOy0uYyr3ZcRt4L/959o5Wkkphy0Dv2w7bfrK5+wdqH6E9AeP+7XUBi5/HVyDY+Kf4Hw==
+puppeteer-stream@2.0.7:
+  version "2.0.7"
+  resolved "https://registry.npmjs.org/puppeteer-stream/-/puppeteer-stream-2.0.7.tgz"
+  integrity sha512-txs5EMemb4v8QEub5NdH1nRGDCsD3KiZIyiXrIKTZXQGEFwOFrdWhUndbejiFEz1KuasTVa9oiLbZZ8vH2aHoQ==
   dependencies:
     puppeteer "^7.1.0"
 
