@@ -267,14 +267,15 @@ class postgres:
 
     def removeAgentAgeGroup(self, agent, age):
         query = '''SELECT * FROM agent_ages WHERE agent=%s'''
-        self.cur.execute(query, (agent))
+        self.cur.execute(query, (agent,))
         results = self.cur.fetchall()
 
         if len(results) > 0:
-            ages = results[0][0].split(';')
+            ages = results[0][1].split(';')
             if age in ages:
                 ages.remove(age)
             ages = ';'.join(ages) 
+            print('ages: ', ages)
             query = '''UPDATE agent_ages SET age=%s WHERE agent=%s'''
             self.cur.execute(query, (ages, agent))
             self.postgres_con.commit()

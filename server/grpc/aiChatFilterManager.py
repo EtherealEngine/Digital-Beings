@@ -18,17 +18,18 @@ class aiChatFilterManager:
         self.ages = self.postgres.getAgentAgeGroups()
 
     def hasBadWord(self, text, agent):
-        agegroup = self.getAgentAge(agent)
-        for x in self.words:
-            if (agegroup == x['age'] and  (x['word'] in text or x['word'] == 'unlimited')):
-                return True
+        groups = self.getAgentAge(agent)
+        for age in groups:
+            for x in self.words:
+                if (age == x['age'] and  (x['word'] in text or x['word'] == 'unlimited')):
+                    return True
         
         return False
     
     def getAgentAge(self, agent):
         for a in self.ages:
             if agent == a['agent']:
-                return a['age'][0] if len(a['age']) > 0 else '19'
+                return a['age']
 
     def getMaxCount(self):
         return self.maxCount

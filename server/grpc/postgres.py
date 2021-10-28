@@ -45,7 +45,6 @@ class postgres:
         if len(results) > 0:
             try:
                 for res in results:
-                    print('adding new keyword')
                     keywords.append({ 'word': res[0], 'count': res[1], 'agent': res[2] })
             except Exception as ex:
                 print(ex)

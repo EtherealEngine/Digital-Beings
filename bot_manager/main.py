@@ -273,7 +273,7 @@ def chat_filter_manager_ai():
         html += '</form>'
         html += '<h2>Agents</h2>'
         for agent in agents:
-            html += '<h4><form action="/chat_filter_manager_ai" method="post" id="add_agent_age">' + getAgegroups() + '<input type="hidden" id="agent" name="agent" value="' + str(agent['agent']) + '"> <input type="submit" name="add_agent_age" value="Add"></form> ' + agent['agent'] + ': ' + ','.join(agent['age']) + '</h4>'
+            html += '<h4><form action="/chat_filter_manager_ai" method="post" id="add_agent_age">' + getAgegroups() + '<input type="hidden" id="agent" name="agent" value="' + str(agent['agent']) + '"> <input type="submit" name="add_agent_age" value="Add"><input type="submit" name="remove_agent_age" value="Remove"></form> ' + agent['agent'] + ': ' + ','.join(agent['age']) + '</h4>'
         if (len(c1) > 0):
             html += '<h4>Bad Words - Age 1-12</h4>'
             html += '<table>'
@@ -388,6 +388,10 @@ def chat_filter_manager_ai():
             agent = request.form['agent'].strip()
             age = request.form['age'].strip()
             _postgres.addAgentAgeGroup(agent, age)
+        elif 'remove_agent_age' in request.form:
+            agent = request.form['agent'].strip()
+            age = request.form['age'].strip()
+            _postgres.removeAgentAgeGroup(agent, age)
 
         return flask.make_response(flask.redirect('chat_filter_manager_ai'))
 
