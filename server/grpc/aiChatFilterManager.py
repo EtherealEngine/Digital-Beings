@@ -30,6 +30,7 @@ class aiChatFilterManager:
         for a in self.ages:
             if agent == a['agent']:
                 return a['age']
+        return []
 
     def getMaxCount(self):
         return self.maxCount
