@@ -30,4 +30,5 @@ INSERT INTO ai_max_filter_count(count)
 SELECT 5
 WHERE NOT EXISTS(SELECT * FROM ai_max_filter_count);
 
-CREATE TABLE IF NOT EXISTS ai_chat_filter(word varchar(255), age int, agent varchar(255));
+CREATE TABLE IF NOT EXISTS ai_chat_filter(word varchar(255), age int);
+CREATE TABLE IF NOT EXISTS agent_ages(agent varchar(255), age varchar(255));

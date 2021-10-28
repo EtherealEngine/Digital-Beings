@@ -178,20 +178,20 @@ class postgres:
             try:
                 for res in results:
                     if res[1] == 12:
-                        _res1.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                        _res1.append({ 'word': res[0], 'age': res[1] })
                     elif res[1] == 16:
-                        _res2.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                        _res2.append({ 'word': res[0], 'age': res[1] })
                     elif res[1] == 18:
-                        _res3.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                        _res3.append({ 'word': res[0], 'age': res[1] })
                     else:
-                        _res4.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                        _res4.append({ 'word': res[0], 'age': res[1] })
             except Exception as ex:
                 print(ex)
 
         return _res1, _res2, _res3, _res4
 
-    def addAIChatFilter(self, word, age, agent):
-        if (self.aiChatFilterExists(word, age, agent)) or self.filterIsDisabled(age, agent):
+    def addAIChatFilter(self, word, age):
+        if (self.aiChatFilterExists(word, age)) or self.filterIsDisabled(age):
             return
 
         if (word == 'unlimited'):
@@ -199,28 +199,82 @@ class postgres:
             self.cur.execute(query)
             self.postgres_con.commit()
             
-        query = '''INSERT INTO ai_chat_filter(word, age, agent) VALUES(%s, %s, %s)'''
-        self.cur.execute(query, (word, age, agent))
+        query = '''INSERT INTO ai_chat_filter(word, age) VALUES(%s, %s)'''
+        self.cur.execute(query, (word, age))
         self.postgres_con.commit()
     
-    def removeAIChatFilter(self, word, age, agent):
-        query = '''DELETE FROM ai_chat_filter WHERE word=%s AND age=%s AND agent=%s'''
-        self.cur.execute(query, (word, age, agent))
+    def removeAIChatFilter(self, word, age):
+        query = '''DELETE FROM ai_chat_filter WHERE word=%s AND age=%s'''
+        self.cur.execute(query, (word, age))
         self.postgres_con.commit()
 
-    def aiChatFilterExists(self, word, age, agent):
-        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s AND agent=%s'''
-        self.cur.execute(query, (word, age, agent))
+    def aiChatFilterExists(self, word, age):
+        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s'''
+        self.cur.execute(query, (word, age))
         results = self.cur.fetchall()
         return len(results) > 0
 
-    def filterIsDisabled(self, age, agent):
-        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s AND agent=%s'''
-        self.cur.execute(query, ('unlimited', age, agent))
+    def filterIsDisabled(self, age):
+        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s'''
+        self.cur.execute(query, ('unlimited', age))
         results = self.cur.fetchall()
         return len(results) > 0
     
-    def updateAIChatFilter(self, word, age, agent):
-        query = '''UPDATE ai_chat_filter SET age=%s WHERE word=%s AND agent=%s'''
-        self.cur.execute(query, (age, word, agent))
+    def updateAIChatFilter(self, word, age):
+        query = '''UPDATE ai_chat_filter SET age=%s WHERE word=%s'''
+        self.cur.execute(query, (age, word))
         self.postgres_con.commit()
+
+    def getAgeGroupsPerAgent(self):
+        query = '''SELECT * FROM agent_ages'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+
+        _res = []
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    _res.append({ 'agent': res[0], 'age':list(filter(None, res[1].split(';'))) })
+            except Exception as ex:
+                print(ex)
+
+        return _res
+    
+    def addAgentAgeGroup(self, agent, age):
+        query = '''SELECT * FROM agent_ages WHERE agent=%s'''
+        self.cur.execute(query, (agent,))
+        results = self.cur.fetchall()
+
+        if len(results) > 0:
+            ages = results[0][1]
+            temp = ages.split(';')
+            if age in temp:
+                print('already in')
+                print(temp)
+                return
+
+            ages += ';' + age
+            query = '''UPDATE agent_ages SET age=%s WHERE agent=%s'''
+            self.cur.execute(query, (ages, agent))
+            self.postgres_con.commit()
+            return
+        
+        ages = age + ''
+        query = '''INSERT INTO agent_ages(agent, age) VALUES(%s, %s)'''
+        self.cur.execute(query, (agent, ages))
+        self.postgres_con.commit()
+
+    def removeAgentAgeGroup(self, agent, age):
+        query = '''SELECT * FROM agent_ages WHERE agent=%s'''
+        self.cur.execute(query, (agent))
+        results = self.cur.fetchall()
+
+        if len(results) > 0:
+            ages = results[0][0].split(';')
+            if age in ages:
+                ages.remove(age)
+            ages = ';'.join(ages) 
+            query = '''UPDATE agent_ages SET age=%s WHERE agent=%s'''
+            self.cur.execute(query, (ages, agent))
+            self.postgres_con.commit()

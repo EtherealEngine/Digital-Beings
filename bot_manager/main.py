@@ -248,6 +248,7 @@ def keyword_manager():
 def chat_filter_manager_ai():
     if request.method == 'GET':
         count = str(_postgres.getAIMaxLoopCount())
+        agents = getAgentsAges()
         c1, c2, c3, c4 = _postgres.getAIChatFilter()
         html = read_file('main.html')
         html += '<center>'
@@ -267,30 +268,25 @@ def chat_filter_manager_ai():
         html += '<input type="checkbox" id="age16" name="age16"> <label for="unlimited">12-16</label>'
         html += '<input type="checkbox" id="age18" name="age18"> <label for="unlimited">16+</label>'
         html += '<input type="checkbox" id="agexxx" name="agexxx"> <label for="unlimited">XXX</label><br>'
-        html += '<label for="client">Agent:</label><br>'
-        html += '<select name="agent" id="agent" multiple>'
-        for ai in ais:
-            html += '<option value="' + ai + '">' + ai + '</option>'
-        html += '</select><br>'
         html += '<input type="checkbox" id="unlimited" name="unlimited"> <label for="unlimited">Unlimited</label><br><br>'
         html += '<input type="submit" name="add_bad_word" value="Add">'
         html += '</form>'
+        html += '<h2>Agents</h2>'
+        for agent in agents:
+            html += '<h4><form action="/chat_filter_manager_ai" method="post" id="add_agent_age">' + getAgegroups() + '<input type="hidden" id="agent" name="agent" value="' + str(agent['agent']) + '"> <input type="submit" name="add_agent_age" value="Add"></form> ' + agent['agent'] + ': ' + ','.join(agent['age']) + '</h4>'
         if (len(c1) > 0):
             html += '<h4>Bad Words - Age 1-12</h4>'
             html += '<table>'
             html += '<tr>'
             html += '<th>Word</th>'
-            html += '<th>Agent</th>'
             html += '<th>Remove</th>'
             html += '</tr>'
             for i in c1:
                 html += '<tr>'
                 html += '<td>' + str(i['word']) + '</td>'
-                html += '<td>' + str(i['agent']) + '</td>'
                 html += '<td><form action="/chat_filter_manager_ai" method="post" id="remove_keyword">'
                 html += '<input type="hidden" id="word" name="word" value="' + str(i['word']) + '">'
                 html += '<input type="hidden" id="age" name="age" value="' + str(i['age']) + '">'
-                html += '<input type="hidden" id="agent" name="agent" value="' + str(i['agent']) + '">'
                 html += '<input type="submit" name="remove_bad_word" value="Remove"></form></td>'
                 html += '</tr>'
             html += '</table>'
@@ -305,11 +301,9 @@ def chat_filter_manager_ai():
             for i in c2:
                 html += '<tr>'
                 html += '<td>' + str(i['word']) + '</td>'
-                html += '<td>' + str(i['agent']) + '</td>'
                 html += '<td><form action="/chat_filter_manager_ai" method="post" id="remove_keyword">'
                 html += '<input type="hidden" id="word" name="word" value="' + str(i['word']) + '">'
                 html += '<input type="hidden" id="age" name="age" value="' + str(i['age']) + '">'
-                html += '<input type="hidden" id="agent" name="agent" value="' + str(i['agent']) + '">'
                 html += '<input type="submit" name="remove_bad_word" value="Remove"></form></td>'
                 html += '</tr>'
             html += '</table>'
@@ -324,11 +318,9 @@ def chat_filter_manager_ai():
             for i in c3:
                 html += '<tr>'
                 html += '<td>' + str(i['word']) + '</td>'
-                html += '<td>' + str(i['agent']) + '</td>'
                 html += '<td><form action="/chat_filter_manager_ai" method="post" id="remove_keyword">'
                 html += '<input type="hidden" id="word" name="word" value="' + str(i['word']) + '">'
                 html += '<input type="hidden" id="age" name="age" value="' + str(i['age']) + '">'
-                html += '<input type="hidden" id="agent" name="agent" value="' + str(i['agent']) + '">'
                 html += '<input type="submit" name="remove_bad_word" value="Remove"></form></td>'
                 html += '</tr>'
             html += '</table>'
@@ -337,17 +329,14 @@ def chat_filter_manager_ai():
             html += '<table>'
             html += '<tr>'
             html += '<th>Word</th>'
-            html += '<th>Agent</th>'
             html += '<th>Remove</th>'
             html += '</tr>'
             for i in c4:
                 html += '<tr>'
                 html += '<td>' + str(i['word']) + '</td>'
-                html += '<td>' + str(i['agent']) + '</td>'
                 html += '<td><form action="/chat_filter_manager_ai" method="post" id="remove_keyword">'
                 html += '<input type="hidden" id="word" name="word" value="' + str(i['word']) + '">'
                 html += '<input type="hidden" id="age" name="age" value="' + str(i['age']) + '">'
-                html += '<input type="hidden" id="agent" name="agent" value="' + str(i['agent']) + '">'
                 html += '<input type="submit" name="remove_bad_word" value="Remove"></form></td>'
                 html += '</tr>'
             html += '</table>'
@@ -365,9 +354,6 @@ def chat_filter_manager_ai():
                 words = [ word ]
             ages = []
             data = list(request.form.listvalues())
-            agents = []
-            if len(data) >= 3:
-                agents = data[2]
 
             if 'age12' in request.form and request.form['age12'] == 'on':
                 ages.append(12)
@@ -384,11 +370,10 @@ def chat_filter_manager_ai():
 
             for word in words:
                 for age in ages:
-                    for agent in agents:
-                        if (len(word) == 0 or len(agent) == 0):
+                        if (len(word) == 0):
                             return flask.make_response(flask.redirect('chat_filter_manager_ai'))
 
-                        _postgres.addAIChatFilter(word, age, agent)
+                        _postgres.addAIChatFilter(word, age)
         elif 'edit_bad_Word' in request.form:
             word = request.form['word'].strip()
             age = request.form['age'].strip()
@@ -399,9 +384,52 @@ def chat_filter_manager_ai():
             age = request.form['age'].strip()
             agent = request.form['agent'].strip()
             _postgres.removeAIChatFilter(word, age, agent)
+        elif 'add_agent_age' in request.form:
+            agent = request.form['agent'].strip()
+            age = request.form['age'].strip()
+            _postgres.addAgentAgeGroup(agent, age)
 
         return flask.make_response(flask.redirect('chat_filter_manager_ai'))
 
+
+def getAgentsAges():
+    list = _postgres.getAgeGroupsPerAgent()
+    if len(list) == 0:
+        print('list is empty')
+        for ai in ais:
+            list.append({ 'agent': ai, 'age': [] })
+        
+        return list
+        
+    for ai in ais:
+        found = False
+        for j in list:
+            if j['agent'] == ai:
+                found = True
+            
+        if not found:
+            print('ai ', ai, ' not found')
+            list.append({ 'agent': ai, 'age': [] })
+
+
+    for ai in list:
+        i = 0
+        ai['age'] = sorted(ai['age'])
+        while i < len(ai['age']):
+            print(i, ': ', ai['age'][i])
+            ai['age'][i] = getAgeGroup(ai['age'][i])
+            i += 1
+        
+    return list
+
+def getAgegroups():
+    html = '<select name="age" id="age">'
+    html += '<option value="12">1-12</option>'
+    html += '<option value="16">12-16</option>'
+    html += '<option value="18">16+</option>'
+    html += '<option value="19">XXX</option>'
+    html += '</select>'
+    return html
 
 if __name__ == '__main__':
     envReader.read()

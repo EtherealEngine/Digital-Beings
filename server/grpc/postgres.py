@@ -75,7 +75,25 @@ class postgres:
         if len(results) > 0:
             try:
                 for res in results:
-                    _res.append({ 'word': res[0], 'age': res[1], 'agent': res[2] })
+                    _res.append({ 'word': res[0], 'age': res[1] })
+            except Exception as ex:
+                print(ex)
+
+        return _res
+    
+    
+
+    def getAgentAgeGroups(self):
+        query = '''SELECT * FROM agent_ages'''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        _res = []
+
+        if len(results) > 0:
+            try:
+                for res in results:
+                    _age = res[1]
+                    _res.append({ 'agent': res[0], 'age': list(filter(None, _age.split(';'))) })
             except Exception as ex:
                 print(ex)
 

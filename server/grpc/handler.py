@@ -68,7 +68,6 @@ class DigitalBeing():
                 return { 'none': 'none' }
             responses_dict = {}
             i = 0
-            age_group = 12
             for model_name in param.SELECTED_AGENTS:
                 if model_name == 'gpt3':
                     text, count = self.kw.transformText(message, 'gpt3')
@@ -80,7 +79,7 @@ class DigitalBeing():
                         responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=text))
 
                         j = 0
-                        while self.aicfm.hasBadWord(responses_dict['gpt3'], age_group, model_name):
+                        while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name):
                             responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message='m_continue'))
                             j += 1
                             if (j > self.aicfm.getMaxCount()):
@@ -131,7 +130,7 @@ class DigitalBeing():
                         responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
                     
                         j = 0
-                        while self.aicfm.hasBadWord(responses_dict[model_name], age_group, model_name):
+                        while self.aicfm.hasBadWord(responses_dict[model_name], model_name):
                             responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message='m continue', model_name=model_name, context=self.context))
                             j += 1
                             if (j > self.aicfm.getMaxCount()):

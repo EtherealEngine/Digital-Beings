@@ -6,9 +6,12 @@ def read_file(filename):
     return text
 
 def getAgeGroup(age):
-    if age == 12:
+    age = str(age)
+    if age == '12':
         return '1-12'
-    elif age == 16:
+    elif age == '16':
         return '12-16'
-    else:
+    elif age == '18':
         return '16+'
+    else:
+        return 'XXX'
