@@ -41,7 +41,7 @@
     "pg": "8.7.1",
     "puppeteer": "10.4.0",
     "puppeteer-extra": "3.2.3",
-    "puppeteer-extra-plugin-stealth": "2.8.2",
+    "puppeteer-extra-plugin-stealth": "2.9.0",
     "puppeteer-stream": "2.0.7",
     "redis": "4.0.0-rc.3",
     "tedis": "0.1.12",
