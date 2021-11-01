@@ -10,6 +10,7 @@ class keywordsManager:
 
     def update(self):
         self.keywords = self.postgres.getKeywords()
+        threading.Timer(35.0, self.update).start()
 
     def getRepeatCount(self, text: str, agent: str):
         print('keywords length: ', len(self.keywords))

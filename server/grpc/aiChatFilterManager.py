@@ -16,6 +16,7 @@ class aiChatFilterManager:
         self.maxCount = self.postgres.getAIMaxLoopCount()
         self.words = self.postgres.getAIChatFilter()
         self.ages = self.postgres.getAgentAgeGroups()
+        threading.Timer(35.0, self.update).start()
 
     def hasBadWord(self, text, agent):
         groups = self.getAgentAge(agent)

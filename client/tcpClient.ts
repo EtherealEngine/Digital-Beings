@@ -25,6 +25,7 @@ export class tcpClient {
             const client_name = resp[1]
             const chat_id = resp[2]
 
+            console.log('received packet: ' + packetId)
             if (packetId === 0) {
                 const message_id = resp[3]
                 const responses = resp[4]
@@ -113,7 +114,7 @@ export class tcpClient {
         }
     }
 
-    sendMessage(message: string, message_id: string, client_name: string, chat_id: string, createdAt: string, addPing: boolean, args: string = 'none') {
+    sendMessage(message: string, message_id: string, client_name: string, chat_id: string, createdAt: string, addPing: boolean, author: string, args: string = 'none') {
         this.send(JSON.stringify({
             id: 0, 
             message: message, 
@@ -122,6 +123,7 @@ export class tcpClient {
             chat_id: chat_id, 
             createdAt: createdAt, 
             addPing: addPing,
+            author: author,
             args: args }))
     }
     sendSlashCommand(sender: string, command: string, args: string, client_name: string, chat_id: string, createdAt: string) {
@@ -160,7 +162,7 @@ export class tcpClient {
             context: context
         }))
     }
-    sendPingSoloAgent(client_name: string, chat_id: string, message_id: string, message: string, agent: string, addPing: boolean) {
+    sendPingSoloAgent(client_name: string, chat_id: string, message_id: string, message: string, agent: string, addPing: boolean, author: string) {
         this.send(JSON.stringify({
             id: 5,
             client_name: client_name,
@@ -168,7 +170,8 @@ export class tcpClient {
             message_id: message_id,
             message: message,
             agent: agent,
-            addPing: addPing
+            addPing: addPing,
+            author: author
         }))
     }
     sendMessageReactionAdd(client_name: string, chat_id: string, message_id: string, content: string, user: string, reaction: string, createdAt: string) {
@@ -184,7 +187,6 @@ export class tcpClient {
         }))
     }
     sendMessageEdit(message: string, message_id: string, client_name: string, chat_id: string, createdAt: string, addPing: boolean, args: string = 'none') {
-        console.log('sending message edit')
         this.send(JSON.stringify({
             id: 7, 
             message: message, 

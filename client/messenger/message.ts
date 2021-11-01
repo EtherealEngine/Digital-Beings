@@ -18,7 +18,7 @@ export async function handleMessage(senderPsid, receivedMessage, messageResponse
     const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
     const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
     
-    tcpClient.getInstance.sendMessage(message, senderPsid, 'Messenger', senderPsid, utcStr, false)
+    tcpClient.getInstance.sendMessage(message, senderPsid, 'Messenger', senderPsid, utcStr, false, senderPsid)
   }
 }
 

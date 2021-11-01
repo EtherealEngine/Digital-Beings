@@ -61,7 +61,7 @@ class DigitalBeing():
         except:
             logger.exception("sendDiscordMessage")
 
-    def handle_message(self, packetId, message, client_name, chat_id, createdAt, message_id, addPing, args):
+    def handle_message(self, packetId, message, client_name, chat_id, createdAt, message_id, addPing, author, args):
         try:
             chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id)
             if (message == None):

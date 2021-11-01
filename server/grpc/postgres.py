@@ -22,7 +22,7 @@ class postgres:
         i = 0
         if len(results) > 0:
             try:
-                sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=True)
+                sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=False)
                 for res in sortedArray:
                     sender = res[4]
                     content = res[5]
@@ -35,7 +35,6 @@ class postgres:
                 print('caught excpeition in sort')
                 print(ex)
         
-        print('got chat history: ', history)
         return history
     
     def getKeywords(self):

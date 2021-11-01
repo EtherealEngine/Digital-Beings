@@ -109,7 +109,7 @@ export async function handleMessages(messages, bot) {
         const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
         args['grpc_args']['createdAt'] = utcStr
 
-        tcpClient.getInstance.sendMessage(content.replace('!ping', ''), messages[i].id, 'xr-engine', messages[i].channelId, utcStr, addPing, _sender)
+        tcpClient.getInstance.sendMessage(content.replace('!ping', ''), messages[i].id, 'xr-engine', messages[i].channelId, utcStr, addPing, _sender, _sender)
     }
 }
 

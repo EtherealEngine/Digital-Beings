@@ -1,6 +1,6 @@
 import { tcpClient } from "../../tcpClient";
 
-export async function run (client, message, args, author, addPing, channel) {
+export async function run(client, message, args, author, addPing, channel) {
     if ( args.grpc_args.message === undefined ||  args.grpc_args.message === '' || args.grpc_args.message.replace(/\s/g, '').length === 0) {
         client.embed.description = 'Wrong format, !ping message'
         message.channel.send(client.embed)
@@ -17,5 +17,5 @@ export async function run (client, message, args, author, addPing, channel) {
     const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
     args.grpc_args['createdAt'] = utcStr
 
-    tcpClient.getInstance.sendMessage(args.grpc_args['message'], message.id, 'Discord', args.grpc_args['chat_id'], utcStr, addPing)   
+    tcpClient.getInstance.sendMessage(args.grpc_args['message'], message.id, 'Discord', args.grpc_args['chat_id'], utcStr, addPing, author.username)   
 }

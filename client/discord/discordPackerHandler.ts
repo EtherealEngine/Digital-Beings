@@ -23,7 +23,7 @@ export class discordPackerHandler {
                         if (addPing) {
                             message.lineReply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             }).catch(console.error)
     
                         }  else {
@@ -31,7 +31,7 @@ export class discordPackerHandler {
                             console.log('response1: ' + text)
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             }).catch(console.error)
                         }
                     }
@@ -40,7 +40,7 @@ export class discordPackerHandler {
                         if (addPing) {
                             message.lineReply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             })
                         } else {
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
@@ -49,7 +49,7 @@ export class discordPackerHandler {
                         if (text.length > 0) {
                             message.channel.send(text, { split: true }).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             })
                         }
                     }
@@ -61,14 +61,14 @@ export class discordPackerHandler {
                             if (addPing) {
                                 message.lineReply(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                 }).catch(console.error)
                             } else {
                                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                                 console.log('response4: ' + text)
                                 message.channel.send(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                 }).catch(console.error)
                             }
                         }
@@ -114,7 +114,7 @@ export class discordPackerHandler {
                         if (addPing) {
                             message.lineReply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             }).catch(console.error)
     
                         }  else {
@@ -122,7 +122,7 @@ export class discordPackerHandler {
                             console.log('response1: ' + text)
                             message.channel.send(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             }).catch(console.error)
                         }
                     }
@@ -131,7 +131,7 @@ export class discordPackerHandler {
                         if (addPing) {
                             message.lineReply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             })
                         } else {
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
@@ -140,7 +140,7 @@ export class discordPackerHandler {
                         if (text.length > 0) {
                             message.channel.send(text, { split: true }).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             })
                         }
                     }
@@ -152,14 +152,14 @@ export class discordPackerHandler {
                             if (addPing) {
                                 message.lineReply(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                 }).catch(console.error)
                             } else {
                                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                                 console.log('response4: ' + text)
                                 message.channel.send(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel.id, message.id, msg.id)
-                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                    addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                 }).catch(console.error)
                             }
                         }
@@ -215,7 +215,7 @@ export class discordPackerHandler {
                                     if (text.length > 0) {
                                         edited.channel.send(text, { split: true }).then(async function (msg) {
                                             onMessageResponseUpdated(channel.id, edited.id, msg.id)
-                                            addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text)
+                                            addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                         })
                                     }
                                 }

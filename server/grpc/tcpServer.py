@@ -42,8 +42,10 @@ class tcpServer:
                     chat_id = data['chat_id']
                     createdAt = data['createdAt']
                     addPing = data['addPing']
+                    author = data['author']
                     args = data['args']
-                    self.DB.handle_message(0, message, client_name, chat_id, createdAt, message_id, addPing, args)
+                    print(data)
+                    self.DB.handle_message(0, message, client_name, chat_id, createdAt, message_id, addPing, author, args)
                 elif packetId == 1: #Slash Command
                     sender = data['sender']
                     command = data['command']
@@ -137,8 +139,9 @@ class tcpServer:
                     chat_id = data['chat_id']
                     createdAt = data['createdAt']
                     addPing = data['addPing']
+                    author = data['author']
                     args = data['args']
-                    self.DB.handle_message(7, message, client_name, chat_id, createdAt, message_id, addPing, args)
+                    self.DB.handle_message(7, message, client_name, chat_id, createdAt, message_id, addPing, author, args)
                 else:
                     print('found incorect packet id: ' + str(packetId))
 

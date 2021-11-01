@@ -12,5 +12,5 @@ export async function run (client, message, args, author, addPing, channel) {
         message.channel.stopTyping();
         return
     }
-    tcpClient.getInstance.sendPingSoloAgent('Discord', message.channel.id, message.id, args.grpc_args['message'], args.grpc_args['agent'], addPing)
+    tcpClient.getInstance.sendPingSoloAgent('Discord', message.channel.id, message.id, args.grpc_args['message'], args.grpc_args['agent'], addPing, author.username)
 }

@@ -1,9 +1,5 @@
-import grpc
-from concurrent import futures
 import logging
 import time
-import os
-import emoji
 
 # import the original example.py
 from handler import DigitalBeing as DB

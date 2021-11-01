@@ -65,8 +65,8 @@ export function getResponse(channel, message) {
     return messageResponses[channel][message]
 }
 
-export async function addMessageToHistory(chatId, messageId, senderName, content) {
-    await postgres.getInstance.addMessageInHistory('discord', chatId, messageId, senderName, content)
+export function addMessageToHistory(chatId, messageId, senderName, content) {
+    postgres.getInstance.addMessageInHistory('discord', chatId, messageId, senderName, content)
 }
 export async function addMessageInHistoryWithDate(chatId, messageId, senderName, content, timestamp) {
     await postgres.getInstance.addMessageInHistoryWithDate('discord', chatId, messageId, senderName, content, timestamp)
