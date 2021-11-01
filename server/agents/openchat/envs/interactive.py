@@ -1,4 +1,4 @@
-import random
+'''import random
 import sys
 import torch
 import gc
@@ -222,3 +222,4 @@ class InteractiveEnvironment(BaseEnvironment):
                         f"[TOPIC]: Wrong topic: {_topic}. Please enter validate topic.\n",
                         color=self.special_color,
                     )
+'''

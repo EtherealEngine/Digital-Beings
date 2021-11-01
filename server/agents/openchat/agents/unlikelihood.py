@@ -1,4 +1,4 @@
-import importlib
+'''import importlib
 from parlai.core.agents import add_datapath_and_model_args
 from parlai.core.build_data import modelzoo_path
 
@@ -114,3 +114,4 @@ class UnlikelihoodAgent(ParlaiGenerationAgent, Seq2SeqLM):
     @staticmethod
     def default_maxlen():
         return 128
+'''

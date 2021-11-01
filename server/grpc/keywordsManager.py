@@ -11,15 +11,16 @@ class keywordsManager:
     def update(self):
         self.keywords = self.postgres.getKeywords()
 
-    def transformText(self, text: str, agent: str):
+    def getRepeatCount(self, text: str, agent: str):
+        print('keywords length: ', len(self.keywords))
         for i in self.keywords:
             if i['agent'] == agent:
                 if i['word'] in text.lower():
-                    return text, int(i['count'])
+                    return int(i['count'])
         
         for i in self.keywords:
             if i['agent'] == agent:
                 if i['word'] == 'rest':
-                    return text, int(i['count'])
+                    return int(i['count'])
 
-        return text, 1
+        return 1

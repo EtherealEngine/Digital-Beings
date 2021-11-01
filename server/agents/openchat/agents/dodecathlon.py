@@ -1,4 +1,4 @@
-from parlai.core.build_data import modelzoo_path
+'''from parlai.core.build_data import modelzoo_path
 from parlai.core.agents import (
     add_datapath_and_model_args,
     create_agent_from_opt_file,
@@ -77,3 +77,4 @@ class DodecathlonAgent(ParlaiGenerationAgent, Seq2SeqLM):
     @staticmethod
     def default_maxlen():
         return 128
+'''

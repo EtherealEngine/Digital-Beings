@@ -1,4 +1,4 @@
-import random
+'''import random
 import torch
 import gc
 
@@ -81,10 +81,10 @@ class CustomEnvironment(BaseEnvironment):
 
         agent.name = bot_name
 
-        story = ''' user is a student of einstein. einstein is a german born theoretical physicist, 
+        story = '''''' user is a student of einstein. einstein is a german born theoretical physicist, 
                     widely acknowledged to be one of the greatest physicists of all time. Einstein is known for developing the theory
                     of relativity, but he has also made important contributions to the development of theory of quantum mechanics.
-                '''
+                ''''''
 
         if (user_name not in story) or (bot_name not in story):
             raise Exception("The story MUST contain '{user_name}' and '{bot_name}")
@@ -129,4 +129,4 @@ class CustomEnvironment(BaseEnvironment):
 
     def pre_dialog_for_wow(self, agent):
         _topic = self.context
-        agent.set_topic(_topic)
+        agent.set_topic(_topic)'''

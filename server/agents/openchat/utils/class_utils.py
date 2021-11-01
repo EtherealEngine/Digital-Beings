@@ -1,4 +1,4 @@
-import logging
+'''import logging
 from parlai.core.agents import NOCOPY_ARGS, compare_init_model_opts
 from parlai.core.opt import Opt
 from parlai.utils.io import PathManager
@@ -67,3 +67,4 @@ def create_agent_from_opt_file_and_model_class(opt, model_class):
     # loaded ones
     compare_init_model_opts(opt, opt_from_file)
     return model_class(opt_from_file)
+'''

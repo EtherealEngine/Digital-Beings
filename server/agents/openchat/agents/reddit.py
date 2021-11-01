@@ -1,4 +1,4 @@
-from parlai.core.agents import add_datapath_and_model_args, create_agent_from_opt_file
+'''from parlai.core.agents import add_datapath_and_model_args, create_agent_from_opt_file
 from parlai.core.build_data import modelzoo_path
 
 from ..base.agents.base import Seq2SeqLM
@@ -58,3 +58,4 @@ class RedditAgent(ParlaiGenerationAgent, Seq2SeqLM):
             option["override"]["gpu"] = 0
 
         return option
+'''

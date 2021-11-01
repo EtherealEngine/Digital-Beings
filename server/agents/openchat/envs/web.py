@@ -1,4 +1,4 @@
-import random
+'''import random
 import base64
 
 from flask import Flask, render_template, request, jsonify
@@ -210,3 +210,4 @@ class WebServerEnvironment(BaseEnvironment):
                 agent.set_topic(_topic)
             else:
                 _topic = f"[TOPIC]: Wrong topic: {_topic}. Please enter validate topic.\n"
+'''

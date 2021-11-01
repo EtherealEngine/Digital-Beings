@@ -1,0 +1,382 @@
+version: '2.0'
+nlu:
+  - intent: ask_circle_tool
+    examples: |
+      - can I see the circle tool?
+      - where is circle tool?
+      - Tell me something about circle tool
+      - What is circle tool in ms paint?
+
+  - intent: teach_circle_tool
+    examples: |
+      - How should I use the circle tool?
+      - How can I draw a circle in ms paint?
+
+  - intent: find_circle_tool
+    examples: |
+      - Where can I find the circle tool?
+      - Show me the circle tool?
+
+  - intent: help
+    examples: |
+      - Please I need help?
+      - Can someone help me?
+      - I'm stuck. Can anybody help?
+      - Can I talk to the teacher pls. Its urgent.
+
+  - intent: Accounting
+    examples: |
+      - When do I get paid?
+      - How often is payday?
+      -  What if payday is on a holiday?
+
+  - intent: ask_ISP
+    examples: |
+      - What is an ISP?
+
+  - intent: class_schedule
+    examples: |
+      - When is Game Gen Open?
+      - What is the schedule?
+      - Class time?
+
+  - intent: Software_blender
+    examples: |
+      - What is Blender?
+      -  What can Blender do?
+
+  - intent: Software_construct
+    examples: |
+      - What is Construct?
+      - What is Construct 3?
+
+  - intent: Software_pyxel
+    examples: |
+      - What is Pyxel?
+
+  - intent: Software_piskel
+    examples: |
+      - What is Piskel?
+
+  - intent: Software_krita
+    examples: |
+      - What is Krita?
+
+  - intent: Software_beepbox
+    examples: |
+      - What is Beepbox?
+
+  - intent: Software_wix
+    examples: |
+      - What is Wix?
+
+  - intent: Software_itch.io
+    examples: |
+      - What is Itch.io?
+
+  - intent: Software_unity
+    examples: |
+      - What is Unity?
+      - 
+
+  - intent: Software_unreal
+    examples: |
+      - What is Unreal?
+      - What is the Unreal Engine?
+
+  - intent: General_Question_3d_modeling
+    examples: |
+      - What is 3D modeling?
+
+  - intent: General_Question_3d_artist
+    examples: |
+      - What is a 3D Artist?
+
+  - intent: General_Question_technical_artist
+    examples: |
+      - What is a Technical Artist?
+
+  - intent: General_Question_programmer
+    examples: |
+      - What is a Programmer?
+
+  - intent: General_Question_game_artist
+    examples: |
+      - What is a Game Artist?
+
+  - intent: General_Question_2d_artist
+    examples: |
+      - What is a 2D Artist?
+
+  - intent: General_Question_environment_artist
+    examples: |
+      - What is an Environment Artist?
+
+  - intent: General_Question_dresser
+    examples: |
+      - What is a Set Dresser?
+
+  - intent: General_Question_rigger
+    examples: |
+      - What is a Rigger?
+      - What is a 3D rigging?
+      - Who Makes skeletons for 3D Models?
+      - What does a character Rigger do?
+
+  - intent: General_Question_unity
+    examples: |
+      - What is C#?
+      - What does Game Gen use to code in Unity?
+      - What do you code with in Unity?
+      - Unity coding language?
+
+  - intent: General_Question_unreal
+    examples: |
+      - What is Blueprints?
+      - What does Game Gen use to code in Unreal?What do you code with in Unreal?
+      - Unreal coding language?
+
+  - intent: General_Question_level_designer
+    examples: |
+      - What is a Level Designer?
+      - What does a Level Designer do?
+
+  - intent: General_Question_texture_artist
+    examples: |
+      - What is a texture artist?
+      - What do a texture artists do?
+
+  - intent: General_Question_discord
+    examples: |
+      - What is Discord?
+
+  - intent: Community_Question_guidelines
+    examples: |
+      - What Are the Community Guidelines?
+      - What are Game Gen's Community Guidlines?
+      - Community Guidelines?
+
+  - intent: General_Question_pixelart
+    examples: |
+      - What is pixel art?
+
+  - intent: General_Question_game_developers
+    examples: |
+      - What is a Game Developer?
+      - What do Game Developers do?
+
+  - intent: General_Question_indie_developers
+    examples: |
+      - What is a Indie Developer?
+      - What is a Independent Developer?
+      - What do Indie Developers do?
+      - What do Independent Developers do?
+
+  - intent: ask_Handbook_duties
+    examples: |
+      - What is a Game Gen Student?
+      - What are the Duties of Game Gen Student?
+
+  - intent: ask_Handbook_responsibilities
+    examples: |
+      - Responsibilities of Game Gen Student?
+      - Responsibilities?
+
+  - intent: ask_Director_regional_center
+    examples: |
+      - How Many Regional Centers do we work with?
+      - What are the Regional Centers we work with?
+      - Regional Centers?
+
+  - intent: ask_Director_code
+    examples: |
+      - Vendor Codes?
+      - What are the Regional Center codes?
+      - What do I need to put for Regional Center Code section?
+
+  - intent: ask_Handbook_teacher
+    examples: |
+      - Student Teacher Ratio?
+      - Whats the student teacher ratio at GameGen?
+
+  - intent: ask_Handbook_portfolio
+    examples: |
+      - Do I have to show up Friday?
+      - Do I have to be there for Portfolio show?
+      - Is Portfolio mandatory?
+
+  - intent: ask_Handbook_blog
+    examples: |
+      - What is a blog?
+      - Do I have to have finished pieces on blog?
+      - Can I put WIP on blog?
+
+  - intent: ask_IPP
+    examples: |
+      - What is an IPP?
+
+  - intent: ask_Surveys
+    examples: |
+      - How often do I have to take a survey?
+      - Do I have to take a survey this month?
+      - Whats the point of surveys?
+
+  - intent: ask_Scrum
+    examples: |
+      - What is a Scrum?
+      - Why are Scrums important?
+
+  - intent: General_Question_constructive_criticism
+    examples: |
+      - What is a constructive critique?
+      - What is Constructive Criticism?
+      - Why is constructive criticism important?
+
+  - intent: General_Question_capstone
+    examples: |
+      - What is a capstone?
+      - What does capstone mean?
+      - What is a capstone project?
+
+  - intent: General_Question_quire
+    examples: |
+      - What is Quire?
+      - Why should I use Quire?
+
+  - intent: General_Question_contact
+    examples: |
+      - What is the Game Gen Phone number?
+
+  - intent: ask_Director_client_info
+    examples: |
+      - What do I use to get in touch with clients?
+      - What do I use to call clients?
+      - What do I use to call consumers?
+      - What do I use to call Regional Centers?
+      - What is grasshopper?
+
+  - intent: ask_Director_cordinator
+    examples: |
+      - What do I do when I get a request submitted on my location?
+      - What do I do when Coordinator contacts me about a possible student?
+
+  - intent: ask_Director_consumer
+    examples: |
+      - What should I do after I talk to possible consumer?
+
+  - intent: ask_Director_consumenr_assesment
+    examples: |
+      - What should I do when I meet the consumer for assement?
+      - What should steps should I take for assesment?
+
+  - intent: ask_Director_pass_assesment
+    examples: |
+      - What should I do when student passes Assesment?
+
+  - intent: ask_Director_icu_number
+    examples: |
+      - Should I start consumer without a Authorization or ICU Number?
+
+  - intent: ask_Director_ail_assesment
+    examples: |
+      - What should I do when a student doesn't pass Assemsent?
+
+  - intent: ask_Director_first_day
+    examples: |
+      - What should I do when Students start date is approved?
+      - What should I do when Student is ready to start?
+      - What should I do on first day?
+
+  - intent: ask_Staff_stressed_student
+    examples: |
+      - What should I do when I feel stressed with a student?
+      - What should I do if I can't handle a student at this moment?
+      - What should I do if a student is becoming irritating?
+
+  - intent: ask_Staff_disobey_rule
+    examples: |
+      - What should I do if student doesn't follow rules?
+      - What should I do if student doesn't listen to me?
+      - What should I do if student keeps on ignoring me?
+
+  - intent: ask_Staff_feeling_stressed
+    examples: |
+      - Im feeling stressed?
+      - Im feeling irritated?
+      - Im mad!
+      - Grrrr!
+
+  - intent: ask_Director_authorization
+    examples: |
+      - When are Authorization requests submitted?
+      - Why does it take so long for me to get Authoorization numbers?
+
+  - intent: ask_Staff_stuck
+    examples: |
+      - I feel stuck.
+      - I dont know how to do this.
+      - I hit a block.
+      - Art Block.
+
+  - intent: ask_Staff_student_lesson
+    examples: |
+      - Student worked outside of lesson not sure what he did wrong?
+      - Difficult time fixing students errors?
+      - Can't figure out whats wrong with students lesson.
+
+  - intent: ask_CareerServices
+    examples: |
+      - When should I make an appointment with Career Services?
+      - 
+
+  - intent: General_Question_game_company
+    examples: |
+      - How many Game Companies around me?
+      - Whats the closest Game company near me?
+      - Where are the Game Companies located?
+
+  - intent: General_Question_money
+    examples: |
+      - Can I sell my stuff now?
+      - Can I make money off my art?
+      - Can I Freelance?
+      - How to make money without a Job?
+
+  - intent: General_Question_sketchfab
+    examples: |
+      - What is Sketchfab?
+
+  - intent: General_Question_magicvoxel
+    examples: |
+      - What is Magic Voxel?
+
+  - intent: ask_Social
+    examples: |
+      - What events are there?
+
+  - intent: General_Question_social_events
+    examples: |
+      - Do I have to participate in social events?
+
+  - intent: General_Question_jam
+    examples: |
+      - What is a Game Jam?
+      - What is a Studio Jam?
+
+  - intent: General_Question_mapping
+    examples: |
+      - What is Unwraping?
+      - What is UVW Mapping?
+      - What does unwrapping a model mean?
+
+  - intent: General_Question_pixel_density
+    examples: |
+      - What is pixel density?
+
+  - intent: ask_Director_submitted_isp
+    examples: |
+      - How long should I wait before checking on sumbited ISP?
+
+  - intent: General_Question_gamegen_type
+    examples: |
+      - What type of school is Game Gen?

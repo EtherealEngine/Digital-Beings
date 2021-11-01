@@ -31,6 +31,7 @@ Interaction API goals: Listen, Speak, Interact, Move, Emote
 - [XR Engine Testing Bot - Sequence of commands](https://github.com/XRFoundation/XREngine/blob/dev/packages/bot/src/run-bot.ts)
 - Echo Bot - Echo what's said in a room by everyone, bots, people, 1 person
 - [Openai GPT3](https://openai.com/blog/openai-api/) - Openai's GPT3 chat bot
+- Currently OpenAI and Repeat agents are enabled, to enable the rest agents, uncomment the needed requirements in the requirement.txt file and the .py files under server/agents/openai
 
 #### Deep Learning
 - [DialoGPT](https://github.com/microsoft/DialoGPT)

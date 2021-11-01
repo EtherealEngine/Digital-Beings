@@ -13,7 +13,8 @@ sys.path.append(parentdir)
 # These might be red in your IDE, since we are adding parent dir to path (above)
 import agent_params as param
 from agents.openchat.agents.gpt3 import GPT3Agent
-from agents.openchat.openchat import OpenChat
+#from agents.openchat.agents.rasa import RasaAgent
+#from agents.openchat.openchat import OpenChat
 from agents.repeat.repeat import Repeat
 
 from tcpServer import tcpServer as server
@@ -43,11 +44,13 @@ class DigitalBeing():
                 print('got self context: ' + self.context)
                 if model_name == 'gpt3':
                     self.gpt3_agent = GPT3Agent(engine=param.GPT3_ENGINE, context=self.context)
+                #elif model_name == 'rasa':
+                #    self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
                 elif model_name =="repeat":
                     self.repeat_agent = Repeat()
-                else:
-                    self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
-                    self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
+                #else:
+                #    self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
+                #    self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
         except:
             logger.exception("__init__")
 
@@ -70,13 +73,13 @@ class DigitalBeing():
             i = 0
             for model_name in param.SELECTED_AGENTS:
                 if model_name == 'gpt3':
-                    text, count = self.kw.transformText(message, 'gpt3')
+                    count = self.kw.getRepeatCount(message, 'gpt3')
                     i = 0
                     responses_dict = {}
                     while i < count:
                         if ('\n' in message):
                             message = message.replace('\n', "r''")
-                        responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=text))
+                        responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
 
                         j = 0
                         while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name):
@@ -100,8 +103,39 @@ class DigitalBeing():
 
                         i += 1
                         message = 'm continue'
+
+            #    elif model_name == 'rasa':
+            #        count = self.kw.getRepeatCount(message, 'rasa')
+            #        i = 0
+            #        responses_dict = {}
+            #        while i < count:
+            #            responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
+
+            #            j = 0
+            #            while self.aicfm.hasBadWord(responses_dict['rasa'], model_name):
+            #                responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
+            #                j += 1
+            #                if j > self.aicfm.getMaxCount():
+            #                    return
+
+            #            if (len(responses_dict) == 0):
+            #                responses_dict = { 'none': 'none' }
+
+            #            self.server.sendMessage(json.dumps([
+            #                        packetId,
+            #                        client_name,
+            #                        chat_id,
+            #                        message_id,
+            #                        responses_dict,
+            #                        addPing,
+            #                        args
+            #                    ]))
+
+            #            i += 1
+            #            message = 'm continue'                       
+
                 elif model_name == "repeat":
-                    text, count = self.kw.transformText(message, 'repeat')
+                    text, count = self.kw.getRepeatCount(message, 'repeat')
                     i = 0
                     responses_dict = {}
                     while i < count:
@@ -122,35 +156,36 @@ class DigitalBeing():
                                 
                         i += 1
                         message = 'm continue'
-                else:
-                    text, count = self.kw.transformText(message, model_name)
-                    i = 0
-                    responses_dict = {}
-                    while i < count:
-                        responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
-                    
-                        j = 0
-                        while self.aicfm.hasBadWord(responses_dict[model_name], model_name):
-                            responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message='m continue', model_name=model_name, context=self.context))
-                            j += 1
-                            if (j > self.aicfm.getMaxCount()):
-                                return
 
-                        if (len(responses_dict) == 0):
-                            responses_dict = { 'none': 'none' }
+                #else:
+                #    text, count = self.kw.getRepeatCount(message, model_name)
+                #    i = 0
+                #    responses_dict = {}
+                #    while i < count:
+                #        responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
+                #    
+                #        j = 0
+                #        while self.aicfm.hasBadWord(responses_dict[model_name], model_name):
+                #            responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message='m continue', model_name=model_name, context=self.context))
+                #            j += 1
+                #            if (j > self.aicfm.getMaxCount()):
+                #                return
 
-                        self.server.sendMessage(json.dumps([
-                                    packetId,
-                                    client_name,
-                                    chat_id,
-                                    message_id,
-                                    responses_dict,
-                                    addPing,
-                                    args
-                                ]))
-                                
-                        i += 1
-                        message = 'm continue'
+                #        if (len(responses_dict) == 0):
+                #            responses_dict = { 'none': 'none' }
+
+                #        self.server.sendMessage(json.dumps([
+                #                    packetId,
+                #                    client_name,
+                #                    chat_id,
+                #                    message_id,
+                #                    responses_dict,
+                #                    addPing,
+                #                    args
+                #                ]))
+                #                
+                #        i += 1
+                #        message = 'm continue'
 
         except Exception as err:
             logger.exception("handle_message")

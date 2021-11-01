@@ -1,4 +1,4 @@
-from ..agents.parlai import ParlaiGenerationAgent
+'''from ..agents.parlai import ParlaiGenerationAgent
 
 
 class ConvAI2Agent(ParlaiGenerationAgent):
@@ -11,3 +11,4 @@ class ConvAI2Agent(ParlaiGenerationAgent):
             pf for pf in histories[user_id]["prefix"]
             if "your persona:" not in pf
         ]
+'''

@@ -1,4 +1,4 @@
-import torch
+'''import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 from ..base.agents.base import DecoderLM
@@ -46,3 +46,4 @@ class GPTNeoAgent(PromptAgent, DecoderLM):
     @staticmethod
     def default_maxlen():
         return 256
+'''

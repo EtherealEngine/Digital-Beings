@@ -1,4 +1,4 @@
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
+'''from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 from ..base.agents.base import DecoderLM
 from ..base.agents.huggingface import HuggingfaceAgent
@@ -33,3 +33,4 @@ class DialoGPTAgent(HuggingfaceAgent, DecoderLM):
     @staticmethod
     def default_maxlen():
         return 48
+'''

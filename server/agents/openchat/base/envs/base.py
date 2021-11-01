@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+'''from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from ..agents.base import DecoderLM, BaseAgent
@@ -80,3 +80,4 @@ class BaseEnvironment(ABC):
     @abstractmethod
     def start(self, agent: BaseAgent):
         raise NotImplemented
+'''

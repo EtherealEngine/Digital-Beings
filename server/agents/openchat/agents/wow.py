@@ -1,4 +1,4 @@
-from parlai.core.agents import create_agent_from_model_file, add_datapath_and_model_args
+'''from parlai.core.agents import create_agent_from_model_file, add_datapath_and_model_args
 from parlai.core.build_data import modelzoo_path
 
 from ..base.agents.base import Seq2SeqLM
@@ -51,3 +51,4 @@ class WizardOfWikipediaGenerationAgent(WizardOfWikipediaAgent, Seq2SeqLM):
             option["override"]["gpu"] = 0
 
         return option
+'''
