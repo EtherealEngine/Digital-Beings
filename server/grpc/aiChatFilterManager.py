@@ -12,7 +12,6 @@ class aiChatFilterManager:
   
     
     def update(self):
-        print('getting new')
         self.maxCount = self.postgres.getAIMaxLoopCount()
         self.words = self.postgres.getAIChatFilter()
         self.ages = self.postgres.getAgentAgeGroups()

@@ -85,5 +85,5 @@ export async function getChatHistory(chatId, length) {
     return await postgres.getInstance.getHistory(length, 'telegram', chatId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
-    await postgres.getInstance.updateMessage('telegram', chatId, messageId, newContent)
+    await postgres.getInstance.updateMessage('telegram', chatId, messageId, newContent, true)
 }

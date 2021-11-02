@@ -87,7 +87,7 @@ export async function deleteMessageFromHistory(chatId, messageId) {
     await postgres.getInstance.deleteMessage('xr-engine', chatId, messageId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
-    await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent)
+    await postgres.getInstance.updateMessage('xr-engine', chatId, messageId, newContent, true)
 }
 export async function wasHandled(chatId, messageId) {
     return await postgres.getInstance.messageExists2('xr-engine', chatId, messageId)

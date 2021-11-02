@@ -75,7 +75,7 @@ export async function deleteMessageFromHistory(chatId, messageId) {
     await postgres.getInstance.deleteMessage('discord', chatId, messageId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
-    await postgres.getInstance.updateMessage('discord', chatId, messageId, newContent)
+    await postgres.getInstance.updateMessage('discord', chatId, messageId, newContent, true)
 }
 export async function wasHandled(chatId, messageId, sender, content, timestamp) {
     return await postgres.getInstance.messageExists('discord', chatId, messageId, sender, content, timestamp)

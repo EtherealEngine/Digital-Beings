@@ -37,8 +37,11 @@ module.exports = async (client) => {
                 if (channel.type === 'text' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
                     channel.messages.fetch({limit: 100}).then(async messages => {
                         messages.forEach(async function (msg) {
-                            if (msg.deleted === true) await deleteMessageFromHistory(channel.id, msg.id)
-                            else await wasHandled(channel.id, msg.id, msg.author.username, msg.content, msg.createdTimestamp)
+                            let _author = msg.author.username
+                            if (msg.author.isBot || msg.author.username.toLowerCase().includes('digital being')) _author = process.env.BOT_NAME
+
+                            if (msg.deleted === true) { await deleteMessageFromHistory(channel.id, msg.id); console.log('deleted message: ' + msg.content) }
+                            else await wasHandled(channel.id, msg.id,_author, msg.content, msg.createdTimestamp)
                         })
                     })
                 }

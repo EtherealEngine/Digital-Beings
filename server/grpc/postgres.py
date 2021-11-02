@@ -22,12 +22,15 @@ class postgres:
         i = 0
         if len(results) > 0:
             try:
-                sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=False)
+                sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=True)
                 for res in sortedArray:
                     sender = res[4]
                     content = res[5]
-                    #createdAt = res[6]
-                    history.append({ 'author': sender, 'content': content })
+                    #createdAt = datetime.strptime(res[6], '%d/%m/%Y %H:%M:%S')
+                    db_bot = False
+                    if sender == os.getenv('BOT_NAME'):
+                        db_bot = True
+                    history.append({ 'author': sender, 'content': content, 'db_bot': db_bot })
                     i += 1
                     if (i >= length):
                         break
@@ -35,6 +38,7 @@ class postgres:
                 print('caught excpeition in sort')
                 print(ex)
         
+        #history.reverse()
         return history
     
     def getKeywords(self):
@@ -46,7 +50,6 @@ class postgres:
         if len(results) > 0:
             try:
                 for res in results:
-                    print('adding new keyword')
                     keywords.append({ 'word': res[0], 'count': res[1], 'agent': res[2] })
             except Exception as ex:
                 print(ex)

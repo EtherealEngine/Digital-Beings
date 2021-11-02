@@ -51,5 +51,5 @@ export async function getChatHistory(chatId, length) {
     return await postgres.getInstance.getHistory(length, 'whatsapp', chatId)
 }
 export async function updateMessage(chatId, messageId, newContent) {
-    await postgres.getInstance.updateMessage('whatsapp', chatId, messageId, newContent)
+    await postgres.getInstance.updateMessage('whatsapp', chatId, messageId, newContent, true)
 }

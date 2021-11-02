@@ -11,3 +11,4 @@ twilio==7.2.0
 websockets
 #rasa==2.8.7
 #rasa-sdk==2.8.2
+asyncio

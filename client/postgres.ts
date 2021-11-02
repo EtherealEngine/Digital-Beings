@@ -79,18 +79,30 @@ export class postgres {
         })
     }
 
-    async updateMessage(client_name: string, chat_id: string, message_id: string, newContent: string) {
-        const date = new Date();
-        const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-        const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
-        const query = "UPDATE chat_history SET content=$1, createdAt=$2 WHERE client_name=$3 AND chat_id=$4 AND message_id=$5"
-        const values = [ newContent, utcStr, client_name, chat_id, message_id ]
+    async updateMessage(client_name: string, chat_id: string, message_id: string, newContent: string, upadteTime: boolean) {
+        if (upadteTime) {
+            const date = new Date();
+            const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+            const query = "UPDATE chat_history SET content=$1, createdAt=$2 WHERE client_name=$3 AND chat_id=$4 AND message_id=$5"
+            const values = [ newContent, utcStr, client_name, chat_id, message_id ]
 
-        await this.client.query(query, values, (err, res) => {
-            if (err) {
-              console.log(err + ' ' + err.stack)
-            }
-        })
+            await this.client.query(query, values, (err, res) => {
+                if (err) {
+                console.log(err + ' ' + err.stack)
+                }
+            })
+        }
+        else {
+            const query = "UPDATE chat_history SET content=$1 WHERE client_name=$2 AND chat_id=$3 AND message_id=$4"
+            const values = [ newContent, client_name, chat_id, message_id ]
+
+            await this.client.query(query, values, (err, res) => {
+                if (err) {
+                console.log(err + ' ' + err.stack)
+                }
+            })
+        }
     }
 
     async messageExists(client_name: string, chat_id: string, message_id: string, sender: string, content: string, timestamp: number) {
@@ -102,7 +114,7 @@ export class postgres {
               console.log(err + ' ' + err.stack)
             } else {
                 if (res.rows && res.rows.length) {
-                    this.updateMessage(client_name, chat_id, message_id, content);
+                    this.updateMessage(client_name, chat_id, message_id, content, false);
                 }
                 else {
                     const date = new Date(timestamp)

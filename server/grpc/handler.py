@@ -201,7 +201,6 @@ class DigitalBeing():
             words[i] = emoji.emojize(words[i])
             i += 1
                     
-        print(words)
         for x in words:
             res += x + ' '
 

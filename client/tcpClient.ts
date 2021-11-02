@@ -20,12 +20,10 @@ export class tcpClient {
         console.log(client)
         this.client.on('data', async function(data) {
             const resp = JSON.parse(data + '')
-            console.log('data: ' + resp)
             const packetId = resp[0]
             const client_name = resp[1]
             const chat_id = resp[2]
 
-            console.log('received packet: ' + packetId)
             if (packetId === 0) {
                 const message_id = resp[3]
                 const responses = resp[4]
