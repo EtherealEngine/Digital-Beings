@@ -20,8 +20,10 @@ class tcpServer:
             data = self.conn.recv(2048)
             if data != None and len(data) > 0:
                 data = data.decode('utf-8')
-                print(data)
-                data = json.loads(data)
+                try:
+                    data = json.loads(data)
+                except: 
+                    continue
                 packetId = data['id']
                 print(packetId)
 
