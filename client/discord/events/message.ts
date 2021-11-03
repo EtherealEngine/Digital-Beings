@@ -1,10 +1,9 @@
 import { chatFilter } from "../../chatFilter";
 import { userDatabase } from "../../userDatabase";
 import { startsWithCapital } from "../../utils";
-import { addMessageToHistory, conversation, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
+import { addMessageToHistory, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 const emojiRegex = require('emoji-regex');
 const emoji = require("emoji-dictionary");
-const inlinereply = require('discord-reply');
 
 module.exports = async (client, message) => {
     const reg = emojiRegex();
@@ -18,10 +17,30 @@ module.exports = async (client, message) => {
     args['grpc_args'] = {};
 
     let {author, channel, content, mentions, id} = message;
+    if (process.env.DIGITAL_BEINGS_ONLY === 'True' && !channel.topic.toLowerCase().includes('digital being')) {
+        return
+    }
     if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) {
         return
     }
-    
+
+    if (mentions.members.size > 0) {
+        const data = content.split(' ')
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].startsWith('<@!') && data[i].charAt(data[i].length - 1) === '>') {
+                try {
+                    const x = data[i].replace('<@!', '').replace('>', '')
+                    const user = await client.users.cache.find(user => user.id == x)
+                    if (user !== undefined) {   
+                        const u = '@' + user.username + '#' + user.discriminator
+                        console.log(u)
+                        content = content.replace(data[i], u)
+                    }
+                } catch(err) { console.log(err) }
+            }
+        }
+    }
+    console.log(content)
     const bad_words = chatFilter.getInstance.isBadWord(content, author.id, 'discord', function(_user, ratings) {
         author.send('You got ' + ratings + ' warnings, at 10 you will get blocked!')
     }, 
