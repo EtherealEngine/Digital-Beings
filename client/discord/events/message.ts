@@ -24,7 +24,7 @@ module.exports = async (client, message) => {
         return
     }
 
-    if (mentions.members.size > 0) {
+    if (mentions !== null && mentions.members !== null && mentions.members.size > 0) {
         const data = content.split(' ')
         for (let i = 0; i < data.length; i++) {
             if (data[i].startsWith('<@!') && data[i].charAt(data[i].length - 1) === '>') {
@@ -40,7 +40,7 @@ module.exports = async (client, message) => {
             }
         }
     }
-    console.log(content)
+    
     const bad_words = chatFilter.getInstance.isBadWord(content, author.id, 'discord', function(_user, ratings) {
         author.send('You got ' + ratings + ' warnings, at 10 you will get blocked!')
     }, 
@@ -70,7 +70,7 @@ module.exports = async (client, message) => {
     const botMention = `<@!${client.user}>`;
     const isDM = channel.type === 'dm';
     const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
-    const otherMention = !isMention && mentions.members.size > 0
+    const otherMention = !isMention && mentions.members !== null && mentions.members.size > 0
     let startConv = false
     let startConvName = ''
     if (!isMention && !otherMention) {
