@@ -196,4 +196,13 @@ export class tcpClient {
             args: args
         }))
     }
+    sendMetadata(channel_name: string, client_name: string, channel_id: string, metadata: string) {
+        this.send(JSON.stringify({
+            id: 8,
+            channel_name: channel_name,
+            client_name: client_name,
+            channel_id: channel_id,
+            metadata: metadata
+        }))
+    }
 }

@@ -1,4 +1,5 @@
 import { redisDb } from "../redisDb";
+import { tcpClient } from "../tcpClient";
 import { userDatabase } from "../userDatabase";
 import { detectOsOption } from "../utils";
 import { handleMessages } from "./messageHandler";
@@ -368,6 +369,7 @@ class XREngineBot {
                 if (data.length === 2) {
                     const _data = data[1]
                     console.log(`Scene Metadata: Data:${_data}`)
+                    tcpClient.getInstance.sendMetadata('xr-engine', 'xr-engine', 'xr-engine', data || 'none')
                 }
                 else
                     console.log(`invalid scene metadata length (${data.length}): ${data}`)

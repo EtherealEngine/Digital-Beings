@@ -1,3 +1,4 @@
+import { tcpClient } from "../../tcpClient";
 import { deleteMessageFromHistory, wasHandled } from "../chatHistory";
 
 module.exports = async (client) => {
@@ -35,6 +36,8 @@ module.exports = async (client) => {
 
             server.channels.cache.forEach(async (channel) => {
                 if (channel.type === 'text' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
+                    console.log('topic: ' + channel.topic + ' for channel: ' + channel.name)
+                    tcpClient.getInstance.sendMetadata(channel.name, 'Discord', channel.id, channel.topic || 'none')
                     channel.messages.fetch({limit: 100}).then(async messages => {
                         messages.forEach(async function (msg) {
                             let _author = msg.author.username

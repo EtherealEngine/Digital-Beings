@@ -142,6 +142,12 @@ class tcpServer:
                     author = data['author']
                     args = data['args']
                     self.DB.handle_message(7, message, client_name, chat_id, createdAt, message_id, addPing, author, args)
+                elif packetId == 8: #Metadata
+                    channel_name = data['channel_name']
+                    client_name = data['client_name']
+                    channel_id = data['channel_id']
+                    metadata = data['metadata']
+                    print('got metadata from channel: ', channel_name, ' data: ', metadata)
                 else:
                     print('found incorect packet id: ' + str(packetId))
 
@@ -151,3 +157,17 @@ class tcpServer:
                 self.conn.send(str(json).encode())
             except Exception as err:
                 print('tcpServer sendMessage: ' + err)
+
+    def sendChatMessage(self, message, message_id, client_name, chat_id, addPing ):
+        responses_dict = {}
+        responses_dict['custom'] = message
+
+        self.server.sendMessage(json.dumps([
+                                    0,
+                                    client_name,
+                                    chat_id,
+                                    message_id,
+                                    responses_dict,
+                                    addPing,
+                                    'none'
+                                ]))
