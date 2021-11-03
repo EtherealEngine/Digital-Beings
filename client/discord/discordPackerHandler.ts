@@ -3,6 +3,7 @@ import { userDatabase } from "../userDatabase";
 import { getRandomEmptyResponse } from "../utils";
 import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "./chatHistory";
 import { replacePlaceholders } from "./util";
+require('discord-inline-reply'); 
 
 export class discordPackerHandler {
     static getInstance: discordPackerHandler
