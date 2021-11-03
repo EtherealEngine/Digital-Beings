@@ -69,7 +69,7 @@ module.exports = async (client, message) => {
 
     const botMention = `<@!${client.user}>`;
     const isDM = channel.type === 'dm';
-    const isMention = (channel.type === 'text' || isDM) && (mentions.has(client.user))
+    const isMention = (channel.type === 'text' && (mentions.has(client.user))) || isDM
     const otherMention = !isMention && mentions.members !== null && mentions.members.size > 0
     let startConv = false
     let startConvName = ''
