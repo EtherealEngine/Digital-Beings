@@ -1,10 +1,11 @@
-
 from json import dumps
-import json
 import os
+import json
+from re import sub as re_sub
 import sys
 
 import emoji
+import utils
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
@@ -16,6 +17,7 @@ from agents.openchat.agents.gpt3 import GPT3Agent
 #from agents.openchat.agents.rasa import RasaAgent
 #from agents.openchat.openchat import OpenChat
 from agents.repeat.repeat import Repeat
+from agents.metaintelligence.metaintelligence import MetaintelligenceWS
 
 from tcpServer import tcpServer as server
 from jsondb import jsondb as jsondb
@@ -27,6 +29,17 @@ from aiChatFilterManager import aiChatFilterManager as aicfm
 import logging
 
 logger = logging.getLogger("app.main")
+
+def prepare_metaintelligence_history(history_str):
+    history = history_str
+    #history.reverse()
+    # TODO remove the regex after
+    # https://github.com/XRFoundation/DigitalBeing/issues/212
+    for midx, message in enumerate(history):
+        history[midx]['content'] = re_sub(r'<@!\d+>', '', message['content']).strip()
+        if history[midx]['author'] == os.getenv('BOT_NAME'):
+            history[midx]['author'] = 'carl.sagan'
+    return history
 
 class DigitalBeing():
     def __init__(self):
@@ -48,6 +61,8 @@ class DigitalBeing():
                 #    self.rasa_agent = RasaAgent(param.RASA_MODEL_NAME)
                 elif model_name =="repeat":
                     self.repeat_agent = Repeat()
+                elif model_name == "metaintelligence":
+                    self.mi_agent = MetaintelligenceWS()
                 #else:
                 #    self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
                 #    self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
@@ -64,6 +79,7 @@ class DigitalBeing():
     def handle_message(self, packetId, message, client_name, chat_id, createdAt, message_id, addPing, author, args):
         try:
             chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id)
+            meta = utils.getMetadataFromText(message)
             if (message == None):
                 if (hasattr(self, '_logginServer')):
                     self._logginServer.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")
@@ -153,7 +169,40 @@ class DigitalBeing():
                                 ]))
                                 
                         i += 1
+                
+                elif model_name =="metaintelligence":
+                    count = self.kw.getRepeatCount(message, 'metaintelligence')
+                    i = 0
+                    responses_dict = {}
+                    while i < count:
+                        if len(chat_history) == 0 or (len(chat_history) > 0 and chat_history[0]['content'] != message):
+                            chat_history.insert(0, { 'author': author, 'content': message, 'db_bot': False })
+                        history = prepare_metaintelligence_history(chat_history)
+                        responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
+                        
+                        j = 0
+                        while self.aicfm.hasBadWord(responses_dict['metaintelligence'], model_name):
+                            history = prepare_metaintelligence_history(chat_history)
+                            responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
+                            j += 1
+                            if (j > self.aicfm.getMaxCount()):
+                                return
 
+                        if (len(responses_dict) == 0):
+                            responses_dict = { 'metaintelligence': 'none' }
+
+                        self.server.sendMessage(json.dumps([
+                                    packetId,
+                                    client_name,
+                                    chat_id,
+                                    message_id,
+                                    responses_dict,
+                                    addPing,
+                                    args
+                                ]))
+                                
+                        i += 1
+                
                 #else:
                 #    text, count = self.kw.getRepeatCount(message, model_name)
                 #    i = 0
