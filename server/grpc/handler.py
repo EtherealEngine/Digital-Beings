@@ -83,7 +83,7 @@ class DigitalBeing():
 
                         j = 0
                         while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name):
-                            responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message='m_continue'))
+                            responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
                             j += 1
                             if (j > self.aicfm.getMaxCount()):
                                 return
@@ -102,7 +102,6 @@ class DigitalBeing():
                                 ]))
 
                         i += 1
-                        message = 'm continue'
 
             #    elif model_name == 'rasa':
             #        count = self.kw.getRepeatCount(message, 'rasa')
@@ -131,8 +130,7 @@ class DigitalBeing():
             #                        args
             #                    ]))
 
-            #            i += 1
-            #            message = 'm continue'                       
+            #            i += 1                    
 
                 elif model_name == "repeat":
                     text, count = self.kw.getRepeatCount(message, 'repeat')
@@ -155,7 +153,6 @@ class DigitalBeing():
                                 ]))
                                 
                         i += 1
-                        message = 'm continue'
 
                 #else:
                 #    text, count = self.kw.getRepeatCount(message, model_name)
@@ -185,7 +182,6 @@ class DigitalBeing():
                 #                ]))
                 #                
                 #        i += 1
-                #        message = 'm continue'
 
         except Exception as err:
             logger.exception("handle_message")
