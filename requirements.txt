@@ -6,7 +6,7 @@ emoji
 openai==0.11.0
 #parlai==1.5.1
 #torch==1.10.0
-transformers==4.12.0
+transformers==4.12.3
 twilio==7.3.0
 websockets
 #rasa==2.8.7
