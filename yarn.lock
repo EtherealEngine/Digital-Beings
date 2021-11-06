@@ -645,10 +645,10 @@
   resolved "https://registry.npmjs.org/@types/ms/-/ms-0.7.31.tgz"
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
-"@types/node-telegram-bot-api@0.53.0":
-  version "0.53.0"
-  resolved "https://registry.npmjs.org/@types/node-telegram-bot-api/-/node-telegram-bot-api-0.53.0.tgz"
-  integrity sha512-tuX5qDCYPAaNUYf1iuspw0o//EJjnZG8qSyensiyDJgRBpFaYDy3yqrWZgnEGW/KoVa0cul2/Zz23Cr6Zncizw==
+"@types/node-telegram-bot-api@0.53.2":
+  version "0.53.2"
+  resolved "https://registry.npmjs.org/@types/node-telegram-bot-api/-/node-telegram-bot-api-0.53.2.tgz"
+  integrity sha512-CeGKP+YSIK/IsJBdc//2BZ43i40HH5AsiiEE8qCL5g5Lgj3i5NvwtdOy23J60eVUXr14orQrGNPFdSgA8k8aXA==
   dependencies:
     "@types/node" "*"
     "@types/request" "*"
