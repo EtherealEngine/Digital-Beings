@@ -1,11 +1,10 @@
-from json import dumps
+from json import dumps, loads
 import os
 import json
 from re import sub as re_sub
 import sys
 
 import emoji
-import utils
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
@@ -23,7 +22,6 @@ from tcpServer import tcpServer as server
 from jsondb import jsondb as jsondb
 from postgres import postgres as _db
 from loggingServer import loggingServer as _loggingServer
-from keywordsManager import keywordsManager as kw
 from aiChatFilterManager import aiChatFilterManager as aicfm
 
 import logging
@@ -40,7 +38,6 @@ def prepare_metaintelligence_history(history_str):
         if history[midx]['author'] == os.getenv('BOT_NAME'):
             history[midx]['author'] = 'carl.sagan'
     return history
-
 class DigitalBeing():
     def __init__(self):
         try:            
@@ -48,7 +45,6 @@ class DigitalBeing():
             self.jsondb = jsondb()
             self.jsondb.getAgents()
             self.postgres = _db()
-            self.kw = kw(self.postgres)
             self.aicfm = aicfm(self.postgres)
             if (os.getenv('LOAD_DISCORD_LOGGER') == 'True'):
                 self._logginServer = _loggingServer('127.0.0.1', 7778)
@@ -77,9 +73,9 @@ class DigitalBeing():
             logger.exception("sendDiscordMessage")
 
     def handle_message(self, packetId, message, client_name, chat_id, createdAt, message_id, addPing, author, args):
+        print('handle message: ', message)
         try:
             chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id)
-            meta = utils.getMetadataFromText(message)
             if (message == None):
                 if (hasattr(self, '_logginServer')):
                     self._logginServer.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")
@@ -89,25 +85,22 @@ class DigitalBeing():
             i = 0
             for model_name in param.SELECTED_AGENTS:
                 if model_name == 'gpt3':
-                    count = self.kw.getRepeatCount(message, 'gpt3')
-                    i = 0
                     responses_dict = {}
-                    while i < count:
-                        if ('\n' in message):
-                            message = message.replace('\n', "r''")
+                    if ('\n' in message):
+                        message = message.replace('\n', "r''")
+                    responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
+
+                    j = 0
+                    while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name):
                         responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
+                        j += 1
+                        if (j > self.aicfm.getMaxCount()):
+                            return
 
-                        j = 0
-                        while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name):
-                            responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
-                            j += 1
-                            if (j > self.aicfm.getMaxCount()):
-                                return
+                    if (len(responses_dict) == 0):
+                        responses_dict = { 'none': 'none' }
 
-                        if (len(responses_dict) == 0):
-                            responses_dict = { 'none': 'none' }
-
-                        self.server.sendMessage(json.dumps([
+                    self.server.sendMessage(json.dumps([
                                     packetId,
                                     client_name,
                                     chat_id,
@@ -115,15 +108,10 @@ class DigitalBeing():
                                     responses_dict,
                                     addPing,
                                     args
-                                ]))
-
-                        i += 1
+                    ]))
 
             #    elif model_name == 'rasa':
-            #        count = self.kw.getRepeatCount(message, 'rasa')
-            #        i = 0
             #        responses_dict = {}
-            #        while i < count:
             #            responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
 
             #            j = 0
@@ -146,68 +134,55 @@ class DigitalBeing():
             #                        args
             #                    ]))
 
-            #            i += 1                    
+            #            i += 1                      
 
                 elif model_name == "repeat":
-                    text, count = self.kw.getRepeatCount(message, 'repeat')
-                    i = 0
                     responses_dict = {}
-                    while i < count:
-                        responses_dict['repeat'] = self.addEmojis(self.repeat_agent.handle_message(text))
+                    responses_dict['repeat'] = self.addEmojis(self.repeat_agent.handle_message(message))
                     
-                        if (len(responses_dict) == 0):
-                            responses_dict = { 'none': 'none' }
+                    if (len(responses_dict) == 0):
+                        responses_dict = { 'none': 'none' }
 
-                        self.server.sendMessage(json.dumps([
-                                    packetId,
-                                    client_name,
-                                    chat_id,
-                                    message_id,
-                                    responses_dict,
-                                    addPing,
-                                    args
-                                ]))
-                                
-                        i += 1
-                
+                    self.server.sendMessage(json.dumps([
+                                packetId,
+                                client_name,
+                                chat_id,
+                                message_id,
+                                responses_dict,
+                                addPing,
+                                args
+                            ]))
+                    
                 elif model_name =="metaintelligence":
-                    count = self.kw.getRepeatCount(message, 'metaintelligence')
-                    i = 0
                     responses_dict = {}
-                    while i < count:
-                        if len(chat_history) == 0 or (len(chat_history) > 0 and chat_history[0]['content'] != message):
-                            chat_history.insert(0, { 'author': author, 'content': message, 'db_bot': False })
+                    if len(chat_history) == 0 or (len(chat_history) > 0 and chat_history[0]['content'] != message):
+                        chat_history.insert(0, { 'author': author, 'content': message, 'db_bot': False })
+                    history = prepare_metaintelligence_history(chat_history)
+                    responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
+                    
+                    j = 0
+                    while self.aicfm.hasBadWord(responses_dict['metaintelligence'], model_name):
                         history = prepare_metaintelligence_history(chat_history)
                         responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
-                        
-                        j = 0
-                        while self.aicfm.hasBadWord(responses_dict['metaintelligence'], model_name):
-                            history = prepare_metaintelligence_history(chat_history)
-                            responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
-                            j += 1
-                            if (j > self.aicfm.getMaxCount()):
-                                return
+                        j += 1
+                        if (j > self.aicfm.getMaxCount()):
+                            return
 
-                        if (len(responses_dict) == 0):
-                            responses_dict = { 'metaintelligence': 'none' }
+                    if (len(responses_dict) == 0):
+                        responses_dict = { 'metaintelligence': 'none' }
 
-                        self.server.sendMessage(json.dumps([
-                                    packetId,
-                                    client_name,
-                                    chat_id,
-                                    message_id,
-                                    responses_dict,
-                                    addPing,
-                                    args
-                                ]))
-                                
-                        i += 1
-                
+                    self.server.sendMessage(json.dumps([
+                                packetId,
+                                client_name,
+                                chat_id,
+                                message_id,
+                                responses_dict,
+                                addPing,
+                                args
+                            ]))
+                            
                 #else:
-                #    text, count = self.kw.getRepeatCount(message, model_name)
-                #    i = 0
                 #    responses_dict = {}
-                #    while i < count:
                 #        responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
                 #    
                 #        j = 0
@@ -229,8 +204,6 @@ class DigitalBeing():
                 #                    addPing,
                 #                    args
                 #                ]))
-                #                
-                #        i += 1
 
         except Exception as err:
             logger.exception("handle_message")
