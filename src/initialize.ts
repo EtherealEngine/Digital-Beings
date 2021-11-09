@@ -30,14 +30,15 @@ const pyConnect = require('./pyconnect');
 (async function(){  
     await pyConnect.invoke(async function(){
         await new tcpClient().init('127.0.0.1', process.env.TCP_PORT) 
-        await require("../client/discord/discord-client").createDiscordClient();
-        //require("../client/messenger/messenger-client").createMessengerClient();
-        //require('../client/telegram/telegram-client').createTelegramClient();
-        //require("../client/twilio/twilio-client").createTwilioClient();
-        //require("../client/whatsapp/whatsapp-client").createWhatsappClient();
-        //require("../client/twitter/twitter-client").createTwitterClient();
-        //require("../client/xr/xrengine-client").createXREngineClient();
-        //require("../client/zoom/zoom-client").createZoomClient();
+        //await require("../client/discord/discord-client").createDiscordClient();
+        await require("../client/reddit/reddit-client").createRedditClient();
+        //await require("../client/messenger/messenger-client").createMessengerClient();
+        //await require('../client/telegram/telegram-client').createTelegramClient();
+        //await require("../client/twilio/twilio-client").createTwilioClient();
+        //await require("../client/whatsapp/whatsapp-client").createWhatsappClient();
+        //await require("../client/twitter/twitter-client").createTwitterClient();
+        //await require("../client/xr/xrengine-client").createXREngineClient();
+        //await require("../client/zoom/zoom-client").createZoomClient();
     }); 
 })();
 

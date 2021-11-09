@@ -2,8 +2,9 @@ import * as net from 'net'
 import { client } from './discord/discord-client'
 import { discordPackerHandler } from './discord/discordPackerHandler'
 import { handlePacketSend } from './messenger/message'
+import { redditHandler } from './reddit/redditHandler'
 import { telegramPacketHandler } from './telegram/telegramPacketHandler'
-import { handleTwilioMsg } from './twilio/routes/messages'
+import { handleTwilio } from './twilio/routes/messages'
 import { xrEnginePacketHandler } from './xr/xrEnginePacketHandler'
 
 export class tcpClient {
@@ -41,10 +42,13 @@ export class tcpClient {
                         await telegramPacketHandler.getInstance.handleMessage(chat_id, responses, message_id, addPing, args)
                     }
                     else if (client_name === 'Twilio') {
-                        await handleTwilioMsg(chat_id, responses)
+                        await handleTwilio.getInstance.handleTwilioMsg(chat_id, responses)
                     }
                     else if (client_name === 'xr-engine') {
                         await xrEnginePacketHandler.getInstance.handleXrEnginePacket(responses, addPing, args)
+                    }
+                    else if (client_name === 'reddit') {
+                        await redditHandler.getInstance.handleMessage(responses, message_id, chat_id, args);
                     }
                 }
                 else if (packetId === 1) {

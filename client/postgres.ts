@@ -129,6 +129,84 @@ export class postgres {
                           console.log(err + ' ' + err.stack)
                         }
                       })
+                    return true
+                }
+
+                return false
+            }
+        })
+    }
+    async messageExistsAsync(client_name: string, chat_id: string, message_id: string, sender: string, content: string, timestamp: number) {
+        const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2 AND message_id=$3"
+        const values = [ client_name, chat_id, message_id ]
+
+        return await this.client.query(query, values, async (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            } else {
+                if (res.rows && res.rows.length) {
+                    this.updateMessage(client_name, chat_id, message_id, content, false);
+                }
+                else {
+                    const date = new Date(timestamp)
+                    const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                    const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+                    const global_message_id = client_name + '.' + chat_id + '.' + message_id
+                    const query2 = "INSERT INTO chat_history(client_name, chat_id, message_id, global_message_id, sender, content, createdAt) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *"
+                    const values2 = [ client_name, chat_id, message_id, global_message_id, sender, content, utcStr ]
+            
+                    await this.client.query(query2, values2, (err, res) => {
+                        if (err) {
+                          console.log(err + ' ' + err.stack)
+                        }
+                      })
+                    return true
+                }
+                return false
+            }
+        })
+    }
+    async messageExistsAsyncWitHCallback(client_name: string, chat_id: string, message_id: string, sender: string, content: string, timestamp: number, callback: Function) {
+        const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2 AND message_id=$3"
+        const values = [ client_name, chat_id, message_id ]
+
+        return await this.client.query(query, values, async (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            } else {
+                if (res.rows && res.rows.length) {
+                    this.updateMessage(client_name, chat_id, message_id, content, false);
+                }
+                else {
+                    const date = new Date(timestamp)
+                    const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                    const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+                    const global_message_id = client_name + '.' + chat_id + '.' + message_id
+                    const query2 = "INSERT INTO chat_history(client_name, chat_id, message_id, global_message_id, sender, content, createdAt) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *"
+                    const values2 = [ client_name, chat_id, message_id, global_message_id, sender, content, utcStr ]
+            
+                    await this.client.query(query2, values2, (err, res) => {
+                        if (err) {
+                          console.log(err + ' ' + err.stack)
+                        }
+                      })
+                      callback()
+                }
+            }
+        })
+    }    
+    async messageExistsAsyncWitHCallback2(client_name: string, chat_id: string, message_id: string, sender: string, content: string, timestamp: number, callback: Function) {
+        const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2 AND message_id=$3"
+        const values = [ client_name, chat_id, message_id ]
+
+        return await this.client.query(query, values, async (err, res) => {
+            if (err) {
+              console.log(err + ' ' + err.stack)
+            } else {
+                if (res.rows && res.rows.length) {
+                }
+                else {
+                    callback()
                 }
             }
         })
@@ -146,8 +224,8 @@ export class postgres {
         })
     }
 
-    async getNewMessageId(client_name: string, chat_id: string) {
-        const query = "SELEC * FROM chat_history WHERE client_name=$1 AND chat_id=$2"
+    async getNewMessageId(client_name: string, chat_id: string, callback: Function) {
+        const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2"
         const values = [ client_name, chat_id ]
 
         return await this.client.query(query, values, (err, res) => {
@@ -156,9 +234,9 @@ export class postgres {
             }
 
             if (res !== undefined && res !== null && res.rows !== undefined) {
-                return res.length + 1
+                callback(res.rows.length + 1)
             } else {
-                return 1
+                callback(1)
             }
         })
     }

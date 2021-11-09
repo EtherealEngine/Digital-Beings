@@ -11,6 +11,8 @@ services:
       CHAT_HISTORY_MESSAGES_COUNT: 20
     volumes:
         - "./:/DigitalBeing"
+    ports:
+        - "65535:65535"
 
   db:
     restart: always

@@ -4,7 +4,7 @@ import { handleMessage } from "./message"
 const token = process.env.MESSENGER_TOKEN
 const verify_token = process.env.MESSENGER_VERIFY_TOKEN
 
-export const createMessengerClient = async (messageResponseHandler) => {
+export const createMessengerClient = async () => {
     if (!token || !verify_token) return console.warn("No API tokens for Messenger bot, skipping");
 
     app.get('/webhook', async function(req, res) {
@@ -42,7 +42,7 @@ export const createMessengerClient = async (messageResponseHandler) => {
             console.log('Sender PSID: ' + senderPsid);
       
             if (webhookEvent.message) {
-               await handleMessage(senderPsid, webhookEvent.message, messageResponseHandler);
+               await handleMessage(senderPsid, webhookEvent.message);
             }
           });
       
