@@ -75,7 +75,7 @@ class DigitalBeing():
     def handle_message(self, packetId, message, client_name, chat_id, createdAt, message_id, addPing, author, args):
         print('handle message: ', message)
         try:
-            chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id)
+            chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id, author)
             if (message == None):
                 if (hasattr(self, '_logginServer')):
                     self._logginServer.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")
@@ -224,9 +224,9 @@ class DigitalBeing():
 
         return res
 
-    def handle_slash_command(self, client_name, chat_id, command, args, createdAt):
+    def handle_slash_command(self, client_name, chat_id, command, args, createdAt, author):
         try:
-            chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id)
+            chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id, author)
             chat_history = { command + ' ' + args: chat_history }
             chat_history = dumps(chat_history)
             print(chat_history)

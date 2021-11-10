@@ -55,7 +55,7 @@ class tcpServer:
                     client_name = data['client_name']
                     chat_id = data['chat_id']
                     createdAt = data['createdAt']
-                    resp = self.DB.handle_slash_command(client_name, chat_id, command, args, createdAt)
+                    resp = self.DB.handle_slash_command(client_name, chat_id, command, args, createdAt, sender)
 
                     self.sendMessage(json.dumps([
                         1,

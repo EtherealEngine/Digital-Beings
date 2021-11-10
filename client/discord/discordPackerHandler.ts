@@ -84,6 +84,20 @@ export class discordPackerHandler {
         this.client.channels.fetch(chat_id).then(channel => {
             channel.send(response)
             channel.stopTyping();
+            
+        /*Object.keys(response.response).map(function(key, index) {
+            console.log('response: ' + response.response[key])
+            if (response.response[key] !== undefined && response.response[key].length > 0) {
+                let text = response.response[key]
+                while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
+                sendSlashCommandResponse(client, interaction, chatId, text)  
+           }
+            else {
+                let emptyResponse = getRandomEmptyResponse()
+                while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
+                sendSlashCommandResponse(client, interaction, chatId, emptyResponse)
+            }
+        });      */
         }).catch(err => console.log(err))
     }
 
