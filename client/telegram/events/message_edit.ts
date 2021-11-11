@@ -3,9 +3,8 @@ import { tcpClient } from "../../tcpClient"
 import { userDatabase } from "../../userDatabase"
 import { getRandomEmptyResponse } from "../../utils"
 import { addMessageToHistory, getChatHistory, getResponse, onMessageResponseUpdated, updateMessage } from "../chatHistory"
-import { botName } from "../telegram-client"
 
-export async function onMessageEdit(bot, msg: TelegramBot.Message, messageResponseHandler) {
+export async function onMessageEdit(bot, msg: TelegramBot.Message, botName: string) {
     if (userDatabase.getInstance.isUserBanned(msg.from.id + '', 'telegram')) return
     console.log('edited_message: ' + JSON.stringify(msg))
     const date = Date.now() / 1000

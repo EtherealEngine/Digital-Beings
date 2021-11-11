@@ -1,15 +1,16 @@
 import TelegramBot = require("node-telegram-bot-api");
 import { getRandomEmptyResponse } from "../utils";
 import { addMessageToHistory, onMessageResponseUpdated } from "./chatHistory";
-import { botName } from "./telegram-client";
 
 export class telegramPacketHandler {
     static getInstance: telegramPacketHandler
     bot: TelegramBot
+    botName: string
 
-    constructor(bot: TelegramBot) {
+    constructor(bot: TelegramBot, botName: string) {
         telegramPacketHandler.getInstance = this
         this.bot = bot
+        this.botName = botName
     }
 
     async handleMessage(chat_id, responses, message_id, addPing, args) { 
@@ -26,11 +27,11 @@ export class telegramPacketHandler {
             if (responses[key] !== undefined && responses[key].length > 0) {
                 let text = responses[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                if (addPing) this.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                if (addPing) telegramPacketHandler.getInstance.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                     }).catch(console.error)
-                else this.bot.sendMessage(chat_id,text).then(function (_resp) {
+                else telegramPacketHandler.getInstance.bot.sendMessage(chat_id,text).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, text)
                 }).catch(console.error)       
@@ -38,11 +39,11 @@ export class telegramPacketHandler {
             else {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                if (addPing) this.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                if (addPing) telegramPacketHandler.getInstance.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
                     }).catch(console.error)           
-                else this.bot.sendMessage(chat_id,emptyResponse).then(function (_resp) {
+                else telegramPacketHandler.getInstance.bot.sendMessage(chat_id,emptyResponse).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
                     addMessageToHistory(_resp.chat.id, _resp.message_id, process.env.BOT_NAME, emptyResponse)
                     }).catch(console.error)
@@ -63,9 +64,9 @@ export class telegramPacketHandler {
             if (responses[key] !== undefined && responses[key].length <= 2000 && responses[key].length > 0) {
                 let text = responses[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                this.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                telegramPacketHandler.getInstance.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
-                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, telegramPacketHandler.getInstance.botName, text)
                     }).catch(console.error)
             }
             else if (responses[key].length > 2000) {
@@ -84,9 +85,9 @@ export class telegramPacketHandler {
                         if (i === 0) {
                             let text = lines[1]
                             while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
-                            this.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                            telegramPacketHandler.getInstance.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${text}`, {parse_mode: 'HTML'}).then(function (_resp) {
                                 onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
-                                addMessageToHistory(_resp.chat.id, _resp.message_id, botName, text)
+                                addMessageToHistory(_resp.chat.id, _resp.message_id, telegramPacketHandler.getInstance.botName, text)
                                 }).catch(console.error) 
                         }
                     }
@@ -95,9 +96,9 @@ export class telegramPacketHandler {
             else {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
-                this.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
+                telegramPacketHandler.getInstance.bot.sendMessage(chat_id,`<a href="tg://user?id=${senderId}">${senderName}</a> ${emptyResponse}`, {parse_mode: 'HTML'}).then(function (_resp) {
                     onMessageResponseUpdated(_resp.chat.id, message_id, _resp.message_id)
-                    addMessageToHistory(_resp.chat.id, _resp.message_id, botName, emptyResponse)
+                    addMessageToHistory(_resp.chat.id, _resp.message_id, telegramPacketHandler.getInstance.botName, emptyResponse)
                 }).catch(console.error)   
             }
         })
