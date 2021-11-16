@@ -118,6 +118,26 @@
   resolved "https://registry.yarnpkg.com/@isaacs/string-locale-compare/-/string-locale-compare-1.1.0.tgz#291c227e93fd407a96ecd59879a35809120e432b"
   integrity sha512-SQ7Kzhh9+D+ZW9MA0zkYv3VXhIDNx+LzM6EJ+/65I3QY+enU6Itte7E5XX7EWrqLW2FN4n06GWzBnPoC3th2aQ==
 
+"@node-redis/client@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.npmjs.org/@node-redis/client/-/client-1.0.0-rc.0.tgz"
+  integrity sha512-+DHbQ5rObps7WW3rMsOFG/4JfpPZQ6EqPHRlRUNOBtwE3sadYqpLTJMSRHDFjRFjhgwnIbvmbN/V6TnB14lCAw==
+  dependencies:
+    cluster-key-slot "1.1.0"
+    generic-pool "3.8.2"
+    redis-parser "3.0.0"
+    yallist "4.0.0"
+
+"@node-redis/json@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.npmjs.org/@node-redis/json/-/json-1.0.0-rc.0.tgz"
+  integrity sha512-bSLHcDWZKGvLIq8YjpkZJNy8FnNQSZNlYwNSvnUIDV+NInhWcY3e0i0xkBbGevrXscNUzPMZCUDMW9/SI/57sQ==
+
+"@node-redis/search@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.npmjs.org/@node-redis/search/-/search-1.0.0-rc.0.tgz"
+  integrity sha512-FEVsL18GXmYh4Figh7aGW/xyP3b7TXiE2d4/dLasK8szinmHz3oYyXFh1H5opz9oqBkwZsoPWkQMgXxsRUnNRA==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -5522,15 +5542,14 @@ redis-parser@3.0.0:
   dependencies:
     redis-errors "^1.0.0"
 
-redis@4.0.0-rc.3:
-  version "4.0.0-rc.3"
-  resolved "https://registry.npmjs.org/redis/-/redis-4.0.0-rc.3.tgz"
-  integrity sha512-yvijGYWp3aOvqpFgqovUWLWSdHgjUEtScqJmjTfUXj/4kEHuSW2TERFQelIBnrGeKh8//eYlLpCFKCjDYT4NQw==
+redis@4.0.0-rc.4:
+  version "4.0.0-rc.4"
+  resolved "https://registry.npmjs.org/redis/-/redis-4.0.0-rc.4.tgz"
+  integrity sha512-rcYOxvURG1kNg9t+BIY9PLDQh1JH0ZtJJxCQ8FwWSZXJ6TSWmk1VLXWkgzpNj/NAqN0nGdzjVPB4+1lFvOAO3w==
   dependencies:
-    cluster-key-slot "1.1.0"
-    generic-pool "3.8.2"
-    redis-parser "3.0.0"
-    yallist "4.0.0"
+    "@node-redis/client" "^1.0.0-rc.0"
+    "@node-redis/json" "^1.0.0-rc.0"
+    "@node-redis/search" "^1.0.0-rc.0"
 
 regexp.prototype.flags@^1.3.1:
   version "1.3.1"
