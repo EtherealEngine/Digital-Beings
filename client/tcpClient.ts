@@ -15,6 +15,8 @@ export class tcpClient {
         tcpClient.getInstance = this
 
         this.client = new net.Socket()
+        this.client.setNoDelay(true)
+        this.client.setKeepAlive(true, 5000)
         this.client.connect(port, ip, function() {
             console.log('connected')
         })

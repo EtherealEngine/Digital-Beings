@@ -1,9 +1,11 @@
+import { exec } from "child_process";
 import { chatFilter } from "../../chatFilter";
 import { userDatabase } from "../../userDatabase";
 import { startsWithCapital } from "../../utils";
 import { addMessageToHistory, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 const emojiRegex = require('emoji-regex');
 const emoji = require("emoji-dictionary");
+import * as fs from 'fs';
 
 module.exports = async (client, message) => {
     const reg = emojiRegex();
@@ -125,7 +127,33 @@ module.exports = async (client, message) => {
                 const channelName = d[index]
                 await message.guild.channels.cache.forEach(async (channel) => {
                     if (channel.type === 'voice' && channel.name === channelName) {
-                        channel.join()
+                        const connection = await channel.join()
+                        const receiver = connection.receiver
+                        const userStream = receiver.createStream(author, {mode:'pcm', end: 'silence'})
+                        const writeStream = fs.createWriteStream('recording.pcm', {})
+
+                        const buffer = []
+                        userStream.on('data', (chunk) => {
+                            buffer.push(chunk)
+                            console.log(chunk)
+                            userStream.pipe(writeStream)
+                        });
+                        writeStream.on('pipe', console.log)
+                        userStream.on('finish', () => {
+                            channel.leave()
+                            /*const cmd = 'ffmpeg -i recording.pcm recording.wav';
+                            exec(cmd, (error, stdout, stderr) => {
+                                if (error) {
+                                    console.log(`error: ${error.message}`);
+                                    return;
+                                }
+                                if (stderr) {
+                                    console.log(`stderr: ${stderr}`);
+                                    return;
+                                }
+                                console.log(`stdout: ${stdout}`);
+                            });*/
+                        });
                         return false
                     }
                 })
