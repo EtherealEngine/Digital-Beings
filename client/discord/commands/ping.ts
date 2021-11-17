@@ -17,5 +17,10 @@ export async function run(client, message, args, author, addPing, channel) {
     const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
     args.grpc_args['createdAt'] = utcStr
 
-    tcpClient.getInstance.sendMessage(args.grpc_args['message'], message.id, 'Discord', args.grpc_args['chat_id'], utcStr, addPing, author.username)   
+    let parentId = ''
+    if (args.grpc_args['isThread'] === true) {
+        parentId = args.grpc_args['parentId']
+    }
+
+    tcpClient.getInstance.sendMessage(args.grpc_args['message'], message.id, 'Discord', args.grpc_args['chat_id'], utcStr, addPing, author.username, 'parentId:' + parentId)
 }

@@ -76,6 +76,14 @@ class DigitalBeing():
         print('handle message: ', message)
         try:
             chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id, author)
+            parent_chat_history = []
+            if (len(args.split(':')) == 2 and len(chat_history) < int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT'))):
+                _len = int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')) - len(chat_history)
+                parentId = args.split(':')[1]
+                parent_chat_history = self.postgres.getHistory(_len, client_name, parentId, author)
+                for x in parent_chat_history:
+                    chat_history.append(x)
+                
             if (message == None):
                 if (hasattr(self, '_logginServer')):
                     self._logginServer.sendMessage("Exception invoke_solo_agent: invalid kwarg: message")

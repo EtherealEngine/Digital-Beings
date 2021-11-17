@@ -35,7 +35,7 @@ module.exports = async (client) => {
             });
 
             server.channels.cache.forEach(async (channel) => {
-                if (channel.type === 'text' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
+                if (channel.type === 'GUILD_TEXT' && channel.deleted === false && channel.permissionsFor(client.user.id).has(['SEND_MESSAGES', 'VIEW_CHANNEL'])) {
                     tcpClient.getInstance.sendMetadata(channel.name, 'Discord', channel.id, channel.topic || 'none')
                     channel.messages.fetch({limit: 100}).then(async messages => {
                         messages.forEach(async function (msg) {

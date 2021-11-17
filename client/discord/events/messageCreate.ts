@@ -19,6 +19,7 @@ module.exports = async (client, message) => {
     args['grpc_args'] = {};
 
     let {author, channel, content, mentions, id} = message;
+    console.log('got message: ' + content)
     if (process.env.DIGITAL_BEINGS_ONLY === 'True' && !channel.topic.toLowerCase().includes('digital being')) {
         return
     }
@@ -56,7 +57,7 @@ module.exports = async (client, message) => {
         }
     }
 
-    if (content === '') content = '{sent media}'
+    if (content === '') return
     let _prev = undefined
     if (!author.bot) {
         _prev = prevMessage[channel.id]
@@ -202,10 +203,17 @@ module.exports = async (client, message) => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
         });
     }
+    if (channel.type === "GUILD_PUBLIC_THREAD") {
+        args['grpc_args']['isThread'] = true
+        args['grpc_args']['parentId'] = channel.parentId
+    } else {
+        args['grpc_args']['isThread'] = false
+    }
+
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 
-    channel.startTyping();
+    channel.sendTyping();
     // Run the command
     cmd.run(client, message, args, author, addPing, channel.id).catch(err => console.log(err))
 };

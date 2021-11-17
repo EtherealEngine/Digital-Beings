@@ -75,7 +75,7 @@ export class discordPackerHandler {
                         }
                     }
                 });          
-                message.channel.stopTyping();
+                
             }).catch(err => console.log(err))
         });
     }
@@ -180,7 +180,7 @@ export class discordPackerHandler {
                         }
                     }
                 });          
-                message.channel.stopTyping();
+                
             })
         }).catch(err => console.log(err))
     }
