@@ -190,13 +190,14 @@ class XREngineBot {
         //#region  Tests
         if (doTests) {
             this.counter++
+            if (this.counter === 10) this.playEmote('dance1')
             if (this.counter === 20) this.requestSceneMetadata()
             if (this.counter === 25) this.sendMovementCommand(1, 1, 1)
             //if (this.counter === 35) this.requestWorldMetadata(5)
             //if (this.counter === 40) this.requestAllWorldMetadata()
             if (this.counter === 25) this.sendMovementCommand(2, 2, 2)
-            if (this.counter === 50) this.follow('alex')
-            if (this.counter === 60) this.follow('stop')
+            //if (this.counter === 50) this.follow('alex')
+            //if (this.counter === 60) this.follow('stop')
             //if (this.counter === 70) this.goTo('Window')
            // if (this.counter === 75) this.getChatHistory()
             //if (this.counter === 80) this.requestPlayers()
