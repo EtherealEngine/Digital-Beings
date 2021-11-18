@@ -247,6 +247,7 @@ class DigitalBeing():
             return { 'none': 'none' }
 
     def handle_user_update(self, event, user):
+        print('user update: ', event, ' for user: ', user)
         try:
             return { 'none': 'not implemented' }
         
