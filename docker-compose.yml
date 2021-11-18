@@ -2,13 +2,6 @@ version: "3.9"
 services:
   bot:
     build: .
-    environment:
-      PGHOST: digitalbeing_db
-      PGUSER: digitalbeing
-      PGPASSWORD: digitalbeing_default_pw
-      PGDATABASE: digitalbeing
-      GRPC_SERVER_PORT: 7777
-      CHAT_HISTORY_MESSAGES_COUNT: 20
     volumes:
         - "./:/DigitalBeing"
     ports:
