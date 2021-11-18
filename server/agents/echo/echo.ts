@@ -35,12 +35,12 @@ const createEcho = (messageResponseHandler) => {
         client.on('message', async (message) => {
             if (message.author.bot)
                 return; // Skip own messages
-            if (message.channel.type === 'text') {
+            if (message.channel.type === 'GUILD_TEXT') {
                 message.channel.startTyping();
                 message.reply(message.content);
                 message.channel.stopTyping()
 
-            } else if (message.channel.type === 'dm') {
+            } else if (message.channel.type === 'DM') {
                 message.channel.startTyping();
                 message.reply(message.content);
                 message.channel.stopTyping()

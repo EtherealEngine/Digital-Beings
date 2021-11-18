@@ -71,7 +71,7 @@ module.exports = async (client, message) => {
     addMessageToHistory(channel.id, id, author.username, content)
 
     const botMention = `<@!${client.user}>`;
-    const isDM = channel.type === 'dm';
+    const isDM = channel.type === 'DM';
     const isMention = (channel.type === 'GUILD_TEXT' && (mentions.has(client.user))) || isDM
     const otherMention = !isMention && mentions.members !== null && mentions.members.size > 0
     let startConv = false
@@ -107,7 +107,7 @@ module.exports = async (client, message) => {
         }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(client.username_regex)
+    const isUserNameMention = (channel.type === 'GUILD_TEXT' || isDM) && content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
     if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
@@ -127,7 +127,7 @@ module.exports = async (client, message) => {
             if (d.length > index) {
                 const channelName = d[index]
                 await message.guild.channels.cache.forEach(async (channel) => {
-                    if (channel.type === 'voice' && channel.name === channelName) {
+                    if (channel.type === 'GUILD_VOICE' && channel.name === channelName) {
                         const connection = await channel.join()
                         const receiver = connection.receiver
                         const userStream = receiver.createStream(author, {mode:'pcm', end: 'silence'})
