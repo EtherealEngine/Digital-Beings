@@ -34,6 +34,13 @@ export const _commandToValue = ([name, args, description]) =>
   return o;
 });
 
+export const channelTypes = {
+  'text': 'GUILD_TEXT',
+  'dm': 'DM',
+  'voice': 'GUILD_VOICE',
+  'thread': 'GUILD_PUBLIC_THREAD'
+}
+
 
 export const _findCommand = commandName => {
   let command = null;

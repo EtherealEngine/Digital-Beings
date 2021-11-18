@@ -1,6 +1,7 @@
 import { tcpClient } from "../../tcpClient";
 import { userDatabase } from "../../userDatabase";
 import { getResponse, updateMessage } from "../chatHistory";
+import { channelTypes } from "../util";
 
 module.exports = async (client, message) => {
     const {author, channel, id} = message;
@@ -33,7 +34,7 @@ module.exports = async (client, message) => {
                     const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
 
                     let parentId = ''
-                    if (channel.type === "GUILD_PUBLIC_THREAD") {
+                    if (channel.type === channelTypes['thread']) {
                         parentId = channel.prefixOptionalWhenMentionOrDM
                     }
 
