@@ -1,6 +1,7 @@
 import * as net from 'net'
 import { client } from './discord/discord-client'
 import { discordPackerHandler } from './discord/discordPackerHandler'
+import { instagramPacketHandler } from './instagram/instagramPacketHandler'
 import { handlePacketSend } from './messenger/message'
 import { redditHandler } from './reddit/redditHandler'
 import { telegramPacketHandler } from './telegram/telegramPacketHandler'
@@ -51,6 +52,9 @@ export class tcpClient {
                     }
                     else if (client_name === 'reddit') {
                         await redditHandler.getInstance.handleMessage(responses, message_id, chat_id, args);
+                    }
+                    else if (client_name === 'instagram') {
+                        await instagramPacketHandler.getInstance.handle(chat_id, responses)
                     }
                 }
                 else if (packetId === 1) {
