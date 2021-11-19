@@ -131,7 +131,7 @@
 
 "@isaacs/string-locale-compare@*", "@isaacs/string-locale-compare@^1.0.1", "@isaacs/string-locale-compare@^1.1.0":
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@isaacs/string-locale-compare/-/string-locale-compare-1.1.0.tgz#291c227e93fd407a96ecd59879a35809120e432b"
+  resolved "https://registry.npmjs.org/@isaacs/string-locale-compare/-/string-locale-compare-1.1.0.tgz"
   integrity sha512-SQ7Kzhh9+D+ZW9MA0zkYv3VXhIDNx+LzM6EJ+/65I3QY+enU6Itte7E5XX7EWrqLW2FN4n06GWzBnPoC3th2aQ==
 
 "@lifeomic/attempt@^3.0.0":
@@ -1030,7 +1030,7 @@ archy@*:
 
 are-we-there-yet@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-2.0.0.tgz#372e0e7bd279d8e94c653aaa1f67200884bf3e1c"
+  resolved "https://registry.npmjs.org/are-we-there-yet/-/are-we-there-yet-2.0.0.tgz"
   integrity sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==
   dependencies:
     delegates "^1.0.0"
@@ -6367,7 +6367,7 @@ strip-ansi@^3.0.0, strip-ansi@^3.0.1, "strip-ansi@^3.0.1 || ^4.0.0":
 
 strip-ansi@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-4.0.0.tgz#a8479022eb1ac368a871389b635262c505ee368f"
+  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-4.0.0.tgz"
   integrity sha1-qEeQIusaw2iocTibY1JixQXuNo8=
   dependencies:
     ansi-regex "^3.0.0"
@@ -6688,10 +6688,10 @@ tweetnacl@^1.0.3:
   resolved "https://registry.npmjs.org/tweetnacl/-/tweetnacl-1.0.3.tgz"
   integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
-twilio@3.71.1:
-  version "3.71.1"
-  resolved "https://registry.npmjs.org/twilio/-/twilio-3.71.1.tgz"
-  integrity sha512-P/KFvm33UW15EnpHJKgdTxUa1u6MlR/u+sCVnL4ie2TDRv6t7kX+ieIGQMpH7bP/z7FXkTjEt0lz4M+XJ/XWOg==
+twilio@3.71.2:
+  version "3.71.2"
+  resolved "https://registry.npmjs.org/twilio/-/twilio-3.71.2.tgz"
+  integrity sha512-aHyq0ofeD0M9O8WbV4ASs9JglkwlnLRWQRLF+9GnKDMoerXKewOLYPhQXhEm1ZydywiGjhgBu7fqEpIbnP/3PA==
   dependencies:
     axios "^0.21.4"
     dayjs "^1.8.29"
