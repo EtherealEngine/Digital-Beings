@@ -71,13 +71,13 @@ DigitalBeing requires the following to run:
 [docker]: https://www.docker.com/
 
 ## Setup - Docker (WSL/Linux)
-1. Instal docker and docker-compose
+1. Install docker and docker-compose
 2. cd to the repository folder
 3. rename the .env.default to .env and updated the variables
 4. update the /src/initialize.ts script with the clients you need and /server/agent_params.py with the needed agents (by default, discord is used and gpt3-openai)
 5. run docker-compose build - to build the docker image
 6. in order to run the image you can use docker-compose up (or docker-compose -d to make it run on the background)
-7. in order to close the imgae you can use CTRL+C if you are inside the image or docker-compose down if not
+7. in order to close the image you can use CTRL+C if you are inside the image or docker-compose down if not
 
 ## Setup - Without Docker
 1. Install python dependencies in requirements.txt
