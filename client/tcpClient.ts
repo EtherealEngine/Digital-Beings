@@ -6,6 +6,7 @@ import { handlePacketSend } from './messenger/message'
 import { redditHandler } from './reddit/redditHandler'
 import { telegramPacketHandler } from './telegram/telegramPacketHandler'
 import { handleTwilio } from './twilio/routes/messages'
+import { twitterPacketHandler } from './twitter/twitterPacketHandler'
 import { xrEnginePacketHandler } from './xr/xrEnginePacketHandler'
 
 export class tcpClient {
@@ -55,6 +56,9 @@ export class tcpClient {
                     }
                     else if (client_name === 'instagram') {
                         await instagramPacketHandler.getInstance.handle(chat_id, responses)
+                    }
+                    else if (client_name === 'twitter') {
+                        await twitterPacketHandler.getInstance.handleMessage(responses, message_id, chat_id, args)
                     }
                 }
                 else if (packetId === 1) {

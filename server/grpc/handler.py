@@ -99,7 +99,7 @@ class DigitalBeing():
                     responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
 
                     j = 0
-                    while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name):
+                    while self.aicfm.hasBadWord(responses_dict['gpt3'], model_name) or (client_name == "twitter" and len(responses_dict['gpt3']) >= 280):
                         responses_dict['gpt3'] = self.addEmojis(self.gpt3_agent.invoke_api(message=message))
                         j += 1
                         if (j > self.aicfm.getMaxCount()):
@@ -123,7 +123,7 @@ class DigitalBeing():
             #            responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
 
             #            j = 0
-            #            while self.aicfm.hasBadWord(responses_dict['rasa'], model_name):
+            #            while self.aicfm.hasBadWord(responses_dict['rasa'], model_name) or (client_name == "twitter" and len(responses_dict['rasa']) >= 280):
             #                responses_dict['rasa'] = self.addEmojis(self.rasa_agent.invoke(message=message))
             #                j += 1
             #                if j > self.aicfm.getMaxCount():
@@ -169,7 +169,7 @@ class DigitalBeing():
                     responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
                     
                     j = 0
-                    while self.aicfm.hasBadWord(responses_dict['metaintelligence'], model_name):
+                    while self.aicfm.hasBadWord(responses_dict['metaintelligence'], model_name) or (client_name == "twitter" and len(responses_dict['metaintelligence']) >= 280):
                         history = prepare_metaintelligence_history(chat_history)
                         responses_dict['metaintelligence'] = self.addEmojis(self.mi_agent.handle_message(history))
                         j += 1
@@ -194,7 +194,7 @@ class DigitalBeing():
                 #        responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message=text, model_name=model_name, context=self.context))
                 #    
                 #        j = 0
-                #        while self.aicfm.hasBadWord(responses_dict[model_name], model_name):
+                #        while self.aicfm.hasBadWord(responses_dict[model_name], model_name) or (client_name == "twitter" and len(responses_dict[model_name]) >= 280):
                 #            responses_dict[model_name] = self.addEmojis(self.agent_env.start(self.agent.agent, user_message='m continue', model_name=model_name, context=self.context))
                 #            j += 1
                 #            if (j > self.aicfm.getMaxCount()):
