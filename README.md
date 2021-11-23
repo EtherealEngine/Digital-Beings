@@ -69,6 +69,18 @@ DigitalBeing requires the following to run:
 [npm]: https://www.npmjs.com/
 [python]: https://www.python.org/ 
 [docker]: https://www.docker.com/
+[rust]: https://www.rust-lang.org/
+
+## Setup - Windows 10
+1. Install the requirements (Nodejs, npm and Python)
+2. Install Rust [Rust][rust] - required for the python requirements
+3. Install c++ support
+4. Clone the repository and go in the folder
+5. Run `npm install`
+6. Run `pip install -r requirements.txt`
+7. Install postgres, setup the database and run the init.sql (in the root folder)
+8. Rename .env.default to .env and update the variables
+9. Run the bot using `npm run` in the command line
 
 ## Setup - Docker (WSL/Linux)
 1. Install docker and docker-compose
