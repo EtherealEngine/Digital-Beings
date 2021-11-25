@@ -49,7 +49,7 @@
     "puppeteer-extra-plugin-stealth": "2.9.0",
     "puppeteer-stream": "2.0.7",
     "reddit": "1.2.1",
-    "redis": "4.0.0-rc.4",
+    "redis": "4.0.0",
     "session": "0.1.0",
     "snoostream": "1.0.1",
     "snoowrap": "1.23.0",
