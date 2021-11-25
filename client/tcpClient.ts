@@ -58,7 +58,7 @@ export class tcpClient {
                         await instagramPacketHandler.getInstance.handle(chat_id, responses)
                     }
                     else if (client_name === 'twitter') {
-                        await twitterPacketHandler.getInstance.handleMessage(responses, message_id, chat_id, args)
+                        await twitterPacketHandler.getInstance.handleMessage(responses, message_id, chat_id, args)  
                     }
                 }
                 else if (packetId === 1) {

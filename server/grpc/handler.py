@@ -76,6 +76,8 @@ class DigitalBeing():
         print('handle message: ', message)
         try:
             chat_history = self.postgres.getHistory(int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')), client_name, chat_id, author)
+            userFirstMessage: bool = not self.postgres.getHasUserSentMessage(client_name, author)
+            print('userFirstMessage: ', userFirstMessage)
             parent_chat_history = []
             if (len(args.split(':')) == 2 and len(chat_history) < int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT'))):
                 _len = int(os.getenv('CHAT_HISTORY_MESSAGES_COUNT')) - len(chat_history)

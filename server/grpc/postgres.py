@@ -112,3 +112,12 @@ class postgres:
                 print(ex)
 
         return _res
+    
+    def getHasUserSentMessage(self, client_name, sender) -> bool:
+        client_name = client_name.lower()
+        query = '''SELECT * FROM chat_history WHERE client_name=%s AND sender=%s'''
+        self.cur.execute(query, [client_name, sender])
+        results = self.cur.fetchall()
+        
+        return len(results) > 0
+        
