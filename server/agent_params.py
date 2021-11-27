@@ -16,7 +16,11 @@ ALL_AGENTS_LIST = [
                     'gptneo.xlarge',
                     'reddit.xlarge',
                     'reddit.xxlarge',
-                    'wizard_of_wikipedia.end2end_generator'
+                    'wizard_of_wikipedia.end2end_generator',
+                    'gpt3',
+                    'repeat',
+                    'metaintelligence',
+                    'thales'
                   ]
 SELECTED_AGENTS = [
                     # 'gpt3',
