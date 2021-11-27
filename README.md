@@ -1,4 +1,4 @@
-What is Digital Being?
+# What is Digital Being? #
 
 Digital Being (DB) is a software written in Typescript and Python used to deploy DL or ML agents easily in the world.
 
@@ -45,7 +45,7 @@ In order to expose a port in the public inside docker go to docker-compose.yaml,
  \
 Port forwarding is needed in order to enable public access to a service, like the database, the web server or the bot manager.
 
-Requirements
+## Requirements ##
 
 Digital Being requires the following to run:
 
@@ -56,9 +56,9 @@ Digital Being requires the following to run:
 * Python - version 3.8 or more
 * Docker - for easy setup in containers (build scripts are included)
 
-Setup
+# Setup #
 
-Windows 10:
+## Windows 10: ##
 
 
 
@@ -72,7 +72,7 @@ Windows 10:
 * Rename the .env.default to .env (or make a new copy) and update the variables
 * Run the bot in using npm run in the command line
 
-Docker (WSL/Linux):
+## Docker (WSL/Linux): ##
 
 
 
@@ -89,7 +89,7 @@ Docker - Options 2 (WSL/Linux):
 *  Docker build -t digital_being
 * Docker run -d digital_being
 
-Without Docker (WSL/Linux):
+## Without Docker (WSL/Linux): ##
 
 
 
@@ -100,7 +100,7 @@ Without Docker (WSL/Linux):
 * Rename the .env.default to .env (or make a new copy) and update the variables
 * Run the bot in using npm run in the command line
 
-Misc Information/Troubleshooting:
+M## isc Information/Troubleshooting: ##
 
 How to change active agents (from the installed): Go to server/agent_params.py and add/remove the SELECT_AGENTS list using the agent name string.
 
@@ -115,7 +115,7 @@ Puppeteer error, that it cant find Chrome: WSL can cause an error with puppeteer
 * wget[ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb](https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb)
 * sudo apt -y install ./google-chrome-stable_current_amd64.deb
 
-XR-Engine Support:
+## XR-Engine Support: ##
 
 DigitalBeing (DB) can run the xr-engine runs using Puppeteer ([https://github.com/puppeteer/puppeteer](https://github.com/puppeteer/puppeteer)). It connects as a virtual headful client in the engine, it updates the model randomly and to a set name for the bot, it can interact as a person and access everything. Currently it has built in support with the chat which can help it talk with other users and use chat commands, also it reads the client-logs which have info that are about the bot, like scene metadata etc.
 
