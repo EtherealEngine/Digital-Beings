@@ -91,7 +91,7 @@ Port forwarding is needed in order to enable public access to a service, like th
 * Run docker-compose build to build the docker image
 * In order to run the image you can use docker-compose up (if in Putty you can use docker-compose up -d to keep the image open after closing)
 * In order to close the image you can either use docker-compose down or CTRL+ALT+C
-* 
+
 ## Windows 10: 
 * Install the requirements (Nodejs, npm, Python)
 * Install Rust - required for the python requirements - Rust is needed in order to installed the requirements.txt, the tokenizers library.
@@ -199,12 +199,12 @@ Values Explanation:
 ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_283.png)
 
    * TWITTER_BEARER_TOKEN
-    * TWITTER_APP_TOKEN
-    * TWITTER_APP_TOKEN_SECRET
-    * TWITTER_ACCESS_TOKEN
-    * TWITTER_Access_TOKEN_SECRET
-    * TWITTER_ID -> The name of the twitter account, e.x. DigitalBeing
-    * TWITTER_TWEET_RULES -> Rules (words) that are used to fetch Tweets, they are separated using semicolon (;), for example: digital being;digital;being
+   * TWITTER_APP_TOKEN
+   * TWITTER_APP_TOKEN_SECRET
+   * TWITTER_ACCESS_TOKEN
+   * TWITTER_Access_TOKEN_SECRET
+   * TWITTER_ID -> The name of the twitter account, e.x. DigitalBeing
+   * TWITTER_TWEET_RULES -> Rules (words) that are used to fetch Tweets, they are separated using semicolon (;), for example: digital being;digital;being
 * Discord:
     * In order to fetch discord Tokens go to the [Dev Portal](https://discord.com/developers/applications) and click New Application, select a name for the Application and click Create, select the Bot panel and create bot, Client_API_Token can be fetched from the Bot Tab and Client and Client_Secret can be fetched from the OAuth2 tab. In the dev portal you in the bot tab you will need to enable these 2 options in order to make the bot crash.
 
