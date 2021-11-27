@@ -300,7 +300,7 @@ In order to set up the bot for facebook, you will need to go to the Facebook Dev
 
 ##### Zoom
 
-To use zoom, you will need to create a room and get the invitation link (for web), like this [https://us04web.zoom.us/wc/join](https://us04web.zoom.us/wc/join)/id if the room needs a password, you will need to add it in the `zoom_password` variable or in the url.
+To use zoom, you will need to create a room and get the invitation link (for web), like this `https://us04web.zoom.us/wc/join/id` if the room needs a password, you will need to add it in the `zoom_password` variable or in the url.
 
 * `ZOOM_INVITATION_LINK`
 * `ZOOM_PASSWORD`
