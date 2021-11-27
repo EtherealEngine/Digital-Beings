@@ -38,7 +38,7 @@ Out of the box, the server supports these AI bots:
  
 The server can fetch chat history and transform it to a list.
 
-The `client` is connected with the `server` using TCP sockets, sending JSON-encoded packets.
+The `client` is connected with the `server` using `TCP` sockets, sending `JSON`-encoded packets.
 
 Right now these TCP packets may contain:
 
@@ -52,32 +52,8 @@ Right now these TCP packets may contain:
 * `sendMessageEdit` (this command is sent when a message is edited, in order to update the agent’s response too)
 * `sendMetadata` (this command is used to send the metadata of the current server - currently implemented in Discord and the [XR-Engine](https://github.com/XRFoundation/XREngine)).
 
-New packets can be implemented easily, the only thing to be noted is that the ID should be different from the old packets, also the packet should be sent as a JSON string, like the examples, to avoid any issues with the server.
+New packets can be implemented easily, the only thing to be noted is that the ID should be different from the old packets, also the packet should be sent as a `JSON` string, like the examples, to avoid any issues with the server.
 More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzlTBgtApiY54oqfNdaCIBTFwRqRDvs/edit?usp=sharing)
-
-How to select available agents:
-
-Go to server/agent_params.py and add the agent name in SELECTED_AGENTS array, or delete/comment unwanted agents, like this.
-
-![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_286.png)
-
-
-How to select available clients:
-
-Go to the src/initialize.ts and comment/uncomment the needed clients, like this.
-
-![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_287.png)
-
-How to port forward in docker:
-
-In order to expose a port in the public inside docker go to docker-compose.yaml, find the needed image and add the needed port like this.
-
-![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_288.png)
-Port forwarding is needed in order to enable public access to a service, like the database, the web server or the bot manager.
-
-If port forwarding is not an option, then [ngrok](https://ngrok.com/) is a helping option, it creates a tunnel that enables public access to your computer
-In order to use NGROK, you will need to install it (it supports both windows and linux) and run `ngrok http port` through CMD/Terminal. This command will generate a new URL that will be later use for public access.
-This step can be used for the Editor, Twilio or Messenger, which needs public access to the computer.
 
 ## Requirements
 
@@ -91,22 +67,23 @@ This step can be used for the Editor, Twilio or Messenger, which needs public ac
 
 ## Docker (WSL/Linux): 
 
-* Install docker and docker-compose - [detailed installation instructions](https://docs.docker.com/desktop/windows/wsl/)
+* Install docker and `docker-compose` - [detailed installation instructions](https://docs.docker.com/desktop/windows/wsl/)
 * Clone the repository and go in the folder
-* Run docker-compose build to build the docker image
-* In order to run the image you can use docker-compose up (if in Putty you can use docker-compose up -d to keep the image open after closing)
-* In order to close the image you can either use docker-compose down or CTRL+ALT+C
+* Run the `docker-compose build` command to build the containers
+* In order to run the image you can use `docker-compose up` (if in Putty you can use `docker-compose up -d` to keep the image open after closing)
+* In order to close the image you can either use docker-compose down or `Ctrl + Alt + C`
 
-## Windows 10: 
-* Install the requirements (Nodejs, npm, Python)
-* Install Rust - required for the python requirements - Rust is needed in order to installed the requirements.txt, the tokenizers library.
-* Install c++ build tools (can be installed through [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/))
-* Clone the repository and go in the folder
-* Run npm install
-* Run pip install -r requirements.txt
-* Install postgres, setup the user and the database and run the init.sql (root folder)
+## Windows 10:
+
+* Install the requirements ([Node.js](https://nodejs.org/en/), [NPM]()https://npmjs.com/, [Python](https://python.org))
+* Install [Rust](https://www.rust-lang.org/), which is needed in for the tokenizers library in `requirements.txt`
+* Install `C++ build tools` through [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/)
+* Clone the repository (`git clone git@github.com:XRFoundation/DigitalBeing.git`) and open the `DigitalBeing` directory
+* Run `npm install`
+* Run `pip install -r requirements.txt`
 * Rename the .env.default to .env (or make a new copy) and update the variables
-* Run the bot in using npm run in the command line
+* Install PostgreSQL, setup the user and the database according to the parameters starting with `PG*` in an `.env` file and run the init.sql (root folder)
+* Run the bot in using `npm run` in the command line
 
 ## Without Docker (WSL/Linux): 
 
@@ -131,6 +108,42 @@ Open `server/agent_params.py` and add / remove the `SELECT_AGENTS` list using th
 **Attention**: applies to the installed clients only.
 
 Open `src/initialize.ts` and comment/uncomment the clients you need, if you need a client that uses a web server ([Twilio](https://www.twilio.com/), messenger), go to client/webserver.ts and uncomment line 17 otherwise you can leave it commented.
+
+#### Selecting available agents
+
+Go to `server/agent_params.py` and add the agent name in `SELECTED_AGENTS` array, or `delete` / `comment` unwanted agents, like this.
+
+![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_286.png)
+
+#### Selecting available clients:
+
+Go to the src/initialize.ts and comment/uncomment the needed clients, like this.
+
+![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_287.png)
+
+#### Port forwarding (used for Twilio)
+
+Port forwarding is needed in order to enable public access to a service, like the database, web server or the bot manager.
+Twilio needs an access to notify the DigitalBeing about SMS events.
+
+##### Public IP is available (Docker)
+
+In order to expose a port in the public inside docker go to `docker-compose.yaml`, edit the contaier you want to change and add the port according to this syntax.
+
+```yaml
+ports:
+  - "HOST_PORT:CONTAINER_PORT"
+```
+
+Example:
+
+![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_288.png)
+
+##### Public IP is not available (`ngrok`)
+
+A software called [ngrok](https://ngrok.com/) may help if you are using a home network and are beyond the nat. It creates a tunnel that enables public access to your computer. In order to use `ngrok`, you will need to install it (it supports both windows and linux) and run `ngrok http port` through the command line. This command will generate a new URL that will be later use for public access.
+
+This step can be used for the `Editor`, `Twilio` or `Messenger`, which needs public access to the computer.
 
 #### Twilio setup
 
