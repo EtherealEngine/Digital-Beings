@@ -1,4 +1,5 @@
 
+
 # About
 
 Digital Being is a software that connects AI agents with a range of IM and VR software, making their deployment easier. You pick a bot, fill the account data and you're able to converse with a bot using SMS, Twitter or other social media.
@@ -74,6 +75,10 @@ In order to expose a port in the public inside docker go to docker-compose.yaml,
 ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_288.png)
 Port forwarding is needed in order to enable public access to a service, like the database, the web server or the bot manager.
 
+If port forwarding is not an option, then [ngrok](https://ngrok.com/) is a helping option, it creates a tunnel that enables public access to your computer
+In order to use NGROK, you will need to install it (it supports both windows and linux) and run `ngrok http port` through CMD/Terminal. This command will generate a new URL that will be later use for public access.
+This step can be used for the Editor, Twilio or Messenger, which needs public access to the computer.
+
 ## Requirements
 
 * [Digital Being](https://github.com/XRFoundation/DigitalBeing) requires the following to run:
@@ -129,8 +134,7 @@ Open `src/initialize.ts` and comment/uncomment the clients you need, if you need
 
 #### Twilio setup
 
-In order to run [Twilio](https://www.twilio.com/), you will need to have your ports forwarded, this can be done easier though using [ngrok](https://ngrok.com/), which opens a tunnel. For [ngrok](https://ngrok.com/) you should use the web server port (`65535` - `ngrok` HTTP port `65535`), ngrok can be used both in Linux and Windows.
-
+In order to run [Twilio](https://www.twilio.com/), you will need to have your ports forwarded.
 Puppeteer error, that it cant find Chrome: [WSL](https://docs.microsoft.com/en-us/windows/wsl/about) can cause an error with puppeteer that it cant find chromium driver, in order to fix it you will need to install chrome manually, running the following commands:
 
 ```
@@ -216,10 +220,8 @@ Values Explanation:
     
 * Twilio:
     * In order to use twilio, you will need to create an account and create a new phone number (Twilio doesn’t receive SMS abroad, so the number should be better from your Region). 
-    * In order to run Twilio you will need to install NGROK or an alternative.
-    * Run ngrok and with the same HTTP port set for the TWILIO_PORT in the .env -> ngrok http 65535
-    * Update Twilio WebHooks for Messaging (SMS) with the new ngrok link x.x.x.x.ngrok.io/sms for the active number
-    * Though NGROK can be ignored if you have port forwarded, then you can just use your local ip:port/sms
+    * Then you will need to port forward (if needed) the web server port, default is 65535
+    * Update Twilio WebHooks for Messaging (SMS) with the your web server url ip:port/sms for the active number
     * TWILIO_ACCOUNT_SID
     * TWILIO_AUTH_TOKEN
     * TWILIO_PHONE_NUMBER
