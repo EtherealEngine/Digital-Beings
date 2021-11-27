@@ -1,28 +1,58 @@
-# What is Digital Being? #
 
-Digital Being (DB) is a software written in Typescript and Python used to deploy DL or ML agents easily in the world.
+# About
 
-A platform for letting researchers connect an intelligent AI directly to real time communication networks and 3D worlds.
+Digital Being is a software that connects AI agents with a range of IM and VR software, making their deployment easier. You pick a bot, fill the account data and you're able to converse with a bot using SMS, Twitter or other social media.
 
-[In partnership with SuperReality, a free open source teaching platform for everyone.](https://superreality.com)
+[Made in partnership with **SuperReality**, a free open source teaching platform for everyone.](https://superreality.com)
 
-The Client is written in Typescript, which holds the Clients of most known social networks, as well XR-Engine which is a 3D World.
+Digital Being is written in [Typescript](https://www.typescriptlang.org/) and [Python](https://www.python.org/). Typescript is used for the clients of most known social networks, as well as [XR-Engine](https://github.com/XRFoundation/XREngine), a 3D metaverse architecture. A layer that connects the AI agents is called the server, and is written in [Python](https://www.python.org/).
 
-While the server is written in Python, as Python is the most used language for Deep and Machine Learning.
+Digital Being supports:
 
-Currently the Client supports out of the Box Discord (Servers, Threads, Direct Messages), Twitter (Twits, Direct Messages), Instagram (Direct Messages), Messenger (Direct Messages - Facebook Pages), Reddit (Posts, Messages), Telegram (Group, Direct Messages), Twilio (SMS), WhatsAPP (Not tested), XR-Engine (Chat, also supports Commands and events from other users - proximity, emotions etc), Zoom (Not fully implemented, Supports Video Group Calls).
+* [Discord](https://discord.com/) (Servers, Threads, DMs)
+* [Twitter](https://twitter.com/) (Tweets, DMs)
+* [Instagram](https://www.instagram.com/) (DMs)
+* [Messenger](https://www.messenger.com/) (DMs - Facebook Pages)
+* [Reddit](https://reddit.com/) (Posts, Messages)
+* [Telegram](https://telegram.org/) (Groupmessages , DMs)
+* [Twilio](https://www.twilio.com/) (SMS)
+* [WhatsAPP](https://www.whatsapp.com/) (untested)
+* [XR-Engine](https://github.com/XRFoundation/XREngine) (chat, also supports commands and events from other users - proximity, emotions, etc.)
+* [Zoom](https://www.zoom.us/) (unfinished, supports video group calls).
 
-The Client is using either Puppeteer (xr-engine, zoom) or the API for each client (discord, messenger etc).
+The Client is using either Puppeteer ([XR-Engine](https://github.com/XRFoundation/XREngine), [Zoom]((https://www.zoom.us/))) or the API for each client ([Discord](https://discord.com/), [Messenger](https://www.messenger.com/), etc).
 
-The Server supports out of the box DiaoloGPT, GPTNeo, Wizard of Wikipedia, OpenChat, GPTj, Droidlet, Rasa, GPT3 - Openai, Metaintelligence. What is more, the server can fetch chat history and transform it to a list.
+Out of the box, the server supports these AI bots:
 
-More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzlTBgtApiY54oqfNdaCIBTFwRqRDvs/edit?usp=sharing)
+* [`DiaoloGPT`](https://huggingface.co/transformers/model_doc/dialogpt.html)
+* [`GPTNeo`](https://github.com/EleutherAI/gpt-neo)
+* [`Wizard of Wikipedia`](https://parl.ai/projects/wizard_of_wikipedia/)
+* `OpenChat`
+* [`GPT-j`](https://6b.eleuther.ai/)
+* [`Droidlet`](https://github.com/facebookresearch/fairo)
+* [`Rasa`](https://rasa.com/)
+* `GPT-3` by OpenAI
+* AI agents by Metaintelligence
+* [ Thales Agent ](https://github.com/DavinciDreams/Thales)
+ 
+The server can fetch chat history and transform it to a list.
 
-The Client is connected with the Server using a TCP Socket, sending JSON encoded packets.
+The `client` is connected with the `server` using TCP sockets, sending JSON-encoded packets.
 
-Right now there is sendMessage (chat packet message), sendSlashCommand (slash command from discord - can be implemented to other clients too), sendUserUpdateEvent (on discord join server, leave, on online, idle or offline, all events can be fed to agents), sendGetAgents (returns a list of the active agents), sendSetAgentsFields (this command can be used to update the context of an agent), sendPingSoloAgent (this command can be used to ping directly one agent - if many agents are active), sendMessageReaction (this command is sent when a user reacts to a message - current implemented in discord), sendMessageEdit (this command is sent when a message is edited, in order to update the agent’s response too), sendMetadata (this command is used to send the metadata of the current server - currently implemented in Discord and the xr-engine).
+Right now these TCP packets may contain:
+
+* `sendMessage` (chat packet message)
+* `sendSlashCommand` (Discord slash command - can be implemented to other clients too)
+* `sendUserUpdateEvent` (on Discord join server, leave, on online, idle or offline, all events can be fed to agents)
+* `sendGetAgents` (returns a list of the active agents)
+* `sendSetAgentsFields` (this command can be used to update the context of an agent)
+* `sendPingSoloAgent` (this command can be used to ping directly one agent - if many agents are active)
+* `sendMessageReaction` (this command is sent when a user reacts to a message - current implemented in Discord)
+* `sendMessageEdit` (this command is sent when a message is edited, in order to update the agent’s response too)
+* `sendMetadata` (this command is used to send the metadata of the current server - currently implemented in Discord and the [XR-Engine](https://github.com/XRFoundation/XREngine)).
 
 New packets can be implemented easily, the only thing to be noted is that the ID should be different from the old packets, also the packet should be sent as a JSON string, like the examples, to avoid any issues with the server.
+More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzlTBgtApiY54oqfNdaCIBTFwRqRDvs/edit?usp=sharing)
 
 How to select available agents:
 
@@ -42,29 +72,30 @@ How to port forward in docker:
 In order to expose a port in the public inside docker go to docker-compose.yaml, find the needed image and add the needed port like this.
 
 ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_288.png)
- \
 Port forwarding is needed in order to enable public access to a service, like the database, the web server or the bot manager.
 
-## Requirements ##
+## Requirements
 
-Digital Being requires the following to run:
+* [Digital Being](https://github.com/XRFoundation/DigitalBeing) requires the following to run:
+* [NodeJS](https://nodejs.org/en/) - version 16 or more
+* [NPM](https://www.npmjs.com/) - will be installed through nodejs
+* [Python](https://www.python.org/) - version 3.8 or more
+* [Docker](https://www.docker.com/) - makes the setup easy through using the containers
 
+# Setup 
 
+## Docker (WSL/Linux): 
 
-* Nodejs - version 16 or more
-* Npm - will be installed through nodejs
-* Python - version 3.8 or more
-* Docker - for easy setup in containers (build scripts are included)
-
-# Setup #
-
-## Windows 10: ##
-
-
-
+* Install docker and docker-compose - [detailed installation instructions](https://docs.docker.com/desktop/windows/wsl/)
+* Clone the repository and go in the folder
+* Run docker-compose build to build the docker image
+* In order to run the image you can use docker-compose up (if in Putty you can use docker-compose up -d to keep the image open after closing)
+* In order to close the image you can either use docker-compose down or CTRL+ALT+C
+* 
+## Windows 10: 
 * Install the requirements (Nodejs, npm, Python)
-* Install Rust - required for the python requirements - Rust is needed in order to installed the requirements.txt, the tokenizers library, also if you get errors with installing the `psycopg2 `library, just comment it out and uncomment `psycopg2-binary `library (postgres connector library), the second is already built and will be installed easier without any dependencies
-* Install c++ build tools (can be installed through Visual Studio Community)
+* Install Rust - required for the python requirements - Rust is needed in order to installed the requirements.txt, the tokenizers library.
+* Install c++ build tools (can be installed through [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/))
 * Clone the repository and go in the folder
 * Run npm install
 * Run pip install -r requirements.txt
@@ -72,26 +103,7 @@ Digital Being requires the following to run:
 * Rename the .env.default to .env (or make a new copy) and update the variables
 * Run the bot in using npm run in the command line
 
-## Docker (WSL/Linux): ##
-
-
-
-* Install docker and docker-compose - [detailed installation instructions](https://docs.docker.com/desktop/windows/wsl/)
-* Clone the repository and go in the folder
-* Run docker-compose build to build the docker image
-* In order to run the image you can use docker-compose up (if in Putty you can use docker-compose up -d to keep the image open after closing)
-* In order to close the image you can either use docker-compose down or CTRL+ALT+C
-
-Docker - Options 2 (WSL/Linux):
-
-
-
-*  Docker build -t digital_being
-* Docker run -d digital_being
-
-## Without Docker (WSL/Linux): ##
-
-
+## Without Docker (WSL/Linux): 
 
 * Install the requirements (Nodejs, npm and Python)
 * Run npm install
@@ -100,65 +112,78 @@ Docker - Options 2 (WSL/Linux):
 * Rename the .env.default to .env (or make a new copy) and update the variables
 * Run the bot in using npm run in the command line
 
-M## isc Information/Troubleshooting: ##
 
-How to change active agents (from the installed): Go to server/agent_params.py and add/remove the SELECT_AGENTS list using the agent name string.
+### Miscellaneous / Troubleshooting
 
-How to change active clients (from the installed): Go to src/initialize.ts and comment/uncomment the clients you need, if you need a client that uses a web server (twilio, messenger), go to client/webserver.ts and uncomment line 17 otherwise you can leave it commented.
+#### Changing active agents
 
-How to setup Twilio: In order to run twilio, you will need to have your ports forwarded, this can be done easier though using ngrok, which opens a tunnel. For ngrok you should use the web server port (65535 - ngrok http 65535), ngrok can be used both in linux and windows.
+**Attention**: applies to installed agent code.
 
-Puppeteer error, that it cant find Chrome: WSL can cause an error with puppeteer that it cant find chromium driver, in order to fix it you will need to install chrome manually, running the following commands:
+Open `server/agent_params.py` and add / remove the `SELECT_AGENTS` list using the agent name string.
 
+#### Selecting active clients
 
+**Attention**: applies to the installed clients only.
 
-* wget[ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb](https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb)
-* sudo apt -y install ./google-chrome-stable_current_amd64.deb
+Open `src/initialize.ts` and comment/uncomment the clients you need, if you need a client that uses a web server ([Twilio](https://www.twilio.com/), messenger), go to client/webserver.ts and uncomment line 17 otherwise you can leave it commented.
 
-## XR-Engine Support: ##
+#### Twilio setup
 
-DigitalBeing (DB) can run the xr-engine runs using Puppeteer ([https://github.com/puppeteer/puppeteer](https://github.com/puppeteer/puppeteer)). It connects as a virtual headful client in the engine, it updates the model randomly and to a set name for the bot, it can interact as a person and access everything. Currently it has built in support with the chat which can help it talk with other users and use chat commands, also it reads the client-logs which have info that are about the bot, like scene metadata etc.
+In order to run [Twilio](https://www.twilio.com/), you will need to have your ports forwarded, this can be done easier though using [ngrok](https://ngrok.com/), which opens a tunnel. For [ngrok](https://ngrok.com/) you should use the web server port (`65535` - `ngrok` HTTP port `65535`), ngrok can be used both in Linux and Windows.
 
-**Available Commands - all commands start with a slash (/):**
+Puppeteer error, that it cant find Chrome: [WSL](https://docs.microsoft.com/en-us/windows/wsl/about) can cause an error with puppeteer that it cant find chromium driver, in order to fix it you will need to install chrome manually, running the following commands:
 
+```
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+```
 
+```
+sudo apt -y install ./google-chrome-stable_current_amd64.deb
+```
 
-* /move x,y,z -> moves to x,y,z position using navmesh
-* /metadata scene -> gets the scene metadata
-* /metadata world,max_distance (from bot) -> gets the world metadata (objects) around the bot
-* /listAllusers -> sends a client log with all users
-* /goTo landmark (based on world metadata) -> moves towards a landmark
-* /emote emote_name -> players an emote
-* /getPosition user -> get the position of a user
-* /getRotation user -> get the rotation of a user
-* /getScale user -> get the scale of a user
-* /getTransform user -> get the transform of a user (position, rotation, scale)
-* /subscribe system -> subscribe to chat system
-* /unsubscribe system -> unsubscribe from a chat system
-* /getSubscribed -> get the current subscribed chat systems
-* /follow user -> follow a user
-* /follow stop -> stop following a user
-* /getChatHistory -> get the recent chat history as client log
-* /getLocalUserId -> get the local user id as client log
-* The xrengine-client.ts has all the functions needed to send commands or generally a chat message
+#### XR-Engine Support:
 
-**Scripts Structure:**
+[DigitalBeing](https://github.com/XRFoundation/DigitalBeing) is able to connect to the [XR-Engine](https://github.com/XRFoundation/XREngine) using [Puppeteer](https://github.com/puppeteer/puppeteer).
 
-The xr-engine engine is one of the DB’s clients, it can handle multiple clients at once though.
+It connects as a virtual headful client (runs like headless, but in headful mode virtual, as puppeteer doesn't support Audio and Video in headless mode) in the engine, it updates the model randomly and to a set name for the bot, it can interact as a person and access everything. Currently it has built in support with the chat which can help it talk with other users and use chat commands, also it reads the `client-logs` which have info that are about the bot, like scene metadata etc.
+
+Available Commands - all commands start with a slash (`/`):
+
+* `/move x,y,z` moves to x,y,z position using navmesh
+* `/metadata scene` gets the scene metadata
+* `/metadata world,max_distance` (from bot) gets the world metadata (objects) around the bot
+* `/listAllusers` sends a client log with all users
+* `/goTo landmark` (based on world metadata) moves towards a landmark
+* `/emote emote_name` players an emote
+* `/getPosition user` get the position of a user
+* `/getRotation user` get the rotation of a user
+* `/getScale user` get the scale of a user
+* `/getTransform user` get the transform of a user (position, rotation, scale)
+* `/subscribe system` subscribe to chat system
+* `/unsubscribe system` unsubscribe from a chat system
+* `/getSubscribed` get the current subscribed chat systems
+* `/follow user` follow a user
+* `/follow stop` stop following a user
+* `/getChatHistory` get the recent chat history as client log
+* `/getLocalUserId` get the local user id as client log
+
+Note: the `xrengine-client.ts` has all the functions needed to send commands or generally a chat message
+
+#### Scripts Structure:
+
+The [XR-Engine](https://github.com/XRFoundation/XREngine) engine is one of the DB’s clients, it can handle multiple clients at once though.
 
 There are multiple scripts for the xr-engine:
 
+`chatHistory.ts` -> has functions to handle the chat history
+`messageHandler.ts` -> handles the chat messages and sends to the server side the needed messages
+`Stt.ts`  -> handles the speech to text engine
+`Tts.ts` -> handles the text to speech engine
+`UsersInRange.ts` -> holds lists of users around the bot
+`Xrengine-client.ts` -> is the main script for the xr-engine, it holds all the functions that use the puppeteer
+`xrEnginePacketHandler.ts` -> handles the received packets from the python server
 
-
-* chatHistory.ts -> has functions to handle the chat history
-* messageHandler.ts -> handles the chat messages and sends to the server side the needed messages
-* Stt.ts  -> handles the speech to text engine
-* Tts.ts -> handles the text to speech engine
-* UsersInRange.ts -> holds lists of users around the bot
-* Xrengine-client.ts -> is the main script for the xr-engine, it holds all the functions that use the puppeteer
-* xrEnginePacketHandler.ts -> handles the received packets from the python server
-
-**.Env Config File:**
+#### `.env` config file
 
 The .env config file holds all the variables that are needed for configuration, they are added externally to support easy changes and avoid rebuilding docker if used.
 
@@ -173,7 +198,7 @@ Values Explanation:
 
 ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_283.png)
 
-    * TWITTER_BEARER_TOKEN
+   * TWITTER_BEARER_TOKEN
     * TWITTER_APP_TOKEN
     * TWITTER_APP_TOKEN_SECRET
     * TWITTER_ACCESS_TOKEN
@@ -185,7 +210,7 @@ Values Explanation:
 
 ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_285.png)
 
-    * DISCORD_API_TOKEN
+   * DISCORD_API_TOKEN
     * DISCORD_CLIENT_ID
     * DISCORD_CLIENT_SECRET
     * LOAD_DISCORD_LOGGER -> whether or not to load the external Logger, which sends DMs with logs to a selected user
@@ -193,7 +218,8 @@ Values Explanation:
 
 ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_284.png)
 
-    * DIGITAL_BEINGS_ONLY -> This variable is a boolean, if set to true, the bot ignores channels that don't have Digital Being in their metadata (Channel Description)
+   * DIGITAL_BEINGS_ONLY -> This variable is a boolean, if set to true, the bot ignores channels that don't have Digital Being in their metadata (Channel Description)
+    
 * Twilio:
     * In order to use twilio, you will need to create an account and create a new phone number (Twilio doesn’t receive SMS abroad, so the number should be better from your Region). 
     * In order to run Twilio you will need to install NGROK or an alternative.
@@ -205,6 +231,7 @@ Values Explanation:
     * TWILIO_PHONE_NUMBER
 * Telegram:
     * In order to create a bot in telegram, you will need to install the APP in an Android or iOS device and login/register, then search for the BotFather bot (Should have a blue checkmark beside his name), click Start conversation to activate it and then follow his instructions.
+    ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_289.jpg)
     * TELEGRAM_BOT_TOKEN
 * XR-Engine:
     * In order to use the xr-engine you will need to [install ](https://github.com/XRFoundation/XREngine/blob/dev/tutorial/01-installation.md)the engine, then for the URL variable just apply the URL for the engine using the location you want the bot to enter, for example [https://localhost:3000/location/test](https://localhost:3000/location/test) - this url will make the bot to connect to the XR-engine that is setup locally on Port 3000 in the location test
