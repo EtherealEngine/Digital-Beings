@@ -195,30 +195,24 @@ Values Explanation:
 
 * Twitter:
     * In order to get the Twitter API tokens a request will be needed to be made for a Twitter Developer Account, then the keys can be fetched this way after creating the Application inside the dev Portal
-
-![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_283.png)
-
-   * TWITTER_BEARER_TOKEN
-   * TWITTER_APP_TOKEN
-   * TWITTER_APP_TOKEN_SECRET
-   * TWITTER_ACCESS_TOKEN
-   * TWITTER_Access_TOKEN_SECRET
-   * TWITTER_ID -> The name of the twitter account, e.x. DigitalBeing
-   * TWITTER_TWEET_RULES -> Rules (words) that are used to fetch Tweets, they are separated using semicolon (;), for example: digital being;digital;being
+    * ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_283.png)
+    * TWITTER_BEARER_TOKEN
+    * TWITTER_APP_TOKEN
+    * TWITTER_APP_TOKEN_SECRET
+    * TWITTER_ACCESS_TOKEN
+    * TWITTER_Access_TOKEN_SECRET
+    * TWITTER_ID -> The name of the twitter account, e.x. DigitalBeing
+    * TWITTER_TWEET_RULES -> Rules (words) that are used to fetch Tweets, they are separated using semicolon (;), for example: digital being;digital;being
 * Discord:
-    * In order to fetch discord Tokens go to the [Dev Portal](https://discord.com/developers/applications) and click New Application, select a name for the Application and click Create, select the Bot panel and create bot, Client_API_Token can be fetched from the Bot Tab and Client and Client_Secret can be fetched from the OAuth2 tab. In the dev portal you in the bot tab you will need to enable these 2 options in order to make the bot crash.
-
-![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_285.png)
-
-   * DISCORD_API_TOKEN
-    * DISCORD_CLIENT_ID
-    * DISCORD_CLIENT_SECRET
-    * LOAD_DISCORD_LOGGER -> whether or not to load the external Logger, which sends DMs with logs to a selected user
-    * LOG_DM_USER_ID -> The user that the Logs are sent to (can be fetched by enabled the Developer Mode in discord, right click to the user and click Copy Id and will be copied to clipboard)                                  
-
-![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_284.png)
-
-   * DIGITAL_BEINGS_ONLY -> This variable is a boolean, if set to true, the bot ignores channels that don't have Digital Being in their metadata (Channel Description)
+     * In order to fetch discord Tokens go to the [Dev Portal](https://discord.com/developers/applications) and click New Application, select a name for the Application and click Create, select the Bot panel and create bot, Client_API_Token can be fetched from the Bot Tab and Client and Client_Secret can be fetched from the OAuth2 tab. In the dev portal you in the bot tab you will need to enable these 2 options in order to make the bot crash.
+     * ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_285.png)
+     * DISCORD_API_TOKEN
+     * DISCORD_CLIENT_ID
+     * DISCORD_CLIENT_SECRET
+     * LOAD_DISCORD_LOGGER -> whether or not to load the external Logger, which sends DMs with logs to a selected user
+     * LOG_DM_USER_ID -> The user that the Logs are sent to (can be fetched by enabled the Developer Mode in discord, right click to the user and click Copy Id and will be copied to clipboard)    
+     * ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_284.png)
+     * DIGITAL_BEINGS_ONLY -> This variable is a boolean, if set to true, the bot ignores channels that don't have Digital Being in their metadata (Channel Description)
     
 * Twilio:
     * In order to use twilio, you will need to create an account and create a new phone number (Twilio doesn’t receive SMS abroad, so the number should be better from your Region). 
@@ -231,7 +225,7 @@ Values Explanation:
     * TWILIO_PHONE_NUMBER
 * Telegram:
     * In order to create a bot in telegram, you will need to install the APP in an Android or iOS device and login/register, then search for the BotFather bot (Should have a blue checkmark beside his name), click Start conversation to activate it and then follow his instructions.
-    ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_289.jpg)
+    * ![alt_text](https://github.com/XRFoundation/DigitalBeing/blob/main/readme_images/Screenshot_289.jpg)
     * TELEGRAM_BOT_TOKEN
 * XR-Engine:
     * In order to use the xr-engine you will need to [install ](https://github.com/XRFoundation/XREngine/blob/dev/tutorial/01-installation.md)the engine, then for the URL variable just apply the URL for the engine using the location you want the bot to enter, for example [https://localhost:3000/location/test](https://localhost:3000/location/test) - this url will make the bot to connect to the XR-engine that is setup locally on Port 3000 in the location test
