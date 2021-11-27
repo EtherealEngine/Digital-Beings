@@ -66,7 +66,8 @@ More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzl
 
 ## Docker (WSL/Linux): 
 
-* Install docker and `docker-compose` - [detailed installation instructions](https://docs.docker.com/desktop/windows/wsl/)
+* [Install Docker](https://docs.docker.com/get-docker/)
+* [Install `docker-compose`](https://docs.docker.com/compose/install/)
 * Clone the repository and switch to its directory
 * Run the `docker-compose build` command to build the containers
 * In order to run the image you can use `docker-compose up` (if in Putty you can use `docker-compose up -d` to keep the image open after closing)
@@ -321,8 +322,8 @@ After, visit the same `URL` and follow the steps to generate the `OAUTH2` token 
 
 Instagram is the simplest to setup, there is no need of a dev account or dev application, just the account’s credentials for the bot to login in the account.
 
-* `IG_USERNAME`
-* `IG_PASSWORD`
+* `IG_USERNAME` - the username for an Instagram bot account
+* `IG_PASSWORD` - the password
 
 ##### PostgreSQL database
 
@@ -362,4 +363,4 @@ The Manager is a web interface to edit variables from the database for the bot.
 
 ##### `GPT-3` agent
 
-* `OPENAI_API_KEY` - OpenAI key that is needed for the 
+* `OPENAI_API_KEY` - OpenAI key that is needed for the `GPT-3` bot to function
