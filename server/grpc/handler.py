@@ -17,6 +17,7 @@ from agents.openchat.agents.gpt3 import GPT3Agent
 #from agents.openchat.openchat import OpenChat
 from agents.repeat.repeat import Repeat
 from agents.metaintelligence.metaintelligence import MetaintelligenceWS
+from agents.thales.thales import Thales
 
 from tcpServer import tcpServer as server
 from jsondb import jsondb as jsondb
@@ -59,6 +60,8 @@ class DigitalBeing():
                     self.repeat_agent = Repeat()
                 elif model_name == "metaintelligence":
                     self.mi_agent = MetaintelligenceWS()
+                elif model_name == "thales":
+                    self.thales = Thales()
                 #else:
                 #    self.agent = OpenChat(model=model_name, device=param.DEVICE, environment=param.ENVIRONMENT)
                 #    self.agent_env = self.agent.create_environment_by_name(self.agent.environment)
@@ -180,6 +183,20 @@ class DigitalBeing():
 
                     if (len(responses_dict) == 0):
                         responses_dict = { 'metaintelligence': 'none' }
+
+                    self.server.sendMessage(json.dumps([
+                                packetId,
+                                client_name,
+                                chat_id,
+                                message_id,
+                                responses_dict,
+                                addPing,
+                                args
+                            ]))
+                
+                elif model_name == "thales":
+                    responses_dict = {}
+                    responses_dict['thales'] = self.thales.handle_message(message, author)
 
                     self.server.sendMessage(json.dumps([
                                 packetId,

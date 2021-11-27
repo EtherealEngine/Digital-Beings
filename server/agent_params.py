@@ -21,7 +21,8 @@ ALL_AGENTS_LIST = [
 SELECTED_AGENTS = [
                     # 'gpt3',
                     #'repeat'
-                    'metaintelligence'
+                    #'metaintelligence'
+                    'thales'
                     #'dodecathlon.wizard_of_wikipedia',
                   ]
 DEVICE = 'cpu'  # cpu or gpu

@@ -4,6 +4,7 @@ import { getRandomEmptyResponse } from "../utils";
 import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "./chatHistory";
 import { replacePlaceholders } from "./util";
 require('discord-inline-reply'); 
+require('discord-reply');
 
 export class discordPackerHandler {
     static getInstance: discordPackerHandler
@@ -22,7 +23,7 @@ export class discordPackerHandler {
                     if (responses[key] !== undefined && responses[key].length <= 2000 && responses[key].length > 0) {
                         let text = replacePlaceholders(responses[key])
                         if (addPing) {
-                            message.lineReply(text).then(async function (msg) {
+                            message.reply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
                                 addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             }).catch(console.error)
@@ -39,7 +40,7 @@ export class discordPackerHandler {
                     else if (responses[key].length >= 2000) {
                         let text: string = replacePlaceholders(responses[key])
                         if (addPing) {
-                            message.lineReply(text).then(async function (msg) {
+                            message.reply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
                                 addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             })
@@ -60,7 +61,7 @@ export class discordPackerHandler {
                         if (emptyResponse !== undefined && emptyResponse !== '' && emptyResponse.replace(/\s/g, '').length !== 0) {
                             let text = emptyResponse
                             if (addPing) {
-                                message.lineReply(text).then(async function (msg) {
+                                message.reply(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel.id, message.id, msg.id)
                                     addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                 }).catch(console.error)
@@ -127,7 +128,7 @@ export class discordPackerHandler {
                     if (responses[key] !== undefined && responses[key].length <= 2000 && responses[key].length > 0) {
                         let text = replacePlaceholders(responses[key])
                         if (addPing) {
-                            message.lineReply(text).then(async function (msg) {
+                            message.reply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
                                 addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             }).catch(console.error)
@@ -144,7 +145,7 @@ export class discordPackerHandler {
                     else if (responses[key].length >= 2000) {
                         let text: string = replacePlaceholders(responses[key])
                         if (addPing) {
-                            message.lineReply(text).then(async function (msg) {
+                            message.reply(text).then(async function (msg) {
                                 onMessageResponseUpdated(channel.id, message.id, msg.id)
                                 addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                             })
@@ -165,7 +166,7 @@ export class discordPackerHandler {
                         if (emptyResponse !== undefined && emptyResponse !== '' && emptyResponse.replace(/\s/g, '').length !== 0) {
                             let text = emptyResponse
                             if (addPing) {
-                                message.lineReply(text).then(async function (msg) {
+                                message.reply(text).then(async function (msg) {
                                     onMessageResponseUpdated(channel.id, message.id, msg.id)
                                     addMessageToHistory(channel.id, msg.id, process.env.BOT_NAME, text,)
                                 }).catch(console.error)
@@ -205,7 +206,7 @@ export class discordPackerHandler {
                             }, 
                             function (_user) {
                                 userDatabase.getInstance.banUser(edited.author.id, 'client')
-                                edited.lineReply('blocked')
+                                edited.reply('blocked')
                             }).length > 0) {
                                 return
                             }

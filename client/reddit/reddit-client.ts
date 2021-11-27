@@ -10,6 +10,7 @@ export let reddit: snoowrap;
 export const createRedditClient = async () => {
     const appId = process.env.REDDIT_APP_ID;
     const appSecredId = process.env.REDDIT_APP_SECRED_ID;
+    const oauthToken = process.env.REDDIT_OATH_TOKEN;
     //https://github.com/not-an-aardvark/reddit-oauth-helper
     if (!appId || !appSecredId) return console.warn("No API token for Reddit bot, skipping");
     
@@ -22,7 +23,7 @@ export const createRedditClient = async () => {
         userAgent: 'test_db_app',
         clientId: appId,
         clientSecret: appSecredId,
-        refreshToken: '1277005325813-SXrFBk2WdteckY1VX2KlZZOkbnI5-w'
+        refreshToken: oauthToken
     });
     reddit.config(snooWrapOpptions);
     const stream = new SnooStream(reddit)
