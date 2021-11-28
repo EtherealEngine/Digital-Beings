@@ -5,7 +5,9 @@ export class xrEnginePacketHandler {
     bot
 
     constructor(bot) {
+        console.log('creating packet handler')
         this.bot = bot
+        xrEnginePacketHandler.getInstance = this
     }
 
     async handleXrEnginePacket(responses, addPing, _sender) {
@@ -15,7 +17,7 @@ export class xrEnginePacketHandler {
                 let text = responses[key]
                 while (text === undefined || text === '' || text.replace(/\s/g, '').length === 0) text = getRandomEmptyResponse()
                 if (addPing) text = _sender + ' ' + text
-                this.bot.sendMessage(text)         
+                xrEnginePacketHandler.getInstance.bot.sendMessage(text)         
             }
             else if (responses[key].length > 2000) {
                 const lines: string[] = []
@@ -37,7 +39,7 @@ export class xrEnginePacketHandler {
                                 text = _sender + ' ' + text
                                 addPing = false
                             }
-                            this.bot.sendMessage(text)                  
+                            xrEnginePacketHandler.getInstance.bot.sendMessage(text)                  
                         }
                     }
                 }
@@ -46,7 +48,7 @@ export class xrEnginePacketHandler {
                 let emptyResponse = getRandomEmptyResponse()
                 while (emptyResponse === undefined || emptyResponse === '' || emptyResponse.replace(/\s/g, '').length === 0) emptyResponse = getRandomEmptyResponse()
                 if (addPing) emptyResponse = _sender + ' ' + emptyResponse
-                this.bot.sendMessage(emptyResponse)         
+                xrEnginePacketHandler.getInstance.bot.sendMessage(emptyResponse)         
             }
         });   
     }

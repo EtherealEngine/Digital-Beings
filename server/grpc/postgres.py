@@ -1,6 +1,6 @@
 import psycopg2
 import os
-from datetime import datetime
+from datetime import date, datetime
 from json import dumps
 
 class postgres: 
@@ -13,7 +13,7 @@ class postgres:
                             password=os.getenv('PGPASSWORD'))
         self.cur = self.postgres_con.cursor()
     
-    def getHistory(self, length, client_name, chat_id):
+    def getHistory(self, length, client_name, chat_id, author):
         client_name = client_name.lower()
         query = """SELECT * FROM chat_history WHERE client_name=%s AND chat_id=%s"""
         self.cur.execute(query, [client_name, chat_id])
@@ -22,12 +22,22 @@ class postgres:
         i = 0
         if len(results) > 0:
             try:
+                '''
+                First it sorts the results based on the date they were created
+                then it checks the sender is the bot or the author of the message, otherwise it ignores it
+                then it checks the date difference, if the message is old, it ignores it
+                finally it checks if the message is sent by the bot and adds a boolean about it
+                '''
                 sortedArray = sorted(results, key=lambda t: datetime.strptime(t[6], '%d/%m/%Y %H:%M:%S'), reverse=True)
                 for res in sortedArray:
                     sender = res[4]
                     content = res[5]
-                    #createdAt = datetime.strptime(res[6], '%d/%m/%Y %H:%M:%S')
+                    createdAt = datetime.strptime(res[6], '%d/%m/%Y %H:%M:%S')
                     db_bot = False
+                    if sender != os.getenv('BOT_NAME') and sender != author:
+                        continue
+                    if abs(datetime.now() - createdAt).days > 1: 
+                        continue
                     if sender == os.getenv('BOT_NAME'):
                         db_bot = True
                     history.append({ 'author': sender, 'content': content, 'db_bot': db_bot })
@@ -102,3 +112,12 @@ class postgres:
                 print(ex)
 
         return _res
+    
+    def getHasUserSentMessage(self, client_name, sender) -> bool:
+        client_name = client_name.lower()
+        query = '''SELECT * FROM chat_history WHERE client_name=%s AND sender=%s'''
+        self.cur.execute(query, [client_name, sender])
+        results = self.cur.fetchall()
+        
+        return len(results) > 0
+        

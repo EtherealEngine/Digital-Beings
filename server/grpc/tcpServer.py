@@ -6,6 +6,8 @@ class tcpServer:
     def __init__(self, host, port, DB):
         self.DB = DB
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        self._socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_QUICKACK, 1)
         self._socket.bind((host, port))
         print('listening')
         self._socket.listen(1)
@@ -55,7 +57,7 @@ class tcpServer:
                     client_name = data['client_name']
                     chat_id = data['chat_id']
                     createdAt = data['createdAt']
-                    resp = self.DB.handle_slash_command(client_name, chat_id, command, args, createdAt)
+                    resp = self.DB.handle_slash_command(client_name, chat_id, command, args, createdAt, sender)
 
                     self.sendMessage(json.dumps([
                         1,

@@ -3,9 +3,8 @@ import { tcpClient } from "../../tcpClient"
 import { userDatabase } from "../../userDatabase"
 import { getRandomEmptyResponse, startsWithCapital } from "../../utils"
 import { addMessageToHistory, exitConversation, getChatHistory, isInConversation, moreThanOneInConversation, onMessageResponseUpdated, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory"
-import { botName, username_regex } from "../telegram-client"
 
-export async function onMessage(bot, msg: TelegramBot.Message, messageResponseHandler) {
+export async function onMessage(bot, msg: TelegramBot.Message, botName: string, username_regex: RegExp) {
     addMessageToHistory(msg.chat.id, msg.message_id, msg.from.username === undefined ? msg.from.first_name : msg.from.username, msg.text)
     console.log(JSON.stringify(msg))
     const date = Date.now() / 1000

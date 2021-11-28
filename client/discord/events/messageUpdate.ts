@@ -1,13 +1,11 @@
-import { chatFilter } from "../../chatFilter";
 import { tcpClient } from "../../tcpClient";
 import { userDatabase } from "../../userDatabase";
-import { getRandomEmptyResponse } from "../../utils";
-import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "../chatHistory";
-import { replacePlaceholders } from "../util";
+import { getResponse, updateMessage } from "../chatHistory";
+import { channelTypes } from "../util";
 
 module.exports = async (client, message) => {
-    const {author, channel, content, id} = message;
-    const oldText = content
+    const {author, channel, id} = message;
+    if (author === null || channel === null || id === null) return
     if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) return
     if (author.id === client.user.id) {
         await channel.messages.fetch(id).then(async msg => {
@@ -35,7 +33,12 @@ module.exports = async (client, message) => {
                     const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
                     const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
 
-                    tcpClient.getInstance.sendMessageEdit(edited.content, edited.id, 'Discord', edited.channel.id, utcStr, false)
+                    let parentId = ''
+                    if (channel.type === channelTypes['thread']) {
+                        parentId = channel.prefixOptionalWhenMentionOrDM
+                    }
+
+                    tcpClient.getInstance.sendMessageEdit(edited.content, edited.id, 'Discord', edited.channel.id, utcStr, false, 'parentId:' + parentId)
                  }
              })
             })

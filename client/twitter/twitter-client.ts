@@ -1,119 +1,145 @@
-import {Autohook} from 'twitter-autohook';
-import * as http from 'http';
-import * as url from 'url';
-import * as Twit from 'twit';
+import { EDirectMessageEventTypeV1, ETwitterStreamEvent, TwitterApi, UserV1, UserV2Result } from 'twitter-api-v2'
+import { postgres } from '../postgres'
+import { tcpClient } from '../tcpClient'
+import { twitterPacketHandler } from './twitterPacketHandler'
 
-const {
-    createHmac,
-} = require('crypto');
+export const createTwitterClient = async () => {
+    const bearerToken = process.env.TWITTER_BEARER_TOKEN
+    const twitterUser = process.env.TWITTER_ID
+    const twitterAppToken = process.env.TWITTER_APP_TOKEN
+    const twitterAppTokenSecret = process.env.TWITTER_APP_TOKEN_SECRET
+    const twitterAccessToken = process.env.TWITTER_ACCESS_TOKEN
+    const twitterAccessTokenSecret = process.env.TWITTER_Access_TOKEN_SECRET
+    const regex = new RegExp('', 'ig')
+    const regex2 = new RegExp(process.env.BOT_NAME_REGEX, 'ig')
+    if (!bearerToken || !twitterUser) return console.warn("No API token for Whatsapp bot, skipping");
 
-const TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY;
-const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET;
-const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
-const TWITTER_ACCESS_TOKEN_SECRET = process.env.TWITTER_ACCESS_TOKEN_SECRET;
-const TWITTER_ID = process.env.TWITTER_ID;
-const TWITTER_WEBHOOK_PORT = process.env.TWITTER_WEBHOOK_PORT;
-const NGROK_TOKEN = process.env.NGROK_TOKEN;
-const SERVER_PORT = process.env.SERVER_PORT;
+    let twitter = new TwitterApi(bearerToken) 
+    let twitterV1 = new TwitterApi({
+        appKey: twitterAppToken,
+        appSecret: twitterAppTokenSecret,
+        accessToken: twitterAccessToken,
+        accessSecret: twitterAccessTokenSecret,
+      });
+    const client = twitter.readWrite
+    const localUser: UserV2Result = await twitter.v2.userByUsername(twitterUser)
 
-let TwitClient;
+    new twitterPacketHandler( new TwitterApi(bearerToken), new TwitterApi({
+        appKey: twitterAppToken,
+        appSecret: twitterAppTokenSecret,
+        accessToken: twitterAccessToken,
+        accessSecret: twitterAccessTokenSecret,
+      }), 
+      localUser)
 
-export const createTwitterClient = async (messageResponseHandler) => {
-    if (!TWITTER_CONSUMER_SECRET || !TWITTER_CONSUMER_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_TOKEN_SECRET)
-        return console.warn("No credentials for Twitter, skipping");
+    setInterval(async () => {
+        const tv1 = new TwitterApi({
+            appKey: twitterAppToken,
+            appSecret: twitterAppTokenSecret,
+            accessToken: twitterAccessToken,
+            accessSecret: twitterAccessTokenSecret,
+          });
+        const eventsPaginator = await tv1.v1.listDmEvents()
+        for await (const event of eventsPaginator) {
+            
+            console.log('Event: ' + JSON.stringify(event.message_create.message_data.text))
+            if (event.type == 'message_create') {
 
-    const SendMessage = (id, twitterUserId, messageType, text) => {
-        if (messageType === 'DM') {
-            TwitClient.post('direct_messages/events/new', {
-                "event": {
-                    "type": "message_create",
-                    "message_create": {
-                        "target": {
-                            "recipient_id": id
-                        },
-                        "message_data": {
-                            "text": text,
-                        }
-                    }
-                }
-            }, (error, data, response) => {
-                if (error) {
-                    console.log(error);
-                }
-            });
-        } else {
-            TwitClient.post('statuses/update', {
-                status: '@' + twitterUserId + ' ' + text,
-                id,
-                in_reply_to_status_id: id
-            }, function (err, data, response) {
-                console.log("Posted ", '@' + twitterUserId + ' ' + text);
-            });
-        }
-    };
+                console.log('isMessage')
+                if (event.message_create.sender_id == localUser.data.id) { console.log('same sender'); return }
 
-    const validateWebhook = (token, auth) => {
-        console.log("token");
-        const responseToken = createHmac('sha256', auth).update(token).digest('base64');
-        return {response_token: `sha256=${responseToken}`};
-    };
-    TwitClient = new Twit({
-        consumer_key: TWITTER_CONSUMER_KEY,
-        consumer_secret: TWITTER_CONSUMER_SECRET,
-        access_token: TWITTER_ACCESS_TOKEN,
-        access_token_secret: TWITTER_ACCESS_TOKEN_SECRET
-    });
+                let authorName = 'unknown'
+                const author = await twitter.v2.user(event.message_create.sender_id)
+                if (author) authorName = author.data.username
 
-    const webhook = new Autohook({
-        token: TWITTER_ACCESS_TOKEN,
-        token_secret: TWITTER_ACCESS_TOKEN_SECRET,
-        consumer_key: TWITTER_CONSUMER_KEY,
-        consumer_secret: TWITTER_CONSUMER_SECRET,
-        ngrok_secret: NGROK_TOKEN,
-        env: 'dev',
-        port: TWITTER_WEBHOOK_PORT
-    });
-    await webhook.removeWebhooks();
-    webhook.on('event', event => {
-        if (typeof (event.tweet_create_events) !== 'undefined' &&
-            event.tweet_create_events[0].user.screen_name !== TWITTER_ID) {
-            const id = event.tweet_create_events[0].user.id;
-            const name = event.tweet_create_events[0].user.screen_name;
-            const receivedMessage = event.tweet_create_events[0].text;
-            const message = receivedMessage.replace("@" + TWITTER_ID + " ", "");
-            console.info("Received message ", message, " from ", name);
-            messageResponseHandler(name, message, (response) => SendMessage(id, name, 'Tweet', response.value));
-        }
+                await postgres.getInstance.messageExistsAsyncWitHCallback2('twitter', event.message_create.target.recipient_id, event.id, authorName, event.message_create.message_data.text, parseInt(event.created_timestamp), () => {
+                    tcpClient.getInstance.sendMessage(event.message_create.message_data.text,
+                        event.id,
+                        'twitter',
+                        author.data.id,
+                        event.created_timestamp,
+                        false,
+                        authorName,
+                        'DM')
 
-        if (typeof (event.direct_message_events) !== 'undefined') {
-            if (event.users[event.direct_message_events[0].message_create.sender_id].screen_name !== TWITTER_ID) {
-                const id = event.direct_message_events[0].message_create.sender_id;
-                const name = event.users[event.direct_message_events[0].message_create.sender_id].screen_name;
-                const message = event.direct_message_events[0].message_create.message_data.text;
-                console.info("Received message ", message, " from ", name);
-                messageResponseHandler(name, message, (response) => SendMessage(id, name, 'DM', response.value));
+                    postgres.getInstance.addMessageInHistoryWithDate(
+                        'twitter',
+                        event.message_create.target.recipient_id,
+                        event.id,
+                        authorName,
+                        event.message_create.message_data.text,
+                        event.created_timestamp)
+                })
+
             }
         }
-    });
-    await webhook.start();
-    await webhook.subscribe({
-        oauth_token: TWITTER_ACCESS_TOKEN,
-        oauth_token_secret: TWITTER_ACCESS_TOKEN_SECRET,
-        screen_name: TWITTER_ID
-    });
+    }, 25000)
 
-    // handle this
-    http.createServer((req, res) => {
-        const route = url.parse(req.url, true);
-        if (!route.pathname)
-            return;
+    
+    /*const rules = await client.v2.streamRules()
+    if (rules.data?.length) {
+        await client.v2.updateStreamRules({
+            delete: { ids: rules.data.map(rule => rule.id) },
+        })
+    }
 
-        if (route.query.crc_token) {
-            console.log("Validating webhook");
-            console.log(route.query.crc_token);
-            const crc = validateWebhook(route.query.crc_token, TWITTER_CONSUMER_SECRET);
-            res.writeHead(200, {'content-type': 'application/json'});
-            res.end(JSON.stringify(crc));
+    const tweetRules = process.env.TWITTER_TWEET_RULES.split(',')
+    const _rules = []
+    for (let x in tweetRules) {
+        console.log('rule: ' + tweetRules[x])
+        _rules.push({value: tweetRules[x]})
+    }
+
+    await client.v2.updateStreamRules({
+        add: _rules
+    })
+
+    const stream = await client.v2.searchStream({
+        "tweet.fields": ['referenced_tweets', 'author_id'],
+        expansions: ['referenced_tweets.id']
+    })
+    stream.autoReconnect = true
+
+    stream.on(ETwitterStreamEvent.Data, async twit => {
+        const isARt = twit.data.referenced_tweets?.some(twit => twit.type === 'retweeted') ?? false
+        if (isARt || (localUser !== undefined && twit.data.author_id == localUser.data.id)) {
+            console.log('isArt found')
+        } else {
+            if (/*!twit.data.text.match(regex) && *//*!twit.data.text.match(regex2)) {  
+             /*   console.log('regex doesnt match')
+            } else {
+                let authorName = 'unknown'
+                const author = await twitter.v2.user(twit.data.author_id)
+                if (author) authorName = author.data.username
+
+                let date = new Date();
+                if (twit.data.created_at) date = new Date(twit.data.created_at)
+                const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                const utcStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
+                var ts = Math.floor(utc.getTime() / 1000);
+
+                await postgres.getInstance.messageExistsAsyncWitHCallback2('reddit', twit.data.id, twit.data.id, authorName, twit.data.text, ts, () => {
+                    tcpClient.getInstance.sendMessage(twit.data.text, 
+                        twit.data.id,
+                        'twitter',
+                        twit.data.in_reply_to_user_id ? twit.data.in_reply_to_user_id : twit.data.id,
+                        ts + '',
+                        false,
+                        authorName,
+                        'Twit')
+                        console.log('sending twit: ' + JSON.stringify(twit))
+
+                    
+                    
+                    postgres.getInstance.addMessageInHistoryWithDate(
+                        'twitter',
+                        twit.data.id,
+                        twit.data.id,
+                        authorName,
+                        twit.data.text,
+                        utcStr)
+                })
+            }
         }
-    }).listen(SERVER_PORT);
-};
+    })*/
+}

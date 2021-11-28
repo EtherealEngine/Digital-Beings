@@ -1,3 +1,4 @@
+import { PageUtils } from "../pageUtils";
 import { redisDb } from "../redisDb";
 import { tcpClient } from "../tcpClient";
 import { userDatabase } from "../userDatabase";
@@ -11,15 +12,15 @@ const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/loca
 const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
 
-const doTests: boolean = false
+const doTests: boolean = true
 
 const _redisDb = new redisDb()
 
-async function createXREngineClient(messageResponseHandler) {
+async function createXREngineClient() {
     //generateVoice('hello there', (buf, path) => {}, false)
     //speechToText('test.wav', (res) => { console.log('Res: ' + res); })
     console.log('creating xr engine client')
-    const xrengineBot = new XREngineBot({ headless: !process.env.GUI, messageResponseHandler });
+    const xrengineBot = new XREngineBot({ headless: !process.env.GUI });
 
     console.log("Preparing to connect to ", XRENGINE_URL);
     xrengineBot.delay(Math.random() * 100000);
@@ -49,7 +50,6 @@ console.log('bot fully loaded')
  */
 class XREngineBot {
     activeChannel;
-    messageResponseHandler
     headless: boolean;
     name: string;
     autoLog: boolean;
@@ -65,20 +65,18 @@ class XREngineBot {
         name = "Bot",
         fakeMediaPath = "",
         headless = true,
-        messageResponseHandler = null,
         autoLog = true } = {}
     ) {
+        new xrEnginePacketHandler(this)
         this.headless = headless;
         this.name = name;
         this.autoLog = autoLog;
-        this.messageResponseHandler = messageResponseHandler;
         this.fakeMediaPath = fakeMediaPath;
-
-        new xrEnginePacketHandler(this)
         setInterval(() => this.getInstanceMessages(), 1000)
     }
 
     async sendMessage(message) {
+        console.log('sending message: ' + message)
         if(message === null || message === undefined) return;
         await this.typeMessage('newMessage', message, false);
         await this.pressKey('Enter')
@@ -190,6 +188,23 @@ class XREngineBot {
 
     counter : number = 0
     async getInstanceMessages() {
+        //#region  Tests
+        if (doTests) {
+            this.counter++
+            if (this.counter === 10) this.playEmote('dance1')
+            if (this.counter === 20) this.requestSceneMetadata()
+            if (this.counter === 25) this.sendMovementCommand(1, 1, 1)
+            //if (this.counter === 35) this.requestWorldMetadata(5)
+            //if (this.counter === 40) this.requestAllWorldMetadata()
+            if (this.counter === 25) this.sendMovementCommand(2, 2, 2)
+            //if (this.counter === 50) this.follow('alex')
+            //if (this.counter === 60) this.follow('stop')
+            //if (this.counter === 70) this.goTo('Window')
+           // if (this.counter === 75) this.getChatHistory()
+            //if (this.counter === 80) this.requestPlayers()
+        }
+        //#endregion
+
         await this.updateChannelState()
         if(!this.activeChannel) return;
         const messages = this.activeChannel.messages;
@@ -218,21 +233,6 @@ class XREngineBot {
             //await _redisDb.setValue(messageId, messages[i])
             this.chatHistory.push(messageId)
         }
-
-//#region  Tests
-        if (doTests) {
-            this.counter++
-            if (this.counter === 20) this.requestSceneMetadata()
-            if (this.counter === 25) this.sendMovementCommand(0.01, 0.01, 0.01)
-            if (this.counter === 35) this.requestWorldMetadata(5)
-            if (this.counter === 40) this.requestAllWorldMetadata()
-            if (this.counter === 50) this.follow('alex')
-            if (this.counter === 60) this.follow('stop')
-            if (this.counter === 70) this.goTo('Window')
-            if (this.counter === 75) this.getChatHistory()
-            if (this.counter === 80) this.requestPlayers()
-        }
-//#endregion
 
         await handleMessages(messages, this)
         return this.activeChannel && messages;
@@ -436,8 +436,8 @@ class XREngineBot {
             else if (message.text().startsWith('emotions|')) {
             }
                 
-            if (this.autoLog)
-                console.log(">> ", message.text())
+            //if (this.autoLog)
+            //    console.log(">> ", message.text())
         })
 
         this.page.setViewport({ width: 0, height: 0 });
@@ -519,7 +519,7 @@ class XREngineBot {
 
         await this.delay(10000)
 
-        await this.getLocalUserId()
+        await this.getUser()
         await this.updateChannelState()
         await this.updateUsername(name)
         await this.delay(10000)
@@ -527,8 +527,8 @@ class XREngineBot {
         console.log(`avatar index: ${index}`)
         await this.updateAvatar(this.avatars[index])
         await this.requestPlayers()
-        await this.getLocalUserId()
-        //await setInterval(() => this.getLocalUserId(), 1000)
+        await this.getUser()
+        await setInterval(() => this.getUser(), 1000)
     }
 
     getRandomNumber(min, max): number {
@@ -537,22 +537,56 @@ class XREngineBot {
 
     async updateChannelState() {
         this.activeChannel = await this.evaluate(() => {
-        if (globalThis.store === undefined) {
-            return console.warn("Store was not found, ignoring chat");
-        }
-        const chatState = globalThis.store.getState().get('chat');
-        const channelState = chatState.get('channels');
-        const channels = channelState.get('channels');
-        const activeChannelMatch = [...channels].find(([, channel]) => channel.channelType === 'instance');
-        if (activeChannelMatch && activeChannelMatch.length > 0) {
-            this.activeChannel = activeChannelMatch[1];
-            return this.activeChannel;
-        } else {
-            console.warn("Couldn't get chat state")
-            return undefined;
-        }
-    })
+            const chatState = globalThis.chatState;
+            if (chatState === undefined) {
+                console.log('chat state is undefined');
+                return;
+            }
+            const channelState = chatState.channels;
+            const channels = channelState.channels.value;
+            const activeChannelMatch = Object.entries(channels).find(([key, channel]) => channels[key].channelType === 'instance');
+            if (activeChannelMatch && activeChannelMatch.length > 0) {
+                const res = deepCopy(activeChannelMatch[1]);
+
+                function deepCopy(obj) {
+                    var copy;
+                
+                    if (null == obj || "object" != typeof obj) return obj;
+                
+                    if (obj instanceof Date) {
+                        copy = new Date();
+                        copy.setTime(obj.getTime());
+                        return copy;
+                    }
+                
+                    if (obj instanceof Array) {
+                        copy = [];
+                        for (var i = 0, len = obj.length; i < len; i++) {
+                            copy[i] = deepCopy(obj[i]);
+                        }
+                        return copy;
+                    }
+                
+                    if (obj instanceof Object) {
+                        copy = {};
+                        for (var attr in obj) {
+                            if (obj.hasOwnProperty(attr)) copy[attr] = deepCopy(obj[attr]);
+                        }
+                        return copy;
+                    }
+                
+                    throw new Error("Unable to copy obj! Its type isn't supported.");
+                }
+
+                return res
+            } else {
+                console.warn("Couldn't get chat state");
+                return undefined;
+            }
+        })
     }
+
+    
 
     async updateUsername(name: string) {
         if (name === undefined || name === '') return
@@ -567,15 +601,14 @@ class XREngineBot {
         console.log(`updating avatar to: ${avatar}`)
        
         await this.clickElementById('SPAN', 'Profile_0')
-        await this.clickElementById('button', 'select-avatar')
+        await this.clickElementById('button', 'CreateIcon')
         await this.clickSelectorByAlt('img', avatar)
-        await this.clickElementById('button', 'confirm-avatar')
+        //await this.clickElementById('button', 'confirm-avatar')
     }
 
     async getUser() {
-        return await this.evaluate(() => {
-            return globalThis.store.getState().get('user')
-            //console.log('\x1b[33m user: ' + JSON.stringify(user))
+        this.userId = await this.evaluate(() => {
+            return globalThis.userId;
         })
     }
 
@@ -618,98 +651,6 @@ class XREngineBot {
         if (this.browser) {
             this.browser.close();
         }
-    }
-}
-
-class PageUtils {
-    page: any;
-    autoLog: boolean;
-    constructor({ page, autoLog = true }) {
-        this.page = page;
-        this.autoLog = autoLog;
-    }
-
-    async clickButton(buttonName: string) {
-        await this.page.evaluate((selector) => { const v = document.querySelector(selector)
-    if (v != undefined && v != null)
-        v.click()
-    }, buttonName)
-}
-    
-    async clickSelectorClassRegex(selector, classRegex) {
-        if (this.autoLog)
-            console.log(`Clicking for a ${selector} matching ${classRegex}`);
-
-        await this.page.evaluate((selector, classRegex) => {
-            classRegex = new RegExp(classRegex);
-            let buttons = Array.from(document.querySelectorAll(selector));
-            let enterButton = buttons.find(button => Array.from(button.classList).some(c => classRegex.test(c)));
-            if (enterButton) 
-                enterButton.click();
-        }, selector, classRegex.toString().slice(1, -1));
-    }
-    async clickSelectorId(selector, id) {
-        if (this.autoLog) console.log(`Clicking for a ${selector} matching ${id}`)
-        
-        await this.page.evaluate(
-          (selector, id) => {
-            let matches = Array.from(document.querySelectorAll(selector))
-            let singleMatch = matches.find((button) => button.id === id)
-            let result
-            if (singleMatch && singleMatch.click) {
-              console.log('normal click')
-              result = singleMatch.click()
-            }
-            if (singleMatch && !singleMatch.click) {
-              console.log('on click')
-              result = singleMatch.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-            }
-            if (!singleMatch) {
-              console.log('event click', matches.length)
-             if (matches.length > 0) {
-                  const m = matches[0]
-                  result = m.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-              }
-            }
-          },
-          selector,
-          id
-        )
-      }
-    async clickSelectorByAlt(selector, title) {
-        if (this.autoLog) console.log(`Clicking for a ${selector} matching ${title}`)
-
-        await this.page.evaluate((selector, title) => {
-            let matches = Array.from(document.querySelectorAll(selector))
-            let singleMatch = matches.find((btn) => btn.alt === title)
-            let result
-            if (singleMatch && singleMatch.click) {
-              console.log('normal click')
-              result = singleMatch.click()
-            }
-            if (singleMatch && !singleMatch.click) {
-              console.log('on click')
-              result = singleMatch.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-            }
-            if (!singleMatch) {
-              console.log('event click', matches.length)
-             if (matches.length > 0) {
-                  const m = matches[0]
-                  result = m.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-              }
-            }
-        }, selector, title)
-    }
-    async clickSelectorFirstMatch(selector) {
-        if (this.autoLog)
-            console.log(`Clicking for first ${selector}`);
-
-        await this.page.evaluate((selector) => {
-            let matches = Array.from(document.querySelectorAll(selector));
-            let singleMatch = matches[0];
-            if (singleMatch)
-                singleMatch.click();
-        }, selector);
     }
 }
 

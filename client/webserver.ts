@@ -14,5 +14,5 @@ export async function createWebServer() {
     app.get('/facebook', (req, res) => {
         res.send('Hello World I am running locally');
     });
-    //app.listen(65535, () => { console.log(`Server listening on http://localhost:${65535}`); })
+    //app.listen(process.env.WEBSERVER_PORT, () => { console.log(`Server listening on http://localhost:${process.env.WEBSERVER_PORT}`); })
 }

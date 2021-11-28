@@ -15,7 +15,7 @@ export async function handleMessages(messages, bot) {
         else if (messages[i].senderName === bot.name || 
             (messages[i].sender !== undefined && messages[i].sender.id === bot.userId) || 
             (messages[i].author !== undefined && messages[i].author[1] === bot.userId)) {
-            addMessageToHistory(messages[i].channelId, messages[i].id, bot.name, messages[i].text)
+            addMessageToHistory(messages[i].channelId, messages[i].id, process.env.BOT_NAME, messages[i].text)
             continue
         }
         else if (await wasHandled(messages[i].channelId, messages[i].id)) continue
@@ -34,6 +34,7 @@ export async function handleMessages(messages, bot) {
 
         const _sender = messages[i].senderName !== undefined ? messages[i].senderName : messages[i].sender.name
         let content = messages[i].text
+        console.log('handling message: ' + content)
         addMessageToHistory(messages[i].channelId, messages[i].id, _sender, content)
         let addPing = false
         let _prev = undefined
@@ -76,38 +77,16 @@ export async function handleMessages(messages, bot) {
         const isInDiscussion = isInConversation(_sender)
         if (!content.startsWith('!')) {
             if (isUserNameMention) { console.log('is user mention'); content = '!ping ' + content.replace(bot.username_regex, '').trim()  }
-            else if (isInDiscussion || startConv) { console.log('isIndiscussion: ' + isInDiscussion + ' startConv: ' + startConv); content = '!ping ' + content}
+            else if (isInDiscussion || startConv) content = '!ping ' + content
         }
 
         if (content.startsWith('!ping')) sentMessage(_sender)
         else continue
         console.log('content: ' + content + ' sender: ' + _sender)
-        const args = {}
-        args['grpc_args'] = {};
-    
-        args['parsed_words'] = content.slice('!'.length).trim().split(/ +/g);
         
-        args['command_info'] = [
-            'ping',
-            [ 'HandleMessage' ],
-            [ 'sender', 'message', 'client_name', 'chat_id', 'createdAt' ],
-            'ping all agents'
-          ]
-        args['grpc_args']['sender'] = _sender
-        if (args['command_info']) {
-            args['command'] = args['command_info'][0];
-            args['grpc_args']['message'] = content.replace("!" + args['command'], "");
-            args['grpc_method'] = args['command_info'][1][0];
-            args['grpc_method_params'] = args['command_info'][2];
-        }
-
-        args['grpc_args']['client_name'] = 'xr-engine'
-        args['grpc_args']['chat_id'] = messages[i].channelId
-
         const dateNow = new Date();
         var utc = new Date(dateNow.getUTCFullYear(), dateNow.getUTCMonth(), dateNow.getUTCDate(), dateNow.getUTCHours(), dateNow.getUTCMinutes(), dateNow.getUTCSeconds());
         const utcStr = dateNow.getDate() + '/' + (dateNow.getMonth() + 1) + '/' + dateNow.getFullYear() + ' ' + utc.getHours() + ':' + utc.getMinutes() + ':' + utc.getSeconds()
-        args['grpc_args']['createdAt'] = utcStr
 
         tcpClient.getInstance.sendMessage(content.replace('!ping', ''), messages[i].id, 'xr-engine', messages[i].channelId, utcStr, addPing, _sender, _sender)
     }

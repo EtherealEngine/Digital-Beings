@@ -1,9 +1,12 @@
+import { exec } from "child_process";
 import { chatFilter } from "../../chatFilter";
 import { userDatabase } from "../../userDatabase";
 import { startsWithCapital } from "../../utils";
 import { addMessageToHistory, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
 const emojiRegex = require('emoji-regex');
 const emoji = require("emoji-dictionary");
+import * as fs from 'fs';
+import { channelTypes } from "../util";
 
 module.exports = async (client, message) => {
     const reg = emojiRegex();
@@ -18,6 +21,7 @@ module.exports = async (client, message) => {
 
     let {author, channel, content, mentions, id} = message;
     if (process.env.DIGITAL_BEINGS_ONLY === 'True' && !channel.topic.toLowerCase().includes('digital being')) {
+        console.log('db only')
         return
     }
     if (userDatabase.getInstance.isUserBanned(author.id, 'discord')) {
@@ -33,7 +37,6 @@ module.exports = async (client, message) => {
                     const user = await client.users.cache.find(user => user.id == x)
                     if (user !== undefined) {   
                         const u = '@' + user.username + '#' + user.discriminator
-                        console.log(u)
                         content = content.replace(data[i], u)
                     }
                 } catch(err) { console.log(err) }
@@ -54,7 +57,7 @@ module.exports = async (client, message) => {
         }
     }
 
-    if (content === '') content = '{sent media}'
+    if (content === '') return 
     let _prev = undefined
     if (!author.bot) {
         _prev = prevMessage[channel.id]
@@ -64,12 +67,12 @@ module.exports = async (client, message) => {
     }
     const addPing = (_prev !== undefined && _prev !== '' && _prev !== author) || moreThanOneInConversation()
     // Ignore all bots
-    if (author.bot) return;
+    if (author.bot) return
     addMessageToHistory(channel.id, id, author.username, content)
 
     const botMention = `<@!${client.user}>`;
-    const isDM = channel.type === 'dm';
-    const isMention = (channel.type === 'text' && (mentions.has(client.user))) || isDM
+    const isDM = channel.type === channelTypes['dm']
+    const isMention = (channel.type === channelTypes['text'] && (mentions.has(client.user))) || isDM
     const otherMention = !isMention && mentions.members !== null && mentions.members.size > 0
     let startConv = false
     let startConvName = ''
@@ -104,7 +107,7 @@ module.exports = async (client, message) => {
         }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isUserNameMention = (channel.type === 'text' || isDM) && content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(client.username_regex)
+    const isUserNameMention = (channel.type === channelTypes['text'] || isDM) && content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
     if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()
@@ -124,8 +127,34 @@ module.exports = async (client, message) => {
             if (d.length > index) {
                 const channelName = d[index]
                 await message.guild.channels.cache.forEach(async (channel) => {
-                    if (channel.type === 'voice' && channel.name === channelName) {
-                        channel.join()
+                    if (channel.type === channelTypes['voice'] && channel.name === channelName) {
+                        const connection = await channel.join()
+                        const receiver = connection.receiver
+                        const userStream = receiver.createStream(author, {mode:'pcm', end: 'silence'})
+                        const writeStream = fs.createWriteStream('recording.pcm', {})
+
+                        const buffer = []
+                        userStream.on('data', (chunk) => {
+                            buffer.push(chunk)
+                            console.log(chunk)
+                            userStream.pipe(writeStream)
+                        });
+                        writeStream.on('pipe', console.log)
+                        userStream.on('finish', () => {
+                            channel.leave()
+                            /*const cmd = 'ffmpeg -i recording.pcm recording.wav';
+                            exec(cmd, (error, stdout, stderr) => {
+                                if (error) {
+                                    console.log(`error: ${error.message}`);
+                                    return;
+                                }
+                                if (stderr) {
+                                    console.log(`stderr: ${stderr}`);
+                                    return;
+                                }
+                                console.log(`stdout: ${stdout}`);
+                            });*/
+                        });
                         return false
                     }
                 })
@@ -174,10 +203,17 @@ module.exports = async (client, message) => {
             args['grpc_args'][element.trim().split("=")[0]] = element.trim().split("=")[1];
         });
     }
+    if (channel.type === channelTypes['thread']) {
+        args['grpc_args']['isThread'] = true
+        args['grpc_args']['parentId'] = channel.parentId
+    } else {
+        args['grpc_args']['isThread'] = false
+    }
+
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 
-    channel.startTyping();
+    channel.sendTyping();
     // Run the command
     cmd.run(client, message, args, author, addPing, channel.id).catch(err => console.log(err))
 };
