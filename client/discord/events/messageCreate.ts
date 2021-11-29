@@ -29,6 +29,7 @@ module.exports = async (client, message) => {
     }
 
     if (mentions !== null && mentions.members !== null && mentions.members.size > 0) {
+        console.log('has mentions')
         const data = content.split(' ')
         for (let i = 0; i < data.length; i++) {
             if (data[i].startsWith('<@!') && data[i].charAt(data[i].length - 1) === '>') {
@@ -36,7 +37,8 @@ module.exports = async (client, message) => {
                     const x = data[i].replace('<@!', '').replace('>', '')
                     const user = await client.users.cache.find(user => user.id == x)
                     if (user !== undefined) {   
-                        const u = '@' + user.username + '#' + user.discriminator
+                        //const u = '@' + user.username + '#' + user.discriminator
+                        const u = user.id == client.user ? process.env.BOT_NAME : user.username
                         content = content.replace(data[i], u)
                     }
                 } catch(err) { console.log(err) }
