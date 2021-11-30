@@ -37,7 +37,7 @@ def prepare_metaintelligence_history(history_str):
     for midx, message in enumerate(history):
         history[midx]['content'] = re_sub(r'<@!\d+>', '', message['content']).strip()
         if history[midx]['author'] == os.getenv('BOT_NAME'):
-            history[midx]['author'] = 'carl.sagan'
+            history[midx]['author'] = os.getenv('BOT_NAME_HANDLE')
     return history
 class DigitalBeing():
     def __init__(self):
