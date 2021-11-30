@@ -217,6 +217,7 @@ Some values are the api keys, chat history length, editor values, ports used etc
 ##### Misc
 
 * `BOT_NAME` - the name of the Bot that is used globally in the chat history, so the bot  understands easily if it sent by it
+* `BOT_NAME_HANDLE` - the name that is set for the bot in the chat history in the metaintelligence handler
 * `BOT_NAME_REGEX` - the regex for the bot name, which is used for the bot to understand that someone is starting a conversation with it
 * `TCP_PORT` - the TCP port that is used to connect the typescript client with the Python server
 * `WEBSERVER_PORT` - the webserver port that is used for the webhooks (Twilio, Messenger)
