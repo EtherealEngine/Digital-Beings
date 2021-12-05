@@ -6762,10 +6762,10 @@ twit@2.2.11:
     mime "^1.3.4"
     request "^2.68.0"
 
-twitter-api-v2@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.npmjs.org/twitter-api-v2/-/twitter-api-v2-1.7.0.tgz"
-  integrity sha512-FxP2Yr9/U4G9Qj0WEay23Bf+RGQ1lnJCCm+nhmVJOkMJSi4Gr0OQzwezhD10sdBR8YDPxssFE25oqydQDh+nig==
+twitter-api-v2@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.npmjs.org/twitter-api-v2/-/twitter-api-v2-1.7.1.tgz"
+  integrity sha512-/3W6gBpF0Qt4n3CLyTJCBm9TttTBpVYbqi23T2LvMZBt06tb/3kP2mAWogbRD5xiEczL14l0+qcY1zxpXm1DJg==
 
 twitter-autohook@1.7.2:
   version "1.7.2"
