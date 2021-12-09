@@ -41,7 +41,7 @@
     "express": "4.17.1",
     "express-session": "1.17.2",
     "instagram-private-api": "1.45.2",
-    "node-telegram-bot-api": "0.54.0",
+    "node-telegram-bot-api": "0.55.0",
     "nodemon": "2.0.15",
     "pg": "8.7.1",
     "puppeteer": "12.0.1",
