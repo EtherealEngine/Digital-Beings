@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <title>Bot Manager</title>
+    <style>
+        * {
+            font-family: Calibri;
+        }
+
+        a {
+            color: #3366CC;
+        }
+
+        table {
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            border-collapse: collapse;
+        }
+
+        th {
+            border-width: 1px;
+            padding: 4px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: lightskyblue;
+            white-space: nowrap;
+        }
+
+        td {
+            border-width: 1px;
+            padding: 4px;
+            border-style: solid;
+            border-color: lightgray;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: LightGray;
+        }
+
+        .flex-container>div {
+            margin: 10px;
+            background-color: White;
+            padding: 10px
+        }
+
+        tr:nth-child(even) {
+            background-color: #E7F5FE;
+        }
+
+        ul.cfm_agent_list li {
+            list-style-type: none;
+        }
+    </style>
+</head>
+
+<body>
+    <center><a href="/">Main</a>&nbsp;&nbsp;
+        <a href="block_manager">Block Manager</a>&nbsp;&nbsp;
+        <a href="chat_filter_manager">Chat Filter Manager (For Users)</a>&nbsp;&nbsp;
+        <a href="chat_filter_manager_ai">Chat Filter Manager (For AI)</a>&nbsp;&nbsp;
+    </center>
+    <div id="content">{% block content %}{% endblock %}</div>
+</body>
+
+</html>
