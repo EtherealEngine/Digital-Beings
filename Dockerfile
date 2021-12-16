@@ -51,10 +51,6 @@ COPY package.json .
 COPY requirements.txt .
 COPY editor.sh .
 
-RUN mkdir -p /bot_manager/
-WORKDIR /bot_manager/
-COPY ./ /bot_manager/
-
 RUN pip install -r requirements.txt --no-cache-dir
 #RUN python3 -m spacy download en_core_web_md
 #RUN python3 -m spacy link en_core_web_md en

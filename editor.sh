@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 bot_manager/main.py
+python3 /DigitalBeing/bot_manager/main.py
