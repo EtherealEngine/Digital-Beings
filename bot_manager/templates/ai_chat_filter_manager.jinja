@@ -1,0 +1,137 @@
+{% extends "layout.jinja" %}
+
+{% block content %}
+<center>
+    <h1>Chat Filter (For AI)</h1>
+    <h2>Max Loop Count</h2>
+    <form action="/chat_filter_manager_ai" method="post" id="max_loop_count">
+        <label for="count">Count:</label><br/>
+        <input type="number" id="count" name="count" value="{{count}}"><br/>
+        <input type="submit" name="max_loop_count" value="Update">
+    </form>
+
+    <h2>Add Bad Word</h2>
+    <form action="/chat_filter_manager_ai" method="post" id="add_bad_word">
+        <label for="word">Word:</label>
+        <input type="text" id="word" name="word" value="">
+        <br/>
+        <label for="age">Age:</label>
+        <input type="checkbox" id="age12" name="age12"> <label for="unlimited">1-12</label>
+        <input type="checkbox" id="age16" name="age16"> <label for="unlimited">12-16</label>
+        <input type="checkbox" id="age18" name="age18"> <label for="unlimited">16+</label>
+        <input type="checkbox" id="agexxx" name="agexxx"> <label for="unlimited">XXX</label>
+        <br/>
+        <input type="checkbox" id="unlimited" name="unlimited"> <label for="unlimited">Unlimited</label>
+        <br/>
+        <br/>
+        <input type="submit" name="add_bad_word" value="Add">
+    </form>
+
+    <h2>Agents</h2>
+    {% for agent in agents %}
+        <h4>
+            <form action="/chat_filter_manager_ai" method="post" id="add_agent_age">
+                <select name="age" id="age">
+                    <option value="12">1-12</option>
+                    <option value="16">12-16</option>
+                    <option value="18">16+</option>
+                    <option value="19">XXX</option>
+                </select>
+                <input type="hidden" id="agent" name="agent" value="{{agent['agent']}}"> 
+                <input type="submit" name="add_agent_age" value="Add">
+                <input type="submit" name="remove_agent_age" value="Remove">
+            </form> {{agent['agent']}}:
+            <ul class="cfm_agent_list">
+            {% for age_item in agent['age'] %}
+                <li>{{age_item}}</li>
+            {% endfor %}
+            </ul>
+        </h4>
+    {% endfor %}
+
+    {% if c1 %}
+    <h4>Bad Words - Age 1-12</h4>
+    <table>
+    <tr>
+        <th>Word</th>
+        <th>Remove</th>
+    </tr>
+    {% endif %}
+    {% for i in c1 %}
+        <tr>
+            <td>{{i['word']}}</td>
+            <td>
+                <form action="/chat_filter_manager_ai" method="post" id="remove_keyword">
+                <input type="hidden" id="word" name="word" value="{{i['word']}}">
+                <input type="hidden" id="age" name="age" value="{{i['age']}}">
+                <input type="submit" name="remove_bad_word" value="Remove"></form>
+            </td>
+        </tr>
+    {% endfor %}
+    {% if c1 %}</table>{% endif %}
+
+    {% if c2 %}
+    <h4>Bad Words - Age 12-16</h4>
+    <table>
+    <tr>
+        <th>Word</th>
+        <th>Remove</th>
+    </tr>
+    {% endif %}
+    {% for i in c2 %}
+    <tr>
+        <td>{{i['word']}}</td>
+        <td>
+            <form action="/chat_filter_manager_ai" method="post" id="remove_keyword">
+            <input type="hidden" id="word" name="word" value="{{i['word']}}">
+            <input type="hidden" id="age" name="age" value="{{i['age']}}">
+            <input type="submit" name="remove_bad_word" value="Remove"></form>
+        </td>
+    </tr>
+    {% endfor %}
+    {% if c2 %}</table>{% endif %}
+
+    {% if c3 %}
+    <h4>Bad Words - Age 16+</h4>
+    <table>
+    <tr>
+        <th>Word</th>
+        <th>Remove</th>
+    </tr>
+    {% endif %}
+    {% for i in c3 %}
+    <tr>
+        <td>{{i['word']}}</td>
+        <td>
+            <form action="/chat_filter_manager_ai" method="post" id="remove_keyword">
+            <input type="hidden" id="word" name="word" value="{{i['word']}}">
+            <input type="hidden" id="age" name="age" value="{{i['age']}}">
+            <input type="submit" name="remove_bad_word" value="Remove"></form>
+        </td>
+    </tr>
+    {% endfor %}
+    {% if c3 %}</table>{% endif %}
+
+    {% if c4 %}
+    <h4>Bad Words - Age XXX</h4>
+    <table>
+    <tr>
+    <th>Word</th>
+    <th>Remove</th>
+    </tr>
+    {% endif %}
+    {% for i in c4 %}
+    <tr>
+        <td>{{i['word']}}</td>
+        <td>
+            <form action="/chat_filter_manager_ai" method="post" id="remove_keyword">
+            <input type="hidden" id="word" name="word" value="{{i['word']}}">
+            <input type="hidden" id="age" name="age" value="{{i['age']}}">
+            <input type="submit" name="remove_bad_word" value="Remove"></form>
+        </td>
+    </tr>
+    {% endfor %}
+    {% if c4 %}</table>{% endif %}
+
+<center>
+{% endblock %}

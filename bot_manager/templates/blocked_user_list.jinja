@@ -1,0 +1,40 @@
+{% extends "layout.jinja" %}
+
+{% block content %}
+    <center>
+        <h1>Blocked User Management</h1>
+        <h4>Block a user</h4>
+        <form action="/block_manager" method="post" id="ban_user">
+            <label for="user_id">User ID:</label><br>
+            <input type="text" id="user_id" name="user_id" value=""><br>
+            <label for="client">Client:</label><br>
+            <input type="text" id="client" name="client" value=""><br><br>
+            <input type="submit" name="ban_user" value="Block">
+        </form>
+        <h4>Blocked users</h4>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Client</th>
+                <th>Action</th>
+            </tr>
+            {% for user in blocked_users %}
+            <tr>
+                <td>{{ user.key }}</td>
+                <td>{{ user.value }}</td>
+                <td>
+                    <form action="/block_manager" method="post" id="unban_user">
+                        <input type="hidden" id="client" name="client" value="{{ user.value }}">
+                        <input type="hidden" id="user_id" name="user_id" value="{{ user.key }}">
+                        <input type="submit" name="unban_user" value="Unblock">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </center>
+{% endblock %}
+
+
+
+

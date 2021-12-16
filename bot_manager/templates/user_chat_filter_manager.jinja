@@ -1,0 +1,45 @@
+{% extends "layout.jinja" %}
+
+{% block content %}
+<center>
+    <h1>Chat Filter Manager (For Users)</h1>
+    <h2>Ratings: half - {{half}} | max - {{max}}</h2>
+    <form action="/chat_filter_manager" method="post" id="update_ratings">
+        <label for="user_id">Half:</label><br>
+        <input type="number" id="half" name="half" value="{half}"><br>
+        <label for="client">Max:</label><br>
+        <input type="number" id="max" name="max" value="{max}"><br><br>
+        <input type="submit" name="update_ratings" value="Add Bad Word">
+    </form>
+    <h2>Add bad words</h2>
+    <form action="/chat_filter_manager" method="post" id="add_bad_word">
+        <label for="user_id">Word:</label><br>
+        <input type="text" id="word" name="word" value=""><br>
+        <label for="client">Rating:</label><br>
+        <input type="text" id="rating" name="rating" value=""><br><br>
+        <input type="submit" name="add_bad_word" value="Update Ratings">
+    </form>
+    <h4>Bad Words</h4>
+    <table>
+        <tr>
+            <th>Word</th>
+            <th>Rating</th>
+            <th>Edit</th>
+            <th>Remove</th>
+        </tr>
+        {% for bw in bad_words %}
+        <tr>
+            <td>{{bw['key']}}</td>
+            <td>{{bw['value']}}</td>
+            <td><form action="/chat_filter_manager" method="post" id="edit_bad_word">
+            <input type="hidden" id="word" name="word" value="{{bw['key']}}">
+            <input type="number" id="new_rating" name="new_rating" value="{{bw['value']}}">
+            <input type="submit" name="edit_bad_word" value="Edit"></form></td>
+            <td><form action="/chat_filter_manager" method="post" id="remove_bad_word">
+            <input type="hidden" id="word" name="word" value="{{bw['key']}}">
+            <input type="submit" name="remove_bad_word" value="Remove"></form></td>
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+{% endblock %}

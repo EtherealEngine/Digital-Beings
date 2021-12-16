@@ -33,7 +33,7 @@ class postgres:
         if not user_id or len(user_id) == 0 or not client or len(client) == 0:
             return
         
-        query = """INSERT INTO blocked_users(user_id, client) VALUES(%s, %s)"""
+        query = 'INSERT INTO blocked_users(user_id, client) VALUES(%s, %s)'
         self.cur.execute(query, (user_id, client))
         self.postgres_con.commit()
     
@@ -41,12 +41,12 @@ class postgres:
         if not user_id or len(user_id) == 0 or not client or len(client) == 0:
             return
         
-        query = """DELETE FROM blocked_users WHERE user_id=%s AND client=%s"""
+        query = 'DELETE FROM blocked_users WHERE user_id=%s AND client=%s'
         self.cur.execute(query, (user_id, client))
         self.postgres_con.commit()
     
     def getChatFilterRatings(self):
-        query = '''SELECT * FROM chat_filter'''
+        query = 'SELECT * FROM chat_filter'
         self.cur.execute(query)
         results = self.cur.fetchall()
         half = 5
@@ -64,12 +64,12 @@ class postgres:
         return half, max
     
     def updateChatFilter(self, half, max):
-        query = '''UPDATE chat_filter SET half=%s, max=%s'''
+        query = 'UPDATE chat_filter SET half=%s, max=%s'
         self.cur.execute(query, (half, max))
         self.postgres_con.commit()
 
     def getBadWordsRatings(self):
-        query = '''SELECT * FROM bad_words'''
+        query = 'SELECT * FROM bad_words'
         self.cur.execute(query)
         results = self.cur.fetchall()
         bad_words = []
@@ -87,28 +87,28 @@ class postgres:
         if (self.badWordExists(word)):
             return
 
-        query = '''INSERT INTO bad_words(word, rating) VALUES(%s, %s)'''
+        query = 'INSERT INTO bad_words(word, rating) VALUES(%s, %s)'
         self.cur.execute(query, (word, rating))
         self.postgres_con.commit()
 
     def removeBadWord(self, word):
-        query = '''DELETE FROM bad_words WHERE word=%s'''
+        query = 'DELETE FROM bad_words WHERE word=%s'
         self.cur.execute(query, (word,))
         self.postgres_con.commit()
     
     def badWordExists(self, word):
-        query = '''SELECT * FROM bad_words WHERE word=%s'''
+        query = 'SELECT * FROM bad_words WHERE word=%s'
         self.cur.execute(query, (word,))
         results = self.cur.fetchall()
         return len(results) > 0
         
     def editBadWord(self, word, newRating):
-        query = '''UPDATE bad_words SET rating=%s WHERE word=%s'''
+        query = 'UPDATE bad_words SET rating=%s WHERE word=%s'
         self.cur.execute(query, (newRating, word))
         self.postgres_con.commit()
     
     def getKeywords(self):
-        query = '''SELECT * FROM keywords'''
+        query = 'SELECT * FROM keywords'
         self.cur.execute(query)
         results = self.cur.fetchall()
         keywords = []
@@ -126,28 +126,28 @@ class postgres:
         if (self.keywordExists(word, agent)):
             return
 
-        query = '''INSERT INTO keywords(word, count, agent) VALUES(%s, %s, %s)'''
+        query = 'INSERT INTO keywords(word, count, agent) VALUES(%s, %s, %s)'
         self.cur.execute(query, (word, count, agent))
         self.postgres_con.commit()
     
     def removeKeyword(self, word, agent):
-        query = '''DELETE FROM keywords WHERE word=%s AND agent=%s'''
+        query = 'DELETE FROM keywords WHERE word=%s AND agent=%s'
         self.cur.execute(query, (word, agent))
         self.postgres_con.commit()
     
     def editKeyword(self, word, count, agent):
-        query = '''UPDATE keywords SET count=%s WHERE word=%s AND agent=%s'''
+        query = 'UPDATE keywords SET count=%s WHERE word=%s AND agent=%s'
         self.cur.execute(query, (count, word, agent))
         self.postgres_con.commit()
 
     def keywordExists(self, word, agent):
-        query = '''SELECT * FROM keywords WHERE word=%s AND agent=%s'''
+        query = 'SELECT * FROM keywords WHERE word=%s AND agent=%s'
         self.cur.execute(query, (word, agent))
         results = self.cur.fetchall()
         return len(results) > 0
 
     def getAIMaxLoopCount(self):
-        query = '''SELECT * FROM ai_max_filter_count'''
+        query = 'SELECT * FROM ai_max_filter_count'
         self.cur.execute(query)
         results = self.cur.fetchall()
 
@@ -161,12 +161,12 @@ class postgres:
         return 5
     
     def setAIMaxLoopCount(self, count):
-        query = '''INSERT INTO ai_max_filter_count(count) VALUES(%s)'''
+        query = 'UPDATE ai_max_filter_count SET count = %s;'
         self.cur.execute(query, (count))
         self.postgres_con.commit()
 
     def getAIChatFilter(self):
-        query = '''SELECT * FROM ai_chat_filter'''
+        query = 'SELECT * FROM ai_chat_filter'
         self.cur.execute(query)
         results = self.cur.fetchall()
         _res1 = []
@@ -195,38 +195,38 @@ class postgres:
             return
 
         if (word == 'unlimited'):
-            query = '''DELETE FROM ai_chat_filter'''
+            query = 'DELETE FROM ai_chat_filter'
             self.cur.execute(query)
             self.postgres_con.commit()
             
-        query = '''INSERT INTO ai_chat_filter(word, age) VALUES(%s, %s)'''
+        query = 'INSERT INTO ai_chat_filter(word, age) VALUES(%s, %s)'
         self.cur.execute(query, (word, age))
         self.postgres_con.commit()
     
     def removeAIChatFilter(self, word, age):
-        query = '''DELETE FROM ai_chat_filter WHERE word=%s AND age=%s'''
+        query = 'DELETE FROM ai_chat_filter WHERE word=%s AND age=%s'
         self.cur.execute(query, (word, age))
         self.postgres_con.commit()
 
     def aiChatFilterExists(self, word, age):
-        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s'''
+        query = 'SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s'
         self.cur.execute(query, (word, age))
         results = self.cur.fetchall()
         return len(results) > 0
 
     def filterIsDisabled(self, age):
-        query = '''SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s'''
+        query = 'SELECT * FROM ai_chat_filter WHERE word=%s AND age=%s'
         self.cur.execute(query, ('unlimited', age))
         results = self.cur.fetchall()
         return len(results) > 0
     
     def updateAIChatFilter(self, word, age):
-        query = '''UPDATE ai_chat_filter SET age=%s WHERE word=%s'''
+        query = 'UPDATE ai_chat_filter SET age=%s WHERE word=%s'
         self.cur.execute(query, (age, word))
         self.postgres_con.commit()
 
     def getAgeGroupsPerAgent(self):
-        query = '''SELECT * FROM agent_ages'''
+        query = 'SELECT * FROM agent_ages'
         self.cur.execute(query)
         results = self.cur.fetchall()
 
@@ -242,7 +242,7 @@ class postgres:
         return _res
     
     def addAgentAgeGroup(self, agent, age):
-        query = '''SELECT * FROM agent_ages WHERE agent=%s'''
+        query = 'SELECT * FROM agent_ages WHERE agent=%s'
         self.cur.execute(query, (agent,))
         results = self.cur.fetchall()
 
@@ -255,18 +255,18 @@ class postgres:
                 return
 
             ages += ';' + age
-            query = '''UPDATE agent_ages SET age=%s WHERE agent=%s'''
+            query = 'UPDATE agent_ages SET age=%s WHERE agent=%s'
             self.cur.execute(query, (ages, agent))
             self.postgres_con.commit()
             return
         
         ages = age + ''
-        query = '''INSERT INTO agent_ages(agent, age) VALUES(%s, %s)'''
+        query = 'INSERT INTO agent_ages(agent, age) VALUES(%s, %s)'
         self.cur.execute(query, (agent, ages))
         self.postgres_con.commit()
 
     def removeAgentAgeGroup(self, agent, age):
-        query = '''SELECT * FROM agent_ages WHERE agent=%s'''
+        query = 'SELECT * FROM agent_ages WHERE agent=%s'
         self.cur.execute(query, (agent,))
         results = self.cur.fetchall()
 
@@ -276,6 +276,6 @@ class postgres:
                 ages.remove(age)
             ages = ';'.join(ages) 
             print('ages: ', ages)
-            query = '''UPDATE agent_ages SET age=%s WHERE agent=%s'''
+            query = 'UPDATE agent_ages SET age=%s WHERE agent=%s'
             self.cur.execute(query, (ages, agent))
             self.postgres_con.commit()
