@@ -24,6 +24,8 @@ services:
     build: .
     restart: always
     command: ./editor.sh
+    volumes:
+        - "./:/DigitalBeing"
     environment:
       PGHOST: digitalbeing_db
       PGUSER: digitalbeing
