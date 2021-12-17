@@ -1,4 +1,3 @@
-import * as fs from 'fs'
 import { postgres } from './postgres'
 
 export class chatFilter {
@@ -15,16 +14,6 @@ export class chatFilter {
         this.half = half
         this.max = max
         this.badWords = badWords
-        /*const data = fs.readFileSync('bad_words.txt', 'utf-8')
-        const lines = data.split('\n')
-        for(let i = 0; i < lines.length; i++) {
-            const d = lines[i].split('=')
-            if (d.length == 2) {
-                const word = d[0].trim()
-                const rating = parseInt(d[1].trim())
-                this.badWords.push({ word: word, rating: rating })
-            }
-        }*/
         console.log('loaded ' + this.badWords.length + ' bad words, half: ' + half + ' max: ' + max)
         setInterval(() => {
             postgres.getInstance.getChatFilterData(false)
