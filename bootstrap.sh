@@ -1,3 +1,3 @@
 #!/bin/sh
 yarn install
-supervisord -c /DigitalBeing/supervisor/service_script.conf
+npm run start

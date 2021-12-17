@@ -10,11 +10,9 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # update the repository sources list
 # and install dependencies
-# supervisor to run multiple processes
 RUN apt-get update \
     && apt-get install -y curl \
-    && apt-get -y autoclean \
-    && apt-get install -y supervisor
+    && apt-get -y autoclean
 
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
@@ -60,4 +58,3 @@ RUN pip install -r requirements.txt --no-cache-dir
 #COPY . .
 
 CMD ["sh", "./bootstrap.sh"]
-#CMD ["supervisord","-c","/DigitalBeing/supervisor/service_script.conf"]
