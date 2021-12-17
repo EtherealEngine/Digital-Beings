@@ -3,9 +3,11 @@ services:
   bot:
     build: .
     volumes:
-        - "./:/DigitalBeing"
+      - "./:/DigitalBeing"
+    depends_on:
+      - "db"
     ports:
-        - "65535:65535"
+      - "65535:65535"
 
   db:
     restart: always
@@ -24,8 +26,10 @@ services:
     build: .
     restart: always
     command: ./editor.sh
+    depends_on:
+      - "db"
     volumes:
-        - "./:/DigitalBeing"
+      - "./:/DigitalBeing"
     environment:
       PGHOST: digitalbeing_db
       PGUSER: digitalbeing
