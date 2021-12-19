@@ -4503,10 +4503,10 @@ node-gyp@^8.2.0:
     tar "^6.1.2"
     which "^2.0.2"
 
-node-telegram-bot-api@0.55.0:
-  version "0.55.0"
-  resolved "https://registry.npmjs.org/node-telegram-bot-api/-/node-telegram-bot-api-0.55.0.tgz"
-  integrity sha512-yn89yuJZr/MMCRNNJ3q2FCvrczfWC+hS/cj9pcY0CfQTJ+I/2jlcbsgXeV6EvVYUTjvqTxTG1lq+J9InRRjUow==
+node-telegram-bot-api@0.56.0:
+  version "0.56.0"
+  resolved "https://registry.npmjs.org/node-telegram-bot-api/-/node-telegram-bot-api-0.56.0.tgz"
+  integrity sha512-gKUlH/uUXdSJ++6y1Y16qEThZouecfl4twuPKe6V2BPFDDfom9j2QMlxfslPEjZPH2ZXlA1S/uoRCKtIjzuaLw==
   dependencies:
     array.prototype.findindex "^2.0.2"
     bl "^1.2.3"
