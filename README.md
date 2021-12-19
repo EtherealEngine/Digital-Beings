@@ -99,6 +99,19 @@ More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzl
 #### Docker-compose up editor.sh error
 If you get this error `ERROR: for testbot_editor_1  Cannot start service editor: OCI runtime create failed: container_linux.go:380: starting container process caused: exec: "./editor.sh": permission denied: unknown` before running the command `docker-compose up` run: `chmod +x editor.sh` in the root folder
 
+#### How to install Postgres manual - without docker
+* `sudo apt-get install postgresql` - installs the postgresql service on the machine
+* `sudo passwd postgres` - the user postgres is created, with this command you can set a password, as the service runs on this user, close and reopen terminal if on WSL otherwise reboot
+* `sudo service postgresql start` - to start the postgres service
+* `sudo -u postgres psql` - to connect to postgres as the postgres user - the user can be changed to a custom user 
+* if you want to run postgres on a different user you can use this command: `sudo -u postgres createuser <username>`
+* to change the user password you will need to connect to postgres as the main user (postgres) and run: `alter user <username> with encrypted password '<password>';`
+* use `create database <dbname>;` to create the new database for the bot
+* to grant all privilages to the new user, run: `grant all privileges on database <dbname> to <username> ;`
+* then use `\c <dbname>`
+* finally run the `init.sql` file that can be located in the root folder in order to create the database
+* Here you can find more [detailed instructions](https://harshityadav95.medium.com/postgresql-in-windows-subsystem-for-linux-wsl-6dc751ac1ff3)
+
 #### Changing active agents
 
 **Attention**: applies to installed agent code.
