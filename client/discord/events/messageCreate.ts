@@ -1,12 +1,16 @@
-import { exec } from "child_process";
-import { chatFilter } from "../../chatFilter";
-import { userDatabase } from "../../userDatabase";
-import { startsWithCapital } from "../../utils";
-import { addMessageToHistory, exitConversation, isInConversation, moreThanOneInConversation, prevMessage, prevMessageTimers, sentMessage } from "../chatHistory";
-const emojiRegex = require('emoji-regex');
-const emoji = require("emoji-dictionary");
-import * as fs from 'fs';
-import { channelTypes } from "../util";
+import { exec } from 'child_process'
+import { chatFilter, toxicityTest } from '../../chatFilter'
+import { userDatabase } from '../../userDatabase'
+import { startsWithCapital } from '../../utils'
+import {
+    addMessageToHistory, exitConversation, isInConversation,
+    moreThanOneInConversation, prevMessage, prevMessageTimers,
+    sentMessage
+} from '../chatHistory'
+const emojiRegex = require('emoji-regex')
+const emoji = require('emoji-dictionary')
+import * as fs from 'fs'
+import { channelTypes } from '../util'
 
 module.exports = async (client, message) => {
     const reg = emojiRegex();
@@ -45,17 +49,41 @@ module.exports = async (client, message) => {
             }
         }
     }
-    
-    const bad_words = chatFilter.getInstance.isBadWord(content, author.id, 'discord', function(_user, ratings) {
-        author.send('You got ' + ratings + ' warnings, at 10 you will get blocked!')
-    }, 
-    function (_user) {
+
+    // Warn an offending user about their actions
+    let warn_offender = function(_user, ratings) {
+        author.send(`You've got ${ratings} warnings and you will get blocked at 10!`)
+    }
+    // Ban an offending user
+    let ban_offender = function (message, _user) {
         userDatabase.getInstance.banUser(author.id, 'discord')
-        message.lineReply('blocked')
-    })
-    if (bad_words !== undefined && bad_words.length > 0) {
-        for(let word in bad_words) {
-            content = content.replace(new RegExp(bad_words[word], 'ig'), '')
+        console.log(message)
+        // TODO doesn't work with both discord-inline-reply and discord-reply
+        // message.lineReply('blocked')
+        author.send(`You've been blocked!`)
+    }
+    // Collect obscene words for further actions / rating
+    const obscenities = chatFilter.getInstance.collectObscenities(content, author.id)
+    // OpenAI obscenity detector
+    let obscenity_count = obscenities.length
+    if (parseInt(process.env.OPENAI_OBSCENITY_DETECTOR, 10) && !obscenity_count) {
+        obscenity_count = await toxicityTest(message)
+    }
+    // Process obscenities
+    if (obscenity_count > 0) {
+        chatFilter.getInstance.handleObscenities(
+            message,
+            'discord',
+            obscenity_count,
+            warn_offender,
+            ban_offender
+        )
+    }
+
+    // ...
+    if (obscenities !== undefined && obscenities.length > 0) {
+        for(let word in obscenities) {
+            content = content.replace(new RegExp(obscenities[word], 'ig'), '')
         }
     }
 
@@ -76,6 +104,9 @@ module.exports = async (client, message) => {
     const isDM = channel.type === channelTypes['dm']
     const isMention = (channel.type === channelTypes['text'] && (mentions.has(client.user))) || isDM
     const otherMention = !isMention && mentions.members !== null && mentions.members.size > 0
+    // TODO someone should document this section. I guess it's about detecting a conversation start,
+    // but it ignores all the other starting words and I have no idea how it's used.
+    // As usual with DigitalBeing code.
     let startConv = false
     let startConvName = ''
     if (!isMention && !otherMention) {
@@ -109,7 +140,10 @@ module.exports = async (client, message) => {
         }
     }
     const isDirectMethion = !content.startsWith('!') && content.toLowerCase().includes(client.bot_name.toLowerCase()) 
-    const isUserNameMention = (channel.type === channelTypes['text'] || isDM) && content.toLowerCase().replace(',', '').replace('.', '').replace('?', '').replace('!', '').match(client.username_regex)
+    const isUserNameMention = (channel.type === channelTypes['text'] || isDM) &&
+                               content.toLowerCase().replace(',', '')
+                               .replace('.', '').replace('?', '').replace('!', '')
+                               .match(client.username_regex)
     const isInDiscussion = isInConversation(author.id)
     if (!content.startsWith('!') && !otherMention) {
         if (isMention) content = '!ping ' + content.replace(botMention, '').trim()

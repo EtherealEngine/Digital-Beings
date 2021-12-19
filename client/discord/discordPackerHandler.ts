@@ -1,10 +1,10 @@
-import { chatFilter } from "../chatFilter";
-import { userDatabase } from "../userDatabase";
-import { getRandomEmptyResponse } from "../utils";
-import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "./chatHistory";
-import { replacePlaceholders } from "./util";
-require('discord-inline-reply'); 
-require('discord-reply');
+import { chatFilter, toxicityTest } from "../chatFilter"
+import { userDatabase } from "../userDatabase"
+import { getRandomEmptyResponse } from "../utils"
+import { addMessageToHistory, getResponse, onMessageResponseUpdated, updateMessage } from "./chatHistory"
+import { replacePlaceholders } from "./util"
+require('discord-inline-reply')
+require('discord-reply')
 
 export class discordPackerHandler {
     static getInstance: discordPackerHandler
@@ -191,6 +191,7 @@ export class discordPackerHandler {
     }
     
     async handleMessageEdit(message_id, chat_id, responses, addPing) {
+
         this.client.channels.fetch(chat_id).then(async channel => {
             const oldResponse = getResponse(channel.id, message_id)
             if (oldResponse === undefined) {
@@ -201,13 +202,36 @@ export class discordPackerHandler {
                 channel.messages.fetch({limit: this.client.edit_messages_max_count}).then(async messages => {
                     messages.forEach(async function(edited) {
                         if (edited.id === message_id) {
-                            if (chatFilter.getInstance.isBadWord(edited.content, edited.author.id, 'discord', function(_user) {
-                                edited.author.send('You got 5 warnings, at 10 you will get blocked!')
-                            }, 
-                            function (_user) {
-                                userDatabase.getInstance.banUser(edited.author.id, 'client')
-                                edited.reply('blocked')
-                            }).length > 0) {
+                            // Warn an offending user about their actions
+                            let warn_offender = function(_user, ratings) {
+                                edited.author.send(`You've got ${ratings} warnings and you will get blocked at 10!`)
+                            }
+                            // Ban an offending user
+                            let ban_offender = function (message, _user) {
+                                userDatabase.getInstance.banUser(edited.author.id, 'discord')
+                                // TODO doesn't work with both discord-inline-reply and discord-reply
+                                // message.lineReply('blocked')
+                                edited.author.send(`You've been blocked!`)
+                            }
+                            // Collect obscene words for further actions / rating
+                            let obscenities = chatFilter.getInstance.collectObscenities(edited.content, edited.author.id)
+                            // OpenAI obscenity detector
+                            let obscenity_count = obscenities.length
+                            if (parseInt(process.env.OPENAI_OBSCENITY_DETECTOR, 10) && !obscenity_count) {
+                                obscenity_count = await toxicityTest(edited.content)
+                            }
+                            // Process obscenities
+                            if (obscenity_count > 0) {
+                                chatFilter.getInstance.handleObscenities(
+                                    edited,
+                                    'discord',
+                                    obscenity_count,
+                                    warn_offender,
+                                    ban_offender
+                                )
+                            }
+                            // Stop processing if there are obscenities
+                            if (obscenities.length > 0) {
                                 return
                             }
         
@@ -255,4 +279,4 @@ export class discordPackerHandler {
             })
         })
     }
-}
+} 

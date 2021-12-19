@@ -223,6 +223,7 @@ Some values are the api keys, chat history length, editor values, ports used etc
 * `WEBSERVER_PORT` - the webserver port that is used for the webhooks (Twilio, Messenger)
 * `EDIT_MESSAGES_MAX_COUNT` - max message to be sent to agent if edited (older messages will be ignored)
 * `CHAT_HISTORY_MESSAGES_COUNT` - the count of chat history fetched in-case the agent needs them
+* `OPENAI_OBSCENITY_DETECTOR` - uses OpenAI for finding obscene messages if set as `1`
 
 ##### Twitter
 
