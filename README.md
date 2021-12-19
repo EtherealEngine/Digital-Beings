@@ -96,6 +96,9 @@ More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzl
 
 ### Miscellaneous / Troubleshooting
 
+#### Docker-compose up editor.sh error
+If you get this error `ERROR: for testbot_editor_1  Cannot start service editor: OCI runtime create failed: container_linux.go:380: starting container process caused: exec: "./editor.sh": permission denied: unknown` before running the command `docker-compose up` run: `chmod +x editor.sh` in the root folder
+
 #### Changing active agents
 
 **Attention**: applies to installed agent code.
