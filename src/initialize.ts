@@ -25,22 +25,63 @@ globalThis.requestAnimationFrame = (f) => {
     }
     serverLoop()
 }
+
 const pyConnect = require('./pyconnect');
 
+let enabled_services = (process.env.ENABLED_SERVICES || '').split(',').map(
+    (item) => item.trim().toLowerCase()
+).filter(
+    (value, index, self) => self.indexOf(value) === index
+);
+
 (async function(){  
-    await pyConnect.invoke(async function(){
-        await new tcpClient().init('127.0.0.1', process.env.TCP_PORT) 
-        await require("../client/discord/discord-client").createDiscordClient();
-        //await require("../client/reddit/reddit-client").createRedditClient();
-        //await require("../client/messenger/messenger-client").createMessengerClient();
-        //await require("../client/instagram/instagram-client").createInstagramClient();
-        //await require('../client/telegram/telegram-client').createTelegramClient();
-        //await require("../client/twilio/twilio-client").createTwilioClient();
-        //await require("../client/whatsapp/whatsapp-client").createWhatsappClient();
-        //await require("../client/twitter/twitter-client").createTwitterClient();
-        //await require("../client/harmony/harmony-client").createHarmonyClient();
-        //await require("../client/xr/xrengine-client").createXREngineClient();
-        //await require("../client/zoom/zoom-client").createZoomClient();
+    await pyConnect.invoke(async function() {
+        // Enable the TCP client
+        await new tcpClient().init('0.0.0.0', process.env.TCP_PORT);
+        // Discord support
+        if (enabled_services.includes('discord')) {
+            await require('../client/discord/discord-client').createDiscordClient();
+        }
+        // Reddit support
+        if (enabled_services.includes('reddit')) {
+            await require('../client/reddit/reddit-client').createRedditClient();
+        }
+        // TODO: MSN? Facebook? Messenger support
+        if (enabled_services.includes('messenger')) {
+            await require('../client/messenger/messenger-client').createMessengerClient();
+        }
+        // Instagram support
+        if (enabled_services.includes('instagram')) {
+            await require('../client/instagram/instagram-client').createInstagramClient();
+        }
+        // Telegram support
+        if (enabled_services.includes('telegram')) {
+            await require('../client/telegram/telegram-client').createTelegramClient();
+        }
+        // Twilio support for SMS
+        if (enabled_services.includes('twilio')) {
+            await require('../client/twilio/twilio-client').createTwilioClient();
+        }
+        // Whatsapp support
+        if (enabled_services.includes('whatsapp')) {
+            await require('../client/whatsapp/whatsapp-client').createWhatsappClient();
+        }
+        // Twitter support
+        if (enabled_services.includes('twitter')) {
+            await require('../client/twitter/twitter-client').createTwitterClient();
+        }
+        // Harmony support
+        if (enabled_services.includes('harmony')) {
+            await require('../client/harmony/harmony-client').createHarmonyClient();
+        }
+        // XREngine support
+        if (enabled_services.includes('xrengine')) {
+            await require('../client/xr/xrengine-client').createXREngineClient();
+        }
+        // Zoom support
+        if (enabled_services.includes('zoom')) {
+            await require('../client/zoom/zoom-client').createZoomClient();
+        }
     }); 
 })();
 
