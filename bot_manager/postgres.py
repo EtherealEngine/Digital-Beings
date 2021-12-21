@@ -3,16 +3,39 @@ import os
 from datetime import datetime
 from json import dumps
 import envReader
+from time import sleep
 
-class postgres: 
+# A maximum count of Postgres connection establishing attempts
+MAX_RETRIES = 128
+
+class postgres:
+
     def __init__(self):
-        print('initializing postgres')
-        self.postgres_con = psycopg2.connect(
-                            host=envReader.getValue('PGHOST'),
-                            database=envReader.getValue('PGDATABASE'),
-                            user=envReader.getValue('PGUSER'),
-                            password=envReader.getValue('PGPASSWORD'))
-        self.cur = self.postgres_con.cursor()
+        """
+        This method establishes a connection with the PostgreSQL server.
+        It will retry 128 times, if necessary, which realistically shouldn't happen,
+        unless the Postgres server stays down.
+
+        On each retry, code will wait for a second, so PostgreSQL has time to actually start.
+
+        Todo:
+            - Consider if a keep-alive DB connection is actually required.
+            - Consider if keeping a single cursor is sane. Actually read about DB cursors.
+            - Consider if keeping both outweights the risk of the Docker-compose
+              failing to start all the containers.
+        """
+        for retry_id in range(MAX_RETRIES):
+            try:
+                self.postgres_con = psycopg2.connect(
+                                    host=envReader.getValue('PGHOST'),
+                                    database=envReader.getValue('PGDATABASE'),
+                                    user=envReader.getValue('PGUSER'),
+                                    password=envReader.getValue('PGPASSWORD'))
+                self.cur = self.postgres_con.cursor()
+                break
+            except psycopg2.OperationalError as pg_ex:
+                print(f'Postgres connection exception #{retry_id}')
+                sleep(1)
     
     def getBlockedUsers(self):
         query = """SELECT * FROM blocked_users"""
