@@ -729,10 +729,10 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node-telegram-bot-api@0.53.2":
-  version "0.53.2"
-  resolved "https://registry.npmjs.org/@types/node-telegram-bot-api/-/node-telegram-bot-api-0.53.2.tgz"
-  integrity sha512-CeGKP+YSIK/IsJBdc//2BZ43i40HH5AsiiEE8qCL5g5Lgj3i5NvwtdOy23J60eVUXr14orQrGNPFdSgA8k8aXA==
+"@types/node-telegram-bot-api@0.53.3":
+  version "0.53.3"
+  resolved "https://registry.npmjs.org/@types/node-telegram-bot-api/-/node-telegram-bot-api-0.53.3.tgz"
+  integrity sha512-C4jNOYYaJ4AJ+KXFq3U54DYhTQaZA2A5Mh8KvvfrblIuL+Qxdaq3LWwtQTDAMUTeKqEOHwFFqSXwnfvfrmRVGA==
   dependencies:
     "@types/node" "*"
     "@types/request" "*"
