@@ -2,7 +2,7 @@ import json
 from flask import Flask, session, request
 import flask
 from postgres import postgres as postgres
-from utils import * 
+from utils import *
 import envReader
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -52,7 +52,7 @@ def block_manager():
         if session.get('logged_in') == None or session.get('logged_in') == False:
             return flask.make_response(flask.redirect('/'))
         blocked_users = _postgres.getBlockedUsers()
-        blocked_user_list_tpl = tpl_env.get_template("blocked_user_list.jinja")
+        blocked_user_list_tpl = tpl_env.get_template('blocked_user_list.jinja')
         return blocked_user_list_tpl.render(blocked_users=blocked_users)
     elif request.method == 'POST':
         if session.get('logged_in') == None or session.get('logged_in') == False:

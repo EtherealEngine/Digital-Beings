@@ -230,15 +230,17 @@ Some values are the api keys, chat history length, editor values, ports used etc
 
 ##### Common parameters
 
-##### Misc
+##### Common
 
 * `BOT_NAME` - the name of the Bot that is used globally in the chat history, so the bot  understands easily if it sent by it
 * `BOT_NAME_HANDLE` - the name that is set for the bot in the chat history in the metaintelligence handler
 * `BOT_NAME_REGEX` - the regex for the bot name, which is used for the bot to understand that someone is starting a conversation with it
+* `ENABLED_SERVICES` - what clients to enable; case-insensitive. Possible options: `Discord`, `Instagram`, `Messenger`, `Reddit`, `Telegram`, `Twilio`, `Twitter`, `Website-reader`, `Whatsapp`, `XR`, `Zoom`.
 * `TCP_PORT` - the TCP port that is used to connect the typescript client with the Python server
-* `WEBSERVER_PORT` - the webserver port that is used for the webhooks (Twilio, Messenger)
 * `EDIT_MESSAGES_MAX_COUNT` - max message to be sent to agent if edited (older messages will be ignored)
 * `CHAT_HISTORY_MESSAGES_COUNT` - the count of chat history fetched in-case the agent needs them
+* `OPENAI_OBSCENITY_DETECTOR` - uses OpenAI for finding obscene messages if set as `1`
+* `WEBSERVER_PORT` - the webserver port that is used for the webhooks (Twilio, Messenger)
 
 ##### Twitter
 

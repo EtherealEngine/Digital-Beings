@@ -1,3 +1,3 @@
 #!/bin/sh
-yarn install
+npm install
 npm run start

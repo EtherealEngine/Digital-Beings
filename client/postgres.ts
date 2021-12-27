@@ -30,7 +30,7 @@ export class postgres {
 
         this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             }
           })
     }
@@ -42,7 +42,7 @@ export class postgres {
 
         this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             }
           })
     }
@@ -52,11 +52,11 @@ export class postgres {
         const values = [ client_name, chat_id ]
         return await this.client.query(query, values, (err, res) => {
             if (err) {
-                return console.log(err + ' ' + err.stack)
+                return console.log(`${err} ${err.stack}`)
             }
             const _res = []
             if (res !== undefined && res !== null && res.rows !== undefined) {
-                console.log('length: ' + res.length)
+                console.log(`length: ${res.length}`)
                 for(let i = 0; i < res.rows.length; i++) {
                     console.log(res.rows[i])
                     _res.push({ author: res.rows[i].sender, content: res.rows[i].content })
@@ -74,7 +74,7 @@ export class postgres {
 
         await this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             }
         })
     }
@@ -89,7 +89,7 @@ export class postgres {
 
             await this.client.query(query, values, (err, res) => {
                 if (err) {
-                console.log(err + ' ' + err.stack)
+                console.log(`${err} ${err.stack}`)
                 }
             })
         }
@@ -99,7 +99,7 @@ export class postgres {
 
             await this.client.query(query, values, (err, res) => {
                 if (err) {
-                console.log(err + ' ' + err.stack)
+                console.log(`${err} ${err.stack}`)
                 }
             })
         }
@@ -111,7 +111,7 @@ export class postgres {
 
         return await this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             } else {
                 if (res.rows && res.rows.length) {
                     this.updateMessage(client_name, chat_id, message_id, content, false);
@@ -126,7 +126,7 @@ export class postgres {
             
                     this.client.query(query2, values2, (err, res) => {
                         if (err) {
-                          console.log(err + ' ' + err.stack)
+                          console.log(`${err} ${err.stack}`)
                         }
                       })
                     return true
@@ -142,7 +142,7 @@ export class postgres {
 
         return await this.client.query(query, values, async (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             } else {
                 if (res.rows && res.rows.length) {
                     this.updateMessage(client_name, chat_id, message_id, content, false);
@@ -157,7 +157,7 @@ export class postgres {
             
                     await this.client.query(query2, values2, (err, res) => {
                         if (err) {
-                          console.log(err + ' ' + err.stack)
+                          console.log(`${err} ${err.stack}`)
                         }
                       })
                     return true
@@ -172,7 +172,7 @@ export class postgres {
 
         return await this.client.query(query, values, async (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             } else {
                 if (res.rows && res.rows.length) {
                     this.updateMessage(client_name, chat_id, message_id, content, false);
@@ -187,7 +187,7 @@ export class postgres {
             
                     await this.client.query(query2, values2, (err, res) => {
                         if (err) {
-                          console.log(err + ' ' + err.stack)
+                          console.log(`${err} ${err.stack}`)
                         }
                       })
                       callback()
@@ -201,7 +201,7 @@ export class postgres {
 
         return await this.client.query(query, values, async (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             } else {
                 if (res.rows && res.rows.length) {
                 }
@@ -217,7 +217,7 @@ export class postgres {
 
         return await this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             } else {
                 return res && res.rows && res.rows.length > 0
             }
@@ -230,7 +230,7 @@ export class postgres {
 
         return await this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             }
 
             if (res !== undefined && res !== null && res.rows !== undefined) {
@@ -245,7 +245,7 @@ export class postgres {
         const query = "SELECT * FROM blocked_users;"
 
         await this.client.query(query, (err, res) => {
-            if (err) console.log(err + ' ' + err.stack)
+            if (err) console.log(`${err} ${err.stack}`)
             else {
                 if (init) new userDatabase(res.rows);
                 else userDatabase.getInstance.bannedUsers = res.rows
@@ -258,7 +258,7 @@ export class postgres {
             
         this.client.query(query, values, (err, res) => {
             if (err) {
-              console.log(err + ' ' + err.stack)
+              console.log(`${err} ${err.stack}`)
             }
           })
 
@@ -269,7 +269,7 @@ export class postgres {
 
         this.client.query(query, values, (err, res) => {
             if (err) {
-                console.log(err + ' ' + err.stack)
+                console.log(`${err} ${err.stack}`)
             }
         });
     }
@@ -278,7 +278,7 @@ export class postgres {
         const values = [ user_id, client ]
 
         return await this.client.query(query, values, (err, res) => {
-            if (err) console.log(err + ' ' + err.stack)
+            if (err) console.log(`${err} ${err.stack}`)
             else return res !== undefined && res.rows !== undefined && res.rows.length > 0
         });
     }
@@ -287,7 +287,7 @@ export class postgres {
         const query = "SELECT * FROM chat_filter"
 
         await this.client.query(query, async (err, res) => {
-            if (err) console.log(err + ' ' + err.stack) 
+            if (err) console.log(`${err} ${err.stack}`) 
             else {
                 const half = parseInt(res.rows[0].half)
                 const max = parseInt(res.rows[0].max)

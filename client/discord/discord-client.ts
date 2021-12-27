@@ -1,21 +1,27 @@
-import { handleGuildMemberAdd } from './response-events/guildMemberAdd';
-import { handleGuildMemberRemove } from './response-events/guildMemberRemove';
-import { handleMessageReactionAdd } from './response-events/messageReactionAdd';
-import { handleSlashCommand } from './slash_commands/handler';
-import { initClient } from './loggingClient';
-import { helpFields, _findCommand, _parseWords } from './util';
-import { discordPackerHandler } from './discordPackerHandler';
+import { handleGuildMemberAdd } from './response-events/guildMemberAdd'
+import { handleGuildMemberRemove } from './response-events/guildMemberRemove'
+import { handleMessageReactionAdd } from './response-events/messageReactionAdd'
+import { handleSlashCommand } from './slash_commands/handler'
+import { initClient } from './loggingClient'
+import { helpFields, _findCommand, _parseWords } from './util'
+import { discordPackerHandler } from './discordPackerHandler'
 
-const Discord = require('discord.js');
+const Discord = require('discord.js')
 const {Util, Intents} = require('discord.js')
-const config = require("./config.json");
+// required for message.lineReply
+require('discord-inline-reply')
+const config = require('./config.json')
 const DISCORD_API_TOKEN = process.env.DISCORD_API_TOKEN 
 
 export let client = undefined
 
 const createDiscordClient = () => {
-    if (!process.env.DISCORD_API_TOKEN) return console.warn("No API token for Discord bot, skipping");
-    client = new Discord.Client({partials: ['MESSAGE', 'USER', 'REACTION'], intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]})//{ intents: [ Intents.GUILDS, Intents.GUILD_MEMBERS, Intents.GUILD_VOICE_STATES, Intents.GUILD_PRESENCES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
+    if (!process.env.DISCORD_API_TOKEN) return console.warn('No API token for Discord bot, skipping');
+    client = new Discord.Client({
+      partials: ['MESSAGE', 'USER', 'REACTION'],
+      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
+    })
+    //{ intents: [ Intents.GUILDS, Intents.GUILD_MEMBERS, Intents.GUILD_VOICE_STATES, Intents.GUILD_PRESENCES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
     // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
     console.log(JSON.stringify(client))
     client.config = config;
