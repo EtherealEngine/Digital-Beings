@@ -12,7 +12,7 @@ class PyConnect {
         return new Promise((resolve, reject) => {
             if (!PyConnect.connected) {
                 console.log('PythonConnector – making a new connection to the python layer');
-                PyConnect.grpcProcess = spawn('python3', ['-u', path.join(__dirname, '../server/grpc/pyserver.py')]);
+                PyConnect.grpcProcess = spawn(process.platform == 'win32' ? 'py' : 'python3', ['-u', path.join(__dirname, '../server/grpc/pyserver.py')]);
                 PyConnect.grpcProcess.stdout.on('data', function(data) {
                     console.info('python:', data.toString());
                     PyConnect.connected = true;
