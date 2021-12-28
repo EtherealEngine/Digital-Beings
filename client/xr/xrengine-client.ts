@@ -12,9 +12,7 @@ const XRENGINE_URL = process.env.XRENGINE_URL || 'https://dev.theoverlay.io/loca
 const browserLauncher= require('../../src/browser-launcher')
 const { existsSync } = require('fs');
 
-const doTests: boolean = true
-
-const _redisDb = new redisDb()
+const doTests: boolean = false
 
 async function createXREngineClient() {
     //generateVoice('hello there', (buf, path) => {}, false)

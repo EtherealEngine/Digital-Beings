@@ -211,15 +211,17 @@ export class postgres {
             }
         })
     }
-    async messageExists2(client_name: string, chat_id: string, message_id: string) {
+    async messageExists2(client_name: string, chat_id: string, message_id: string, foundCallback, notFoundCallback) {
         const query = "SELECT * FROM chat_history WHERE client_name=$1 AND chat_id=$2 AND message_id=$3"
         const values = [ client_name, chat_id, message_id ]
 
         return await this.client.query(query, values, (err, res) => {
             if (err) {
               console.log(`${err} ${err.stack}`)
+              notFoundCallback()
             } else {
-                return res && res.rows && res.rows.length > 0
+                if (res && res.rows && res.rows.length > 0) foundCallback()
+                else notFoundCallback()
             }
         })
     }

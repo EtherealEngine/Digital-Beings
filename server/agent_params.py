@@ -26,7 +26,7 @@ SELECTED_AGENTS = [
                     # 'gpt3',
                     #'repeat'
                     'metaintelligence'
-                    'thales'
+                    #'thales'
                     #'dodecathlon.wizard_of_wikipedia',
                   ]
 DEVICE = 'cpu'  # cpu or gpu
