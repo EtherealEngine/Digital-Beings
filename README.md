@@ -83,7 +83,7 @@ More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzl
 * Run `pip install -r requirements.txt`
 * Rename the `.env.default` to `.env` (or make a new copy) and update the variables
 * Install PostgreSQL, setup the user and the database according to the parameters starting with `PG*` in an `.env` file and run the `init.sql` (root folder)
-* Run the bot in using `npm run` in the command line
+* Run the bot in using `npm run start` in the command line
 
 ## Without Docker (WSL/Linux): 
 
