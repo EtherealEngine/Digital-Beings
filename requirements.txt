@@ -1,4 +1,4 @@
-flask==2.0.2
+flask==2.0.3
 flask-cors==3.0.10
 psycopg2-binary
 emoji
