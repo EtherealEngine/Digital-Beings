@@ -34,8 +34,6 @@ Out of the box, the server supports these AI bots:
 * [Droidlet](https://github.com/facebookresearch/fairo)
 * [Rasa](https://rasa.com/)
 * [GPT-3](https://openai.com/blog/openai-api/) by [OpenAI](https://openai.com/)
-* AI agents by Metaintelligence
-* [Thales Agent](https://github.com/DavinciDreams/Thales)
  
 The server can fetch chat history and transform it to a list.
 
@@ -374,14 +372,6 @@ The Manager is a web interface to edit variables from the database for the bot.
 * `MANAGER_PASSWORD`
 * `BOT_MANAGER_SECRET_KEY` - a custom secret key
 * `AVAILABLE_AIS` - Available agents in the bot, separated by the semicolons so spaces can be used, for example: `gpt3;gpt2;test agent`
-
-##### Metaintelligence
-
-* `METAINTELLIGENCE_CONNECTION_STRING` - the connection string for the meta intelligence agent if used
-
-##### Thales
-
-* `THALES_CONNECTION_STRING` - the connection string for the [Thales agent](https://github.com/DavinciDreams/Thales) if used
 
 ##### `GPT-3` agent
 
