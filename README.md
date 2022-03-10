@@ -6,6 +6,9 @@
 
 [Digital Being](https://github.com/XRFoundation/DigitalBeing) is written in [Typescript](https://www.typescriptlang.org/) and [Python](https://www.python.org/). Typescript is used for the clients of most known social networks, as well as [XR-Engine](https://github.com/XRFoundation/XREngine), a 3D metaverse architecture. A layer that connects the AI agents is called the server, and is written in [Python](https://www.python.org/).
 
+![Digital Being Architecture](https://user-images.githubusercontent.com/5104160/157588883-5a4d2c6b-1635-419c-91c2-73cc36e6a7fe.svg)
+
+
 Digital Being supports:
 
 * [Discord](https://discord.com/) (Servers, Threads, DMs)
