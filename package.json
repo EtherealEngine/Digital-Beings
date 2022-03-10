@@ -44,7 +44,7 @@
     "node-telegram-bot-api": "0.56.0",
     "nodemon": "2.0.15",
     "openai-api": "1.2.6",
-    "pg": "8.7.1",
+    "pg": "8.7.3",
     "puppeteer": "13.1.2",
     "puppeteer-extra": "3.2.3",
     "puppeteer-extra-plugin-stealth": "2.9.0",
