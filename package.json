@@ -27,7 +27,7 @@
     "@green-api/whatsapp-bot": "0.2.5",
     "@types/express": "4.17.13",
     "@types/express-serve-static-core": "4.17.28",
-    "@types/node-telegram-bot-api": "0.53.6",
+    "@types/node-telegram-bot-api": "0.56.0",
     "@types/recordrtc": "5.6.8",
     "axios": "0.25.0",
     "bluebird": "3.7.2",
