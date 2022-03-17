@@ -2,7 +2,7 @@ flask==2.0.3
 flask-cors==3.0.10
 psycopg2-binary
 emoji
-openai==0.15.0
+openai==0.16.0
 #parlai==1.5.1
 #torch==1.10.0
 transformers==4.17.0
