@@ -67,7 +67,7 @@
     "@types/node": "16.11.26",
     "@types/react": "17.0.40",
     "@types/react-dom": "17.0.14",
-    "@types/three": "0.138.0",
+    "@types/three": "0.139.0",
     "config": "3.3.7",
     "cross-env": "7.0.3",
     "eslint": "8.12.0",
