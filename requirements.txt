@@ -11,4 +11,4 @@ websockets
 #rasa==2.8.7
 #rasa-sdk==2.8.2
 asyncio
-jinja2==3.1.1
+jinja2==3.1.2
