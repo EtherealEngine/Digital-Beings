@@ -43,7 +43,7 @@
     "instagram-private-api": "1.45.3",
     "node-telegram-bot-api": "0.57.0",
     "nodemon": "2.0.16",
-    "openai-api": "1.2.6",
+    "openai-api": "1.3.1",
     "pg": "8.7.3",
     "puppeteer": "13.7.0",
     "puppeteer-extra": "3.2.3",
