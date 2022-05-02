@@ -41,7 +41,7 @@
     "express": "4.18.1",
     "express-session": "1.17.2",
     "instagram-private-api": "1.45.3",
-    "node-telegram-bot-api": "0.56.0",
+    "node-telegram-bot-api": "0.57.0",
     "nodemon": "2.0.16",
     "openai-api": "1.2.6",
     "pg": "8.7.3",
