@@ -48,7 +48,7 @@
     "puppeteer": "13.7.0",
     "puppeteer-extra": "3.2.3",
     "puppeteer-extra-plugin-stealth": "2.9.0",
-    "puppeteer-stream": "2.0.9",
+    "puppeteer-stream": "2.1.1",
     "reddit": "1.2.1",
     "redis": "4.1.0",
     "session": "0.1.0",
