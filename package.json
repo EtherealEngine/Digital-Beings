@@ -55,7 +55,7 @@
     "snoostream": "1.0.1",
     "snoowrap": "1.23.0",
     "tedis": "0.1.12",
-    "ts-node": "10.7.0",
+    "ts-node": "10.8.1",
     "twilio": "3.77.2",
     "twit": "2.2.11",
     "twitter-api-v2": "1.12.2",
