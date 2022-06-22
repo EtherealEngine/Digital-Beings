@@ -47,7 +47,7 @@
     "pg": "8.7.3",
     "puppeteer": "13.7.0",
     "puppeteer-extra": "3.2.3",
-    "puppeteer-extra-plugin-stealth": "2.10.0",
+    "puppeteer-extra-plugin-stealth": "2.10.1",
     "puppeteer-stream": "2.1.1",
     "reddit": "1.2.1",
     "redis": "4.1.0",
