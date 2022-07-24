@@ -70,7 +70,7 @@
     "@types/three": "0.141.0",
     "config": "3.3.7",
     "cross-env": "7.0.3",
-    "eslint": "8.19.0",
+    "eslint": "8.20.0",
     "eslint-plugin-react": "7.30.1",
     "semantic-release": "19.0.3",
     "semantic-release-monorepo": "7.0.5",
