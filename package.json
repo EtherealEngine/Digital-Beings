@@ -58,7 +58,7 @@
     "ts-node": "10.9.1",
     "twilio": "3.81.0",
     "twit": "2.2.11",
-    "twitter-api-v2": "1.12.2",
+    "twitter-api-v2": "1.12.5",
     "twitter-autohook": "1.7.2",
     "wav-file-encoder": "1.0.3",
     "xvfb": "0.4.0"
