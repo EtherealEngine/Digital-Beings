@@ -6,7 +6,7 @@ openai==0.20.0
 #parlai==1.5.1
 #torch==1.10.0
 transformers==4.20.1
-twilio==7.10.0
+twilio==7.13.0
 websockets
 #rasa==2.8.7
 #rasa-sdk==2.8.2
