@@ -68,7 +68,7 @@
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
     "@types/three": "0.144.0",
-    "config": "3.3.7",
+    "config": "3.3.8",
     "cross-env": "7.0.3",
     "eslint": "8.23.0",
     "eslint-plugin-react": "7.31.1",
