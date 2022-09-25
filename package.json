@@ -60,7 +60,7 @@
     "twit": "2.2.11",
     "twitter-api-v2": "1.12.7",
     "twitter-autohook": "1.7.2",
-    "wav-file-encoder": "1.0.3",
+    "wav-file-encoder": "1.0.4",
     "xvfb": "0.4.0"
   },
   "devDependencies": {
