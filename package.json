@@ -56,7 +56,7 @@
     "snoowrap": "1.23.0",
     "tedis": "0.1.12",
     "ts-node": "10.9.1",
-    "twilio": "3.81.0",
+    "twilio": "3.83.3",
     "twit": "2.2.11",
     "twitter-api-v2": "1.12.7",
     "twitter-autohook": "1.7.2",
