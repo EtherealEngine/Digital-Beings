@@ -50,7 +50,7 @@
     "puppeteer-extra-plugin-stealth": "2.11.1",
     "puppeteer-stream": "2.1.1",
     "reddit": "1.2.1",
-    "redis": "4.3.0",
+    "redis": "4.5.1",
     "session": "0.1.0",
     "snoostream": "1.0.1",
     "snoowrap": "1.23.0",
