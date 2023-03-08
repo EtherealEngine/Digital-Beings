@@ -1,10 +1,10 @@
 # About
 
-[Digital Being](https://github.com/XRFoundation/DigitalBeing) is a software that connects AI agents with a range of IM and VR software, making their deployment easier. You pick a bot, fill the account data and you're able to converse with a bot using SMS, Twitter or other social media.
+[Digital Beings]([https://github.com/EtherealEngine/Digital-Beings) is a software that connects AI agents with a range of IM and VR software, making their deployment easier. You pick a bot, fill the account data and you're able to converse with a bot using SMS, Twitter or other social media.
 
 [Made in partnership with **SuperReality**, a free open source teaching platform for everyone.](https://superreality.com)
 
-[Digital Being](https://github.com/XRFoundation/DigitalBeing) is written in [Typescript](https://www.typescriptlang.org/) and [Python](https://www.python.org/). Typescript is used for the clients of most known social networks, as well as [XR-Engine](https://github.com/XRFoundation/XREngine), a 3D metaverse architecture. A layer that connects the AI agents is called the server, and is written in [Python](https://www.python.org/).
+[Digital Beings](https://github.com/EtherealEngine/Digital-Beings) is written in [Typescript](https://www.typescriptlang.org/) and [Python](https://www.python.org/). Typescript is used for the clients of most known social networks, as well as [XR-Engine](https://github.com/EtherealEngine/etherealengine), a 3D metaverse architecture. A layer that connects the AI agents is called the server, and is written in [Python](https://www.python.org/).
 
 ![Digital Being Architecture](https://user-images.githubusercontent.com/5104160/157588883-5a4d2c6b-1635-419c-91c2-73cc36e6a7fe.svg)
 
@@ -19,10 +19,10 @@ Digital Being supports:
 * [Telegram](https://telegram.org/) (Groupmessages , DMs)
 * [Twilio](https://www.twilio.com/) (SMS)
 * [WhatsAPP](https://www.whatsapp.com/) (untested)
-* [XR-Engine](https://github.com/XRFoundation/XREngine) (chat, also supports commands and events from other users - proximity, emotions, etc.)
+* [XR-Engine](https://github.com/EtherealEngine/etherealengine) (chat, also supports commands and events from other users - proximity, emotions, etc.)
 * [Zoom](https://www.zoom.us/) (unfinished, supports video group calls).
 
-The Client is using either the API for connecting to the different services like [Discord](https://discord.com/), [Messenger](https://www.messenger.com/), etc, or [Puppeteer](https://github.com/puppeteer/puppeteer) for emulating the browser to connect to the [XR-Engine](https://github.com/XRFoundation/XREngine) and [Zoom]((https://www.zoom.us/)).
+The Client is using either the API for connecting to the different services like [Discord](https://discord.com/), [Messenger](https://www.messenger.com/), etc, or [Puppeteer](https://github.com/puppeteer/puppeteer) for emulating the browser to connect to the [XR-Engine](https://github.com/EtherealEngine/etherealengine) and [Zoom]((https://www.zoom.us/)).
 
 Out of the box, the server supports these AI bots:
 
@@ -49,7 +49,7 @@ Right now these TCP packets may contain:
 * `sendPingSoloAgent` - this command can be used to ping an agent directly, if many agents are active
 * `sendMessageReaction` - this command is sent when a user reacts to a message, currently implemented in Discord
 * `sendMessageEdit` - this command is sent when a message is edited, in order to update the agent’s response too
-* `sendMetadata` - this command is used to send the metadata of the current server - currently implemented in Discord and the [XR-Engine](https://github.com/XRFoundation/XREngine)
+* `sendMetadata` - this command is used to send the metadata of the current server - currently implemented in Discord and the [XR-Engine](https://github.com/EtherealEngine/etherealengine)
 
 New packets can be implemented easily, the only thing to be noted is that the ID should be different from the old packets, also the packet should be sent as a `JSON` string, like the examples, to avoid any issues with the server.
 More info about [Networking](https://docs.google.com/document/d/1fz4x1pZGGELPKzlTBgtApiY54oqfNdaCIBTFwRqRDvs/edit?usp=sharing)
@@ -123,7 +123,7 @@ Open `server/agent_params.py` and add / remove the `SELECT_AGENTS` list using th
 
 **Attention**: applies to the installed clients only.
 
-Open `src/initialize.ts` and comment/uncomment the clients you need, if you need a client that uses a web server ([Twilio](https://www.twilio.com/), messenger), go to client/webserver.ts and uncomment line 17 otherwise you can leave it commented.
+Open `src/initialize.ts` and comment/uncomment the clients you need, if you need a client that uses a web server (ex. [Twilio](https://www.twilio.com/)), go to client/webserver.ts and uncomment line 17 otherwise you can leave it commented.
 
 #### Selecting available agents
 
@@ -181,7 +181,7 @@ sudo apt -y install ./google-chrome-stable_current_amd64.deb
 
 #### XR-Engine Support:
 
-[DigitalBeing](https://github.com/XRFoundation/DigitalBeing) is able to connect to the [XR-Engine](https://github.com/XRFoundation/XREngine) using [Puppeteer](https://github.com/puppeteer/puppeteer).
+[DigitalBeing](https://github.com/XRFoundation/DigitalBeing) is able to connect to the [XR-Engine](https://github.com/EtherealEngine/etherealengine) using [Puppeteer](https://github.com/puppeteer/puppeteer).
 
 DigitalBeing is able to imitate a character in XR-engine and access its functions. It currently selects a random model.
 It works using a virtual headful client (runs like headless, but in headful mode virtual, as puppeteer doesn't support Audio and Video in headless mode) in the engine.
@@ -211,16 +211,22 @@ Available Commands - all commands start with a slash (`/`):
 
 #### Scripts Structure:
 
-The [XR-Engine](https://github.com/XRFoundation/XREngine) engine is one of the DB’s clients, it can handle multiple clients at once though.
+The [XR-Engine](https://github.com/EtherealEngine/etherealengine) engine is one of the DB’s clients, it can handle multiple clients at once though.
 
 There are multiple scripts for the xr-engine:
 
 `chatHistory.ts` - has functions to handle the chat history
+
 `messageHandler.ts` - handles the chat messages and sends to the server side the needed messages
+
 `Stt.ts`  - handles the speech to text engine
+
 `Tts.ts` - handles the text to speech engine
+
 `UsersInRange.ts` - holds lists of users around the bot
+
 `Xrengine-client.ts` - is the main script for the XR-Engine, it holds all the functions that use the puppeteer
+
 `xrEnginePacketHandler.ts` - handles the received packets from the python server
 
 #### `.env` config file
@@ -294,7 +300,7 @@ In order to create a bot in telegram, you will need to install the APP in an And
 
 ##### XR-Engine
 
-In order to use the xr-engine you will need to [install](https://github.com/XRFoundation/XREngine/blob/dev/tutorial/01-installation.md) the engine, then for the URL variable just apply the `URL` for the engine using the location you want the bot to enter, for example [https://localhost:3000/location/test](https://localhost:3000/location/test). This `URL` will make the bot to connect to the `XR-engine` that is setup locally on Port `3000` in the location test.
+In order to use the xr-engine you will need to [install](https://github.com/EtherealEngine/etherealengine/blob/dev/tutorial/01-installation.md) the engine, then for the URL variable just apply the `URL` for the engine using the location you want the bot to enter, for example [https://localhost:3000/location/test](https://localhost:3000/location/test). This `URL` will make the bot to connect to the `XR-engine` that is setup locally on Port `3000` in the location test.
 
 * `XRENGINE_URL`
 
@@ -360,7 +366,7 @@ For example, in Ubuntu you can install it with `sudo apt install postgresql-serv
 
 In Windows, you'll need to download it from the [official server](https://www.postgresql.org/download/windows/) and follow [the instructions](https://www.postgresqltutorial.com/install-postgresql/).
 
-Windows installation instructions [instructions](https://harshityadav95.medium.com/postgresql-in-windows-subsystem-for-linux-wsl-6dc751ac1ff3) using WSL.
+Windows installation [instructions](https://harshityadav95.medium.com/postgresql-in-windows-subsystem-for-linux-wsl-6dc751ac1ff3) using WSL.
 
 ##### Manager
 
